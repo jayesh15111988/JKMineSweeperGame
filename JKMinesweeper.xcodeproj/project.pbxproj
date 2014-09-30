@@ -1,0 +1,485 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		91078BD719D8D63500F9B438 /* JKMineSweeperConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 91078BD619D8D63500F9B438 /* JKMineSweeperConstants.m */; };
+		91AA40FE19D8C956009CB397 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AA40FD19D8C956009CB397 /* main.m */; };
+		91AA410119D8C956009CB397 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AA410019D8C956009CB397 /* AppDelegate.m */; };
+		91AA410919D8C956009CB397 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91AA410819D8C956009CB397 /* Images.xcassets */; };
+		91AA410C19D8C956009CB397 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91AA410A19D8C956009CB397 /* LaunchScreen.xib */; };
+		91AA411819D8C956009CB397 /* JKMinesweeperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AA411719D8C956009CB397 /* JKMinesweeperTests.m */; };
+		91AA412419D8CA77009CB397 /* JKMinesweeperHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AA412319D8CA77009CB397 /* JKMinesweeperHomeViewController.m */; };
+		91AA412719D8CAD8009CB397 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91AA412619D8CAD8009CB397 /* Main.storyboard */; };
+		91AA412C19D8CC80009CB397 /* JKButtonStateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AA412B19D8CC80009CB397 /* JKButtonStateModel.m */; };
+		91AA412F19D8CC94009CB397 /* JKCustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AA412E19D8CC94009CB397 /* JKCustomButton.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		91AA411219D8C956009CB397 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 91AA40F019D8C956009CB397 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 91AA40F719D8C956009CB397;
+			remoteInfo = JKMinesweeper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		91078BD519D8D63500F9B438 /* JKMineSweeperConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKMineSweeperConstants.h; sourceTree = "<group>"; };
+		91078BD619D8D63500F9B438 /* JKMineSweeperConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKMineSweeperConstants.m; sourceTree = "<group>"; };
+		91AA40F819D8C956009CB397 /* JKMinesweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JKMinesweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		91AA40FC19D8C956009CB397 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		91AA40FD19D8C956009CB397 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		91AA40FF19D8C956009CB397 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		91AA410019D8C956009CB397 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		91AA410819D8C956009CB397 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		91AA410B19D8C956009CB397 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		91AA411119D8C956009CB397 /* JKMinesweeperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JKMinesweeperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		91AA411619D8C956009CB397 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		91AA411719D8C956009CB397 /* JKMinesweeperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKMinesweeperTests.m; sourceTree = "<group>"; };
+		91AA412219D8CA77009CB397 /* JKMinesweeperHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKMinesweeperHomeViewController.h; sourceTree = "<group>"; };
+		91AA412319D8CA77009CB397 /* JKMinesweeperHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKMinesweeperHomeViewController.m; sourceTree = "<group>"; };
+		91AA412619D8CAD8009CB397 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		91AA412A19D8CC80009CB397 /* JKButtonStateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKButtonStateModel.h; sourceTree = "<group>"; };
+		91AA412B19D8CC80009CB397 /* JKButtonStateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKButtonStateModel.m; sourceTree = "<group>"; };
+		91AA412D19D8CC94009CB397 /* JKCustomButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKCustomButton.h; sourceTree = "<group>"; };
+		91AA412E19D8CC94009CB397 /* JKCustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKCustomButton.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		91AA40F519D8C956009CB397 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91AA410E19D8C956009CB397 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		91078BD419D8D61800F9B438 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				91078BD519D8D63500F9B438 /* JKMineSweeperConstants.h */,
+				91078BD619D8D63500F9B438 /* JKMineSweeperConstants.m */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
+		91AA40EF19D8C956009CB397 = {
+			isa = PBXGroup;
+			children = (
+				91AA40FA19D8C956009CB397 /* JKMinesweeper */,
+				91AA411419D8C956009CB397 /* JKMinesweeperTests */,
+				91AA40F919D8C956009CB397 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		91AA40F919D8C956009CB397 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				91AA40F819D8C956009CB397 /* JKMinesweeper.app */,
+				91AA411119D8C956009CB397 /* JKMinesweeperTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		91AA40FA19D8C956009CB397 /* JKMinesweeper */ = {
+			isa = PBXGroup;
+			children = (
+				91078BD419D8D61800F9B438 /* Constants */,
+				91AA412919D8CC67009CB397 /* Models */,
+				91AA412819D8CC57009CB397 /* Custom UIButton */,
+				91AA412519D8CAC8009CB397 /* Storyboard */,
+				91AA412119D8CA61009CB397 /* Controllers */,
+				91AA40FF19D8C956009CB397 /* AppDelegate.h */,
+				91AA410019D8C956009CB397 /* AppDelegate.m */,
+				91AA410819D8C956009CB397 /* Images.xcassets */,
+				91AA410A19D8C956009CB397 /* LaunchScreen.xib */,
+				91AA40FB19D8C956009CB397 /* Supporting Files */,
+			);
+			path = JKMinesweeper;
+			sourceTree = "<group>";
+		};
+		91AA40FB19D8C956009CB397 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				91AA40FC19D8C956009CB397 /* Info.plist */,
+				91AA40FD19D8C956009CB397 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		91AA411419D8C956009CB397 /* JKMinesweeperTests */ = {
+			isa = PBXGroup;
+			children = (
+				91AA411719D8C956009CB397 /* JKMinesweeperTests.m */,
+				91AA411519D8C956009CB397 /* Supporting Files */,
+			);
+			path = JKMinesweeperTests;
+			sourceTree = "<group>";
+		};
+		91AA411519D8C956009CB397 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				91AA411619D8C956009CB397 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		91AA412119D8CA61009CB397 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				91AA412219D8CA77009CB397 /* JKMinesweeperHomeViewController.h */,
+				91AA412319D8CA77009CB397 /* JKMinesweeperHomeViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		91AA412519D8CAC8009CB397 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				91AA412619D8CAD8009CB397 /* Main.storyboard */,
+			);
+			name = Storyboard;
+			sourceTree = "<group>";
+		};
+		91AA412819D8CC57009CB397 /* Custom UIButton */ = {
+			isa = PBXGroup;
+			children = (
+				91AA412D19D8CC94009CB397 /* JKCustomButton.h */,
+				91AA412E19D8CC94009CB397 /* JKCustomButton.m */,
+			);
+			name = "Custom UIButton";
+			sourceTree = "<group>";
+		};
+		91AA412919D8CC67009CB397 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				91AA412A19D8CC80009CB397 /* JKButtonStateModel.h */,
+				91AA412B19D8CC80009CB397 /* JKButtonStateModel.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		91AA40F719D8C956009CB397 /* JKMinesweeper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91AA411B19D8C956009CB397 /* Build configuration list for PBXNativeTarget "JKMinesweeper" */;
+			buildPhases = (
+				91AA40F419D8C956009CB397 /* Sources */,
+				91AA40F519D8C956009CB397 /* Frameworks */,
+				91AA40F619D8C956009CB397 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JKMinesweeper;
+			productName = JKMinesweeper;
+			productReference = 91AA40F819D8C956009CB397 /* JKMinesweeper.app */;
+			productType = "com.apple.product-type.application";
+		};
+		91AA411019D8C956009CB397 /* JKMinesweeperTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91AA411E19D8C956009CB397 /* Build configuration list for PBXNativeTarget "JKMinesweeperTests" */;
+			buildPhases = (
+				91AA410D19D8C956009CB397 /* Sources */,
+				91AA410E19D8C956009CB397 /* Frameworks */,
+				91AA410F19D8C956009CB397 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				91AA411319D8C956009CB397 /* PBXTargetDependency */,
+			);
+			name = JKMinesweeperTests;
+			productName = JKMinesweeperTests;
+			productReference = 91AA411119D8C956009CB397 /* JKMinesweeperTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		91AA40F019D8C956009CB397 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "Jayesh Kawli";
+				TargetAttributes = {
+					91AA40F719D8C956009CB397 = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
+					91AA411019D8C956009CB397 = {
+						CreatedOnToolsVersion = 6.0.1;
+						TestTargetID = 91AA40F719D8C956009CB397;
+					};
+				};
+			};
+			buildConfigurationList = 91AA40F319D8C956009CB397 /* Build configuration list for PBXProject "JKMinesweeper" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 91AA40EF19D8C956009CB397;
+			productRefGroup = 91AA40F919D8C956009CB397 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				91AA40F719D8C956009CB397 /* JKMinesweeper */,
+				91AA411019D8C956009CB397 /* JKMinesweeperTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		91AA40F619D8C956009CB397 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91AA412719D8CAD8009CB397 /* Main.storyboard in Resources */,
+				91AA410C19D8C956009CB397 /* LaunchScreen.xib in Resources */,
+				91AA410919D8C956009CB397 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91AA410F19D8C956009CB397 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		91AA40F419D8C956009CB397 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91AA412F19D8CC94009CB397 /* JKCustomButton.m in Sources */,
+				91AA412419D8CA77009CB397 /* JKMinesweeperHomeViewController.m in Sources */,
+				91AA410119D8C956009CB397 /* AppDelegate.m in Sources */,
+				91078BD719D8D63500F9B438 /* JKMineSweeperConstants.m in Sources */,
+				91AA412C19D8CC80009CB397 /* JKButtonStateModel.m in Sources */,
+				91AA40FE19D8C956009CB397 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91AA410D19D8C956009CB397 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91AA411819D8C956009CB397 /* JKMinesweeperTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		91AA411319D8C956009CB397 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 91AA40F719D8C956009CB397 /* JKMinesweeper */;
+			targetProxy = 91AA411219D8C956009CB397 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		91AA410A19D8C956009CB397 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				91AA410B19D8C956009CB397 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		91AA411919D8C956009CB397 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		91AA411A19D8C956009CB397 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		91AA411C19D8C956009CB397 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = JKMinesweeper/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		91AA411D19D8C956009CB397 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = JKMinesweeper/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+		91AA411F19D8C956009CB397 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = JKMinesweeperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JKMinesweeper.app/JKMinesweeper";
+			};
+			name = Debug;
+		};
+		91AA412019D8C956009CB397 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = JKMinesweeperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JKMinesweeper.app/JKMinesweeper";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		91AA40F319D8C956009CB397 /* Build configuration list for PBXProject "JKMinesweeper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91AA411919D8C956009CB397 /* Debug */,
+				91AA411A19D8C956009CB397 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		91AA411B19D8C956009CB397 /* Build configuration list for PBXNativeTarget "JKMinesweeper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91AA411C19D8C956009CB397 /* Debug */,
+				91AA411D19D8C956009CB397 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		91AA411E19D8C956009CB397 /* Build configuration list for PBXNativeTarget "JKMinesweeperTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91AA411F19D8C956009CB397 /* Debug */,
+				91AA412019D8C956009CB397 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 91AA40F019D8C956009CB397 /* Project object */;
+}
