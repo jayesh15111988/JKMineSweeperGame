@@ -33,16 +33,16 @@
             CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y,
                        DEFAULT_TILE_WIDTH, DEFAULT_TILE_WIDTH);
 
-        if (self.buttonStateModel.isThisButtonMine) {
+        //if (self.buttonStateModel.isThisButtonMine) {
             self.backgroundColor = [UIColor orangeColor];
-        } else {
-            self.backgroundColor = [UIColor lightGrayColor];
-        }
+       // } else {
+         //   self.backgroundColor = [UIColor lightGrayColor];
+        //}
 
-        [self setTitle:[NSString stringWithFormat:@"%d",
-                                                  self.buttonStateModel
-                                                      .numberOfNeighboringMines]
-              forState:UIControlStateNormal];
+        //[self setTitle:[NSString stringWithFormat:@"%d",
+          //                                        self.buttonStateModel
+            //                                          .numberOfNeighboringMines]
+             // forState:UIControlStateNormal];
         [self addTarget:self
                       action:@selector(tileButtonSelected:)
             forControlEvents:UIControlEventTouchUpInside];
@@ -63,9 +63,9 @@
             self.gameOverInstant();
         }
     } else {
-        self.backgroundColor = sender.buttonStateModel.tileSelectedIndicator
-                                   ? [UIColor greenColor]
-                                   : [UIColor lightGrayColor];
+      //  self.backgroundColor = sender.buttonStateModel.tileSelectedIndicator
+        //                           ? [UIColor greenColor]
+          //                         : [UIColor lightGrayColor];
         //User has selected normal slide now, go and highlight all its neighbours
         if(self.randomTileSelectedInstant){
             self.randomTileSelectedInstant(self.buttonSequenceNumber);

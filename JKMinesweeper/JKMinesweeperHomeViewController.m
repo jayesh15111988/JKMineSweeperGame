@@ -45,7 +45,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.gridHolderView = [[UIView alloc] init];
     self.minesLocationHolder = [NSMutableDictionary new];
     self.minesButtonsHolder = [NSMutableArray new];
-    self.regularButtonsHolder=[NSMutableArray new];
+    self.regularButtonsHolder = [NSMutableArray new];
     self.numberOfSurroundingMinesHolder = [NSMutableDictionary new];
 
     [self.createGridButton addTarget:self
@@ -105,7 +105,7 @@ typedef void (^resetTilesFinishedBlock)();
             buttonSequenceNumber =
                 ((widthParameter / 55) +
                  (heightParamters / 55) * self.totalNumberOfRequiredTiles);
-            
+
             doesMineExistForTile =
                 self.minesLocationHolder[@(buttonSequenceNumber)] ? YES : NO;
 
@@ -122,8 +122,13 @@ typedef void (^resetTilesFinishedBlock)();
                 andNumberOfSurroundingMines:
                     totalNumberOfMinesSurroundingGivenTile];
 
-            newRevealMineButton.buttonStateModel.sequenceOfNeighbouringTiles=[JKNeighbouringTilesProvider getNeighbouringTilesForGivenTileWithSequence:buttonSequenceNumber andTotalTilesInSingleLine:self.totalNumberOfRequiredTiles];
-            
+            newRevealMineButton.buttonStateModel.sequenceOfNeighbouringTiles =
+                [JKNeighbouringTilesProvider
+                    getNeighbouringTilesForGivenTileWithSequence:
+                        buttonSequenceNumber
+                                       andTotalTilesInSingleLine:
+                                           self.totalNumberOfRequiredTiles];
+
             __weak typeof(self) weakSelf = self;
 
             newRevealMineButton.gameOverInstant = ^() {
@@ -131,21 +136,24 @@ typedef void (^resetTilesFinishedBlock)();
                 [strongSelf showAllMines];
                 [strongSelf showGameOverAlertView];
             };
-            
-//            __weak typeof(JKCustomButton*) weakButtonObject = newRevealMineButton;
-            
-            newRevealMineButton.randomTileSelectedInstant=^(NSInteger buttonSequenceNumber){
-  //              __strong __typeof(JKCustomButton*) strongButtonObject = weakButtonObject;
+
+            //            __weak typeof(JKCustomButton*) weakButtonObject =
+            //            newRevealMineButton;
+
+            newRevealMineButton.randomTileSelectedInstant =
+                ^(NSInteger buttonSequenceNumber) {
+                //              __strong __typeof(JKCustomButton*)
+                //              strongButtonObject = weakButtonObject;
                 __strong __typeof(weakSelf) strongSelf = weakSelf;
-                
-                [strongSelf highlightNeighbouringButtonsForButtonSequence:buttonSequenceNumber];
+
+                [strongSelf highlightNeighbouringButtonsForButtonSequence:
+                                buttonSequenceNumber];
             };
-            
+
 
             if (doesMineExistForTile) {
                 [self.minesButtonsHolder addObject:newRevealMineButton];
-            }
-            else{
+            } else {
                 [self.regularButtonsHolder addObject:newRevealMineButton];
             }
             [self.gridHolderView addSubview:newRevealMineButton];
@@ -155,37 +163,49 @@ typedef void (^resetTilesFinishedBlock)();
     [self.view addSubview:self.gridHolderView];
 }
 
--(JKCustomButton*)getButtonWithSequence:(NSInteger)buttonSequence{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"buttonSequenceNumber == %d", buttonSequence];
-    return  [[self.regularButtonsHolder filteredArrayUsingPredicate:predicate] firstObject];
+- (JKCustomButton *)getButtonWithSequence:(NSInteger)buttonSequence {
+    NSPredicate *predicate = [NSPredicate
+        predicateWithFormat:@"buttonSequenceNumber == %d", buttonSequence];
+    return [[self.regularButtonsHolder
+        filteredArrayUsingPredicate:predicate] firstObject];
 }
 
--(void)highlightNeighbouringButtonsForButtonSequence:(NSInteger)buttonSequence{
-    
-    
-    JKCustomButton* buttonWithCurrentIdentifier = [self getButtonWithSequence:buttonSequence];
-    
-    if(!buttonWithCurrentIdentifier.isVisited){
-    NSArray* collectionOfSurroundingTilesForCurrentTile=@[];
-    [buttonWithCurrentIdentifier setBackgroundColor:[UIColor redColor]];
+- (void)highlightNeighbouringButtonsForButtonSequence:
+            (NSInteger)buttonSequence {
 
 
-    
-    buttonWithCurrentIdentifier.isVisited=YES;
-    
-    if((buttonWithCurrentIdentifier.buttonStateModel.numberOfNeighboringMines==0)){
-        collectionOfSurroundingTilesForCurrentTile=buttonWithCurrentIdentifier.buttonStateModel.sequenceOfNeighbouringTiles;
+    JKCustomButton *buttonWithCurrentIdentifier =
+        [self getButtonWithSequence:buttonSequence];
 
-        for(NSString* storedNeighboringTilesSequence in collectionOfSurroundingTilesForCurrentTile){
-            NSInteger tileSequenceIdentifier=[storedNeighboringTilesSequence integerValue];
-            [self highlightNeighbouringButtonsForButtonSequence:tileSequenceIdentifier];
-        
+    if (!buttonWithCurrentIdentifier.isVisited) {
+
+
+        [buttonWithCurrentIdentifier setBackgroundColor:[UIColor redColor]];
+        buttonWithCurrentIdentifier.isVisited = YES;
+
+        if ((buttonWithCurrentIdentifier.buttonStateModel
+                 .numberOfNeighboringMines == 0)) {
+            NSArray *collectionOfSurroundingTilesForCurrentTile =
+                buttonWithCurrentIdentifier.buttonStateModel
+                    .sequenceOfNeighbouringTiles;
+
+            for (NSString *storedNeighboringTilesSequence in
+                     collectionOfSurroundingTilesForCurrentTile) {
+                NSInteger tileSequenceIdentifier =
+                    [storedNeighboringTilesSequence integerValue];
+                [self highlightNeighbouringButtonsForButtonSequence:
+                          tileSequenceIdentifier];
+            }
+        } else {
+            [buttonWithCurrentIdentifier
+                setTitle:[NSString
+                             stringWithFormat:@"%d",
+                                              buttonWithCurrentIdentifier
+                                                  .buttonStateModel
+                                                  .numberOfNeighboringMines]
+                forState:UIControlStateNormal];
         }
-
     }
-
-    }
-    
 }
 
 - (void)showGameOverAlertView {
@@ -284,14 +304,15 @@ typedef void (^resetTilesFinishedBlock)();
 
     if (sender.tag == 14) {
         sender.tag = 15;
-        sender.titleLabel.text = @"Hide";
+        [self.revealMenuButton setTitle:@"Hide" forState:UIControlStateNormal];
         for (
             JKCustomButton *individualTileWithMine in self.minesButtonsHolder) {
             individualTileWithMine.backgroundColor = [UIColor greenColor];
         }
     } else {
         sender.tag = 14;
-        sender.titleLabel.text = @"Reveal";
+        [self.revealMenuButton setTitle:@"Reveal"
+                               forState:UIControlStateNormal];
         for (
             JKCustomButton *individualTileWithMine in self.minesButtonsHolder) {
             individualTileWithMine.backgroundColor = [UIColor orangeColor];
