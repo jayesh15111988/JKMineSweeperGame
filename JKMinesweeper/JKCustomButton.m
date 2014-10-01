@@ -66,6 +66,10 @@
         self.backgroundColor = sender.buttonStateModel.tileSelectedIndicator
                                    ? [UIColor greenColor]
                                    : [UIColor lightGrayColor];
+        //User has selected normal slide now, go and highlight all its neighbours
+        if(self.randomTileSelectedInstant){
+            self.randomTileSelectedInstant(self.buttonSequenceNumber);
+        }
     }
 }
 
