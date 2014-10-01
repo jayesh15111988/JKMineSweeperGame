@@ -10,7 +10,6 @@
 
 #define DEFAULT_TILE_WIDTH 50
 #define DEFAULT_GUTTER_WIDTH 5
-#define MAXIMUM_NUMBER_OF_MINES 5
 
 
 @interface JKMineSweeperConstants : NSObject

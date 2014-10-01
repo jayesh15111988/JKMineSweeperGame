@@ -20,6 +20,7 @@ typedef void (^resetTilesFinishedBlock)();
 @property(weak, nonatomic) IBOutlet UIButton *createGridButton;
 @property(strong, nonatomic) UIView *gridHolderView;
 @property(strong, nonatomic) NSMutableDictionary *minesLocationHolder;
+@property(assign, nonatomic) NSInteger totalNumberOfMinesOnGrid;
 
 @property(strong, nonatomic) NSMutableArray *minesButtonsHolder;
 @property(strong, nonatomic) NSMutableArray *regularButtonsHolder;
@@ -64,6 +65,9 @@ typedef void (^resetTilesFinishedBlock)();
     if (self.totalNumberOfRequiredTiles < 3) {
         self.totalNumberOfRequiredTiles = 3;
     }
+
+    // We are setting number of mines equal to number of tiles in a single row
+    self.totalNumberOfMinesOnGrid = self.totalNumberOfRequiredTiles;
 
     [self createNewGridOnScreen];
 }
@@ -242,7 +246,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.bottomLeftCorner = (maximumNumberOfTilesInRow)*self.topRightCorner;
 
 
-    while (minesGeneratedSoFar < MAXIMUM_NUMBER_OF_MINES) {
+    while (minesGeneratedSoFar < self.totalNumberOfMinesOnGrid) {
 
         generateRandomMinesSequence =
             [self getRandomNumberWithMinValue:0
