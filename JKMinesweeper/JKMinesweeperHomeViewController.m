@@ -222,7 +222,14 @@ typedef void (^resetTilesFinishedBlock)();
     if (!buttonWithCurrentIdentifier.isVisited) {
 
 
-        [buttonWithCurrentIdentifier setBackgroundColor:[UIColor redColor]];
+        [UIView animateWithDuration:0.5
+                         animations:^{
+                             [buttonWithCurrentIdentifier
+                                 setBackgroundColor:[UIColor redColor]];
+                         }
+                         completion:nil];
+
+
         self.totalNumberOfTilesRevealed++;
         NSLog(@"Number of revealed tiles %d", self.totalNumberOfTilesRevealed);
         buttonWithCurrentIdentifier.isVisited = YES;
