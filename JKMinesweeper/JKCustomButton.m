@@ -27,22 +27,31 @@
         self.buttonStateModel.isThisButtonMine = isMine;
         self.buttonStateModel.numberOfNeighboringMines =
             numberOfSurroundingMines;
+        self.alpha = 0.0;
         // 0 55 110 165 220 275
 
         self.frame =
             CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y,
                        DEFAULT_TILE_WIDTH, DEFAULT_TILE_WIDTH);
 
-        //if (self.buttonStateModel.isThisButtonMine) {
-            self.backgroundColor = [UIColor orangeColor];
-       // } else {
-         //   self.backgroundColor = [UIColor lightGrayColor];
-        //}
+        // Change color of title based on number of surrounding mines for given
+        // tile
+        // While - Light blue - lightgreen
+        UIColor *titleColor;
+        if (numberOfSurroundingMines == 1) {
+            titleColor = [UIColor whiteColor];
+        } else if (numberOfSurroundingMines < 4) {
+            titleColor = [UIColor blueColor];
 
-        //[self setTitle:[NSString stringWithFormat:@"%d",
-          //                                        self.buttonStateModel
-            //                                          .numberOfNeighboringMines]
-             // forState:UIControlStateNormal];
+        }
+        // Any Value >3
+        else {
+            titleColor = [UIColor redColor];
+        }
+
+        self.backgroundColor = [UIColor orangeColor];
+        [self setTitleColor:titleColor forState:UIControlStateNormal];
+
         [self addTarget:self
                       action:@selector(tileButtonSelected:)
             forControlEvents:UIControlEventTouchUpInside];
@@ -53,23 +62,24 @@
 
 - (IBAction)tileButtonSelected:(JKCustomButton *)sender {
 
-    self.buttonStateModel.tileSelectedIndicator =
-        !self.buttonStateModel.tileSelectedIndicator;
+    // Go in the block only if tile is not previously selected by the user
+    if (!self.buttonStateModel.tileSelectedIndicator) {
+        self.buttonStateModel.tileSelectedIndicator =
+            !self.buttonStateModel.tileSelectedIndicator;
 
-
-    if (self.buttonStateModel.isThisButtonMine) {
-        // Game Over for player
-        if (self.gameOverInstant) {
-            self.gameOverInstant();
+        if (self.buttonStateModel.isThisButtonMine) {
+            // Game Over for player
+            if (self.gameOverInstant) {
+                self.gameOverInstant();
+            }
+        } else {
+            // Any tile is selected by user
+            if (self.randomTileSelectedInstant) {
+                self.randomTileSelectedInstant(self.buttonSequenceNumber);
+            }
         }
     } else {
-      //  self.backgroundColor = sender.buttonStateModel.tileSelectedIndicator
-        //                           ? [UIColor greenColor]
-          //                         : [UIColor lightGrayColor];
-        //User has selected normal slide now, go and highlight all its neighbours
-        if(self.randomTileSelectedInstant){
-            self.randomTileSelectedInstant(self.buttonSequenceNumber);
-        }
+        NSLog(@"Tile was already selected");
     }
 }
 

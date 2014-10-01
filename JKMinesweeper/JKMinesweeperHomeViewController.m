@@ -36,6 +36,9 @@ typedef void (^resetTilesFinishedBlock)();
 @property(assign, nonatomic) NSInteger topRightCorner;
 @property(assign, nonatomic) NSInteger bottomLeftCorner;
 
+@property(weak, nonatomic) IBOutlet UIButton *verifyLossWinButton;
+@property(assign, nonatomic) NSInteger totalNumberOfTilesRevealed;
+@property(assign, nonatomic) NSInteger maximumTileSequence;
 
 @end
 
@@ -48,17 +51,21 @@ typedef void (^resetTilesFinishedBlock)();
     self.minesButtonsHolder = [NSMutableArray new];
     self.regularButtonsHolder = [NSMutableArray new];
     self.numberOfSurroundingMinesHolder = [NSMutableDictionary new];
-
+    self.totalNumberOfTilesRevealed = 0;
     [self.createGridButton addTarget:self
                               action:@selector(createGridButtonPressed:)
                     forControlEvents:UIControlEventTouchUpInside];
+
+    [self.verifyLossWinButton addTarget:self
+                                 action:@selector(verifyLossWinButtonPressed:)
+                       forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (IBAction)createGridButtonPressed:(UIButton *)sender {
 
 
     self.revealMenuButton.tag = 14;
-
+    [self.revealMenuButton setTitle:@"Reveal" forState:UIControlStateNormal];
     self.totalNumberOfRequiredTiles =
         [self.gridSizeInputText.text integerValue];
 
@@ -72,6 +79,26 @@ typedef void (^resetTilesFinishedBlock)();
     [self createNewGridOnScreen];
 }
 
+- (IBAction)verifyLossWinButtonPressed:(UIButton *)sender {
+
+
+    BOOL didUserWinCurrentGame =
+        (self.totalNumberOfTilesRevealed ==
+         (self.maximumTileSequence - self.totalNumberOfMinesOnGrid));
+
+    NSString *currentGameStatusMessage = @"N/A";
+
+    if (didUserWinCurrentGame) {
+        currentGameStatusMessage = @"You won this game. Click the button "
+            @"below to start a new game";
+    } else {
+        currentGameStatusMessage = @"Sorry, you still need to unleash few "
+            @"tiles before we could declare you as " @"Winner";
+    }
+
+    [self showAlertViewWithMessage:currentGameStatusMessage];
+}
+
 - (void)createNewGridOnScreen {
 
 
@@ -81,6 +108,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.createGridButton.enabled = NO;
     self.resetButton.enabled = YES;
     self.revealMenuButton.enabled = YES;
+
 
     [self populateMinesHolderWithMinesLocationsWithMaximumGridWidth:
               self.totalNumberOfRequiredTiles];
@@ -100,6 +128,8 @@ typedef void (^resetTilesFinishedBlock)();
     NSInteger buttonSequenceNumber = 0;
     BOOL doesMineExistForTile = NO;
     NSInteger totalNumberOfMinesSurroundingGivenTile = 0;
+
+    dispatch_time_t time = DISPATCH_TIME_NOW;
 
     for (NSInteger heightParamters = 0; heightParamters < gridHeightAndWidth;
          heightParamters += 55) {
@@ -138,7 +168,8 @@ typedef void (^resetTilesFinishedBlock)();
             newRevealMineButton.gameOverInstant = ^() {
                 __strong __typeof(weakSelf) strongSelf = weakSelf;
                 [strongSelf showAllMines];
-                [strongSelf showGameOverAlertView];
+                [strongSelf showAlertViewWithMessage:@"You clicked on mine and "
+                            @"game is now over"];
             };
 
             //            __weak typeof(JKCustomButton*) weakButtonObject =
@@ -161,6 +192,13 @@ typedef void (^resetTilesFinishedBlock)();
                 [self.regularButtonsHolder addObject:newRevealMineButton];
             }
             [self.gridHolderView addSubview:newRevealMineButton];
+            dispatch_after(time, dispatch_get_main_queue(), ^{
+                [UIView
+                    animateWithDuration:0.2
+                             animations:^{ newRevealMineButton.alpha = 1.0; }
+                             completion:nil];
+            });
+            time = dispatch_time(time, 0.04 * NSEC_PER_SEC);
         }
     }
 
@@ -185,6 +223,8 @@ typedef void (^resetTilesFinishedBlock)();
 
 
         [buttonWithCurrentIdentifier setBackgroundColor:[UIColor redColor]];
+        self.totalNumberOfTilesRevealed++;
+        NSLog(@"Number of revealed tiles %d", self.totalNumberOfTilesRevealed);
         buttonWithCurrentIdentifier.isVisited = YES;
 
         if ((buttonWithCurrentIdentifier.buttonStateModel
@@ -212,13 +252,13 @@ typedef void (^resetTilesFinishedBlock)();
     }
 }
 
-- (void)showGameOverAlertView {
-    UIAlertView *gameOverAlertView = [[UIAlertView alloc]
-            initWithTitle:@"Game Over"
-                  message:@"You clicked on mine and game is now over"
-                 delegate:self
-        cancelButtonTitle:@"Start New Game"
-        otherButtonTitles:nil];
+- (void)showAlertViewWithMessage:(NSString *)message {
+    UIAlertView *gameOverAlertView =
+        [[UIAlertView alloc] initWithTitle:@"Minesweeper"
+                                   message:message
+                                  delegate:self
+                         cancelButtonTitle:@"Start new game"
+                         otherButtonTitles:@"Continue", nil];
     [gameOverAlertView show];
 }
 
@@ -235,7 +275,7 @@ typedef void (^resetTilesFinishedBlock)();
 - (void)populateMinesHolderWithMinesLocationsWithMaximumGridWidth:
             (NSInteger)maximumNumberOfTilesInRow {
 
-    NSInteger maximumTileSequence = pow(maximumNumberOfTilesInRow, 2);
+    self.maximumTileSequence = pow(maximumNumberOfTilesInRow, 2);
 
     NSInteger minesGeneratedSoFar = 0;
     NSInteger generateRandomMinesSequence = 0;
@@ -250,7 +290,7 @@ typedef void (^resetTilesFinishedBlock)();
 
         generateRandomMinesSequence =
             [self getRandomNumberWithMinValue:0
-                                  andMaxValue:maximumTileSequence];
+                                  andMaxValue:self.maximumTileSequence];
         if (![self.minesLocationHolder
                 objectForKey:@(generateRandomMinesSequence)]) {
             minesGeneratedSoFar++;
@@ -261,7 +301,6 @@ typedef void (^resetTilesFinishedBlock)();
                                          forKey:@(generateRandomMinesSequence)];
         }
     }
-    NSLog(@"Generated mines %@", self.minesLocationHolder);
 }
 
 - (NSInteger)getRandomNumberWithMinValue:(NSInteger)minValue
@@ -284,6 +323,7 @@ typedef void (^resetTilesFinishedBlock)();
     [self.regularButtonsHolder removeAllObjects];
     [self.minesButtonsHolder removeAllObjects];
     [self.numberOfSurroundingMinesHolder removeAllObjects];
+    self.totalNumberOfTilesRevealed = 0;
 
     dispatch_time_t time = DISPATCH_TIME_NOW;
 
@@ -346,7 +386,6 @@ typedef void (^resetTilesFinishedBlock)();
             self.numberOfSurroundingMinesHolder[individualNumber] = @(1);
         }
     }
-    NSLog(@"%@", self.numberOfSurroundingMinesHolder);
 }
 
 - (void)showAllMines {
