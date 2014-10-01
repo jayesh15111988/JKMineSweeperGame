@@ -12,4 +12,5 @@
 @property (nonatomic,assign) BOOL isThisButtonMine;
 @property (nonatomic,assign) BOOL tileSelectedIndicator;
 @property (nonatomic,assign)  NSInteger numberOfNeighboringMines;
+@property (nonatomic,strong) NSArray* sequenceOfNeighbouringTiles;
 @end

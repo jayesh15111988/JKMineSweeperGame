@@ -20,4 +20,5 @@
 
 typedef void (^gameOverBlock)();
 @property(strong, nonatomic) gameOverBlock gameOverInstant;
+
 @end

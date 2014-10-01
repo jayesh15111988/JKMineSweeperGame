@@ -7,10 +7,11 @@
 //
 
 #import "JKMinesweeperHomeViewController.h"
+#import "JKNeighbouringTilesProvider.h"
 #import "JKMineSweeperConstants.h"
 #import "JKCustomButton.h"
 
-typedef void (^ resetTilesFinishedBlock)();
+typedef void (^resetTilesFinishedBlock)();
 
 @interface JKMinesweeperHomeViewController () <UIAlertViewDelegate>
 
@@ -54,22 +55,24 @@ typedef void (^ resetTilesFinishedBlock)();
 
     self.totalNumberOfRequiredTiles =
         [self.gridSizeInputText.text integerValue];
-    
-    if(self.totalNumberOfRequiredTiles<3){
-        self.totalNumberOfRequiredTiles=3;
+
+    if (self.totalNumberOfRequiredTiles < 3) {
+        self.totalNumberOfRequiredTiles = 3;
     }
-    
+
     [self createNewGridOnScreen];
 }
 
 - (void)createNewGridOnScreen {
 
-    self.createGridButton.enabled=NO;
-    self.resetButton.enabled=YES;
-    self.revealMenuButton.enabled=YES;
-    
+
     [self resetGridWithNewTilesAndCompletionBlock:nil];
-    
+
+
+    self.createGridButton.enabled = NO;
+    self.resetButton.enabled = YES;
+    self.revealMenuButton.enabled = YES;
+
     [self populateMinesHolderWithMinesLocationsWithMaximumGridWidth:
               self.totalNumberOfRequiredTiles];
 
@@ -148,7 +151,6 @@ typedef void (^ resetTilesFinishedBlock)();
         [self resetGridWithNewTilesAndCompletionBlock:^{
             [self createNewGridOnScreen];
         }];
-        
     }
 }
 
@@ -193,10 +195,12 @@ typedef void (^ resetTilesFinishedBlock)();
     [self resetGridWithNewTilesAndCompletionBlock:nil];
 }
 
-- (void)resetGridWithNewTilesAndCompletionBlock:(void (^)())resetTilesFinishedBlock {
+- (void)resetGridWithNewTilesAndCompletionBlock:
+            (void (^)())resetTilesFinishedBlock {
+
     self.createGridButton.enabled = YES;
-    self.resetButton.enabled = YES;
-    self.revealMenuButton.enabled = YES;
+    self.resetButton.enabled = NO;
+    self.revealMenuButton.enabled = NO;
 
     [self.minesLocationHolder removeAllObjects];
     [self.minesButtonsHolder removeAllObjects];
@@ -216,8 +220,8 @@ typedef void (^ resetTilesFinishedBlock)();
         });
         time = dispatch_time(time, 0.04 * NSEC_PER_SEC);
     }
-    if(resetTilesFinishedBlock){
-    resetTilesFinishedBlock();
+    if (resetTilesFinishedBlock) {
+        resetTilesFinishedBlock();
     }
 }
 
@@ -243,99 +247,11 @@ typedef void (^ resetTilesFinishedBlock)();
 - (void)getNeighboringValidCellsForGivenMineWithSequence:
             (NSInteger)minesTileSequenceNumber {
 
-    NSArray *resultantNeightbors = @[];
+    NSArray *resultantNeightbors = [JKNeighbouringTilesProvider
+        getNeighbouringTilesForGivenTileWithSequence:minesTileSequenceNumber
+                           andTotalTilesInSingleLine:
+                               self.totalNumberOfRequiredTiles];
 
-
-    if (minesTileSequenceNumber == 0) {
-        resultantNeightbors = @[
-            @(minesTileSequenceNumber + 1),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles + 1)
-        ];
-    } else if (minesTileSequenceNumber == self.topRightCorner) {
-        resultantNeightbors = @[
-            @(minesTileSequenceNumber - 1),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles - 1),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles)
-        ];
-
-    } else if (minesTileSequenceNumber == self.bottomLeftCorner) {
-        resultantNeightbors = @[
-            @(minesTileSequenceNumber + 1),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles + 1),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles)
-        ];
-
-    } else if (minesTileSequenceNumber ==
-               self.topRightCorner + self.bottomLeftCorner) {
-        resultantNeightbors = @[
-            @(minesTileSequenceNumber - 1),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles - 1),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles)
-        ];
-
-    }
-    // Top horizontal Row
-    else if (minesTileSequenceNumber < self.topRightCorner) {
-        resultantNeightbors = @[
-            @(minesTileSequenceNumber - 1),
-            @(minesTileSequenceNumber + 1),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles - 1),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles + 1),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles)
-        ];
-
-    }
-    // Extreme right vertical row
-    else if ((minesTileSequenceNumber + 1) % self.totalNumberOfRequiredTiles ==
-             0) {
-        resultantNeightbors = @[
-            @(minesTileSequenceNumber - 1),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles - 1),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles - 1)
-        ];
-
-    }
-    // Extreme left vertical row
-    else if (minesTileSequenceNumber % self.totalNumberOfRequiredTiles == 0) {
-
-        resultantNeightbors = @[
-            @(minesTileSequenceNumber + 1),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles + 1),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles + 1)
-        ];
-
-    }
-    // Bottom horizontal row
-    else if (minesTileSequenceNumber > self.bottomLeftCorner) {
-        resultantNeightbors = @[
-            @(minesTileSequenceNumber - 1),
-            @(minesTileSequenceNumber + 1),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles - 1),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles + 1),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles)
-        ];
-
-    }
-    // Any tile inside grid and not touching any adjacent boundary
-    else {
-        resultantNeightbors = @[
-            @(minesTileSequenceNumber - 1),
-            @(minesTileSequenceNumber + 1),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles - 1),
-            @(minesTileSequenceNumber + self.totalNumberOfRequiredTiles + 1),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles - 1),
-            @(minesTileSequenceNumber - self.totalNumberOfRequiredTiles + 1)
-        ];
-    }
-
-    NSLog(@"%d Tile Sequence number", minesTileSequenceNumber);
 
     for (NSString *individualNumber in resultantNeightbors) {
         if ([self.numberOfSurroundingMinesHolder

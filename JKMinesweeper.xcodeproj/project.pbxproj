@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		91078BD719D8D63500F9B438 /* JKMineSweeperConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 91078BD619D8D63500F9B438 /* JKMineSweeperConstants.m */; };
+		911DB8E919DBA10E00D16B6F /* JKNeighbouringTilesProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 911DB8E819DBA10E00D16B6F /* JKNeighbouringTilesProvider.m */; };
 		91AA40FE19D8C956009CB397 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AA40FD19D8C956009CB397 /* main.m */; };
 		91AA410119D8C956009CB397 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AA410019D8C956009CB397 /* AppDelegate.m */; };
 		91AA410919D8C956009CB397 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91AA410819D8C956009CB397 /* Images.xcassets */; };
@@ -32,6 +33,8 @@
 /* Begin PBXFileReference section */
 		91078BD519D8D63500F9B438 /* JKMineSweeperConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKMineSweeperConstants.h; sourceTree = "<group>"; };
 		91078BD619D8D63500F9B438 /* JKMineSweeperConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKMineSweeperConstants.m; sourceTree = "<group>"; };
+		911DB8E719DBA10E00D16B6F /* JKNeighbouringTilesProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNeighbouringTilesProvider.h; sourceTree = "<group>"; };
+		911DB8E819DBA10E00D16B6F /* JKNeighbouringTilesProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKNeighbouringTilesProvider.m; sourceTree = "<group>"; };
 		91AA40F819D8C956009CB397 /* JKMinesweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JKMinesweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91AA40FC19D8C956009CB397 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91AA40FD19D8C956009CB397 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -78,6 +81,15 @@
 			name = Constants;
 			sourceTree = "<group>";
 		};
+		911DB8E619DBA0C800D16B6F /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				911DB8E719DBA10E00D16B6F /* JKNeighbouringTilesProvider.h */,
+				911DB8E819DBA10E00D16B6F /* JKNeighbouringTilesProvider.m */,
+			);
+			name = Utility;
+			sourceTree = "<group>";
+		};
 		91AA40EF19D8C956009CB397 = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +111,7 @@
 		91AA40FA19D8C956009CB397 /* JKMinesweeper */ = {
 			isa = PBXGroup;
 			children = (
+				911DB8E619DBA0C800D16B6F /* Utility */,
 				91078BD419D8D61800F9B438 /* Constants */,
 				91AA412919D8CC67009CB397 /* Models */,
 				91AA412819D8CC57009CB397 /* Custom UIButton */,
@@ -276,6 +289,7 @@
 			files = (
 				91AA412F19D8CC94009CB397 /* JKCustomButton.m in Sources */,
 				91AA412419D8CA77009CB397 /* JKMinesweeperHomeViewController.m in Sources */,
+				911DB8E919DBA10E00D16B6F /* JKNeighbouringTilesProvider.m in Sources */,
 				91AA410119D8C956009CB397 /* AppDelegate.m in Sources */,
 				91078BD719D8D63500F9B438 /* JKMineSweeperConstants.m in Sources */,
 				91AA412C19D8CC80009CB397 /* JKButtonStateModel.m in Sources */,
