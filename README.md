@@ -3,15 +3,25 @@ JKMineSweeperGame
 
 The implementation of classic Minesweeper using Objective-C and Cocoa
 
-As we all played This game in the childhood, this is my honest attempt to actually create the game using 
-programming knowledge and logic. It took me couple days to write this game from scratch. But anyways here are some cool 
-screenshots of this game.
 
-
-
+As we all played this game in the childhood, this is my honest attempt to actually create the game using 
+programming language and logic. It took me couple days to write this game from scratch. But anyways here are some cool screenshots of this game.
+<p>
+<img src='http://www.jayeshkawli.com/MineSweeperScreenshots/HomePage.png'>
+</p><p>
+<img src='http://www.jayeshkawli.com/MineSweeperScreenshots/LevelSelector.png'>
+</p><p>
+<img src='http://www.jayeshkawli.com/MineSweeperScreenshots/MinesView.png'>
+</p><p>
+<img src='http://www.jayeshkawli.com/MineSweeperScreenshots/RevealedMines.png'>
+</p><p>
+<img src='http://www.jayeshkawli.com/MineSweeperScreenshots/RevealedTiles.png'>
+</p><p>
+<img src='http://www.jayeshkawli.com/MineSweeperScreenshots/VerifyGameStatus.png'>
+</p>
 
 Game follows regular Minesweeper conventions and it has following existing and additional features. I coding challenge
-mentioned on Thumbstack careers page (http://www.thumbtack.com/challenges/software-engineer) motivated me to write 
+mentioned on [Thumbstack Challenge Page](http://www.thumbtack.com/challenges/software-engineer) motivated me to write 
 this game.
 
 It has following features.
