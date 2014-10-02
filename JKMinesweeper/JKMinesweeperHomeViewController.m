@@ -43,6 +43,8 @@ typedef void (^resetTilesFinishedBlock)();
 @property(weak, nonatomic) IBOutlet UIButton *levelNumberButton;
 
 @property(assign, nonatomic) NSInteger levelNumberSelected;
+@property(assign, nonatomic) NSInteger currentScoreValue;
+@property(weak, nonatomic) IBOutlet UILabel *currentScore;
 
 @end
 
@@ -51,6 +53,7 @@ typedef void (^resetTilesFinishedBlock)();
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.levelNumberSelected = 1;
+    self.currentScoreValue = 0;
     self.gridHolderView = [[UIView alloc] init];
     self.minesLocationHolder = [NSMutableDictionary new];
     self.minesButtonsHolder = [NSMutableArray new];
@@ -247,6 +250,8 @@ typedef void (^resetTilesFinishedBlock)();
 
         if ((buttonWithCurrentIdentifier.buttonStateModel
                  .numberOfNeighboringMines == 0)) {
+
+            self.currentScoreValue += self.levelNumberSelected;
             NSArray *collectionOfSurroundingTilesForCurrentTile =
                 buttonWithCurrentIdentifier.buttonStateModel
                     .sequenceOfNeighbouringTiles;
@@ -266,7 +271,14 @@ typedef void (^resetTilesFinishedBlock)();
                                                   .buttonStateModel
                                                   .numberOfNeighboringMines]
                 forState:UIControlStateNormal];
+
+            self.currentScoreValue +=
+                self.levelNumberSelected *
+                buttonWithCurrentIdentifier.buttonStateModel
+                    .numberOfNeighboringMines;
         }
+        self.currentScore.text =
+            [NSString stringWithFormat:@"%d", self.currentScoreValue];
     }
 }
 
@@ -342,7 +354,8 @@ typedef void (^resetTilesFinishedBlock)();
     [self.minesButtonsHolder removeAllObjects];
     [self.numberOfSurroundingMinesHolder removeAllObjects];
     self.totalNumberOfTilesRevealed = 0;
-
+    self.currentScoreValue = 0;
+    self.currentScore.text = @"0";
     dispatch_time_t time = DISPATCH_TIME_NOW;
 
     NSArray *allButtonsInGridView = [self.gridHolderView subviews];
