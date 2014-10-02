@@ -14,7 +14,8 @@
 
 typedef void (^resetTilesFinishedBlock)();
 
-@interface JKMinesweeperHomeViewController () <UIAlertViewDelegate>
+@interface JKMinesweeperHomeViewController () <UIAlertViewDelegate,
+                                               UIActionSheetDelegate>
 
 @property(weak, nonatomic) IBOutlet UITextField *gridSizeInputText;
 @property(weak, nonatomic) IBOutlet UIButton *createGridButton;
@@ -39,6 +40,9 @@ typedef void (^resetTilesFinishedBlock)();
 @property(weak, nonatomic) IBOutlet UIButton *verifyLossWinButton;
 @property(assign, nonatomic) NSInteger totalNumberOfTilesRevealed;
 @property(assign, nonatomic) NSInteger maximumTileSequence;
+@property(weak, nonatomic) IBOutlet UIButton *levelNumberButton;
+
+@property(assign, nonatomic) NSInteger levelNumberSelected;
 
 @end
 
@@ -46,6 +50,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.levelNumberSelected = 1;
     self.gridHolderView = [[UIView alloc] init];
     self.minesLocationHolder = [NSMutableDictionary new];
     self.minesButtonsHolder = [NSMutableArray new];
@@ -59,6 +64,10 @@ typedef void (^resetTilesFinishedBlock)();
     [self.verifyLossWinButton addTarget:self
                                  action:@selector(verifyLossWinButtonPressed:)
                        forControlEvents:UIControlEventTouchUpInside];
+
+    [self.levelNumberButton addTarget:self
+                               action:@selector(levelNumberButtonPressed:)
+                     forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (IBAction)createGridButtonPressed:(UIButton *)sender {
@@ -74,7 +83,8 @@ typedef void (^resetTilesFinishedBlock)();
     }
 
     // We are setting number of mines equal to number of tiles in a single row
-    self.totalNumberOfMinesOnGrid = self.totalNumberOfRequiredTiles;
+    self.totalNumberOfMinesOnGrid =
+        self.totalNumberOfRequiredTiles * self.levelNumberSelected;
 
     [self createNewGridOnScreen];
 }
@@ -229,10 +239,11 @@ typedef void (^resetTilesFinishedBlock)();
                          }
                          completion:nil];
 
-
         self.totalNumberOfTilesRevealed++;
-        NSLog(@"Number of revealed tiles %d", self.totalNumberOfTilesRevealed);
+
         buttonWithCurrentIdentifier.isVisited = YES;
+        buttonWithCurrentIdentifier.buttonStateModel.tileSelectedIndicator =
+            buttonWithCurrentIdentifier.isVisited;
 
         if ((buttonWithCurrentIdentifier.buttonStateModel
                  .numberOfNeighboringMines == 0)) {
@@ -396,9 +407,44 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (void)showAllMines {
+
+    dispatch_time_t time = DISPATCH_TIME_NOW;
+
     for (JKCustomButton *individualMinesButton in self.minesButtonsHolder) {
-        [individualMinesButton setBackgroundColor:[UIColor blueColor]];
+
+        dispatch_after(time, dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:0.3
+                animations:^{
+                    [individualMinesButton
+                        setBackgroundColor:[UIColor blueColor]];
+                }
+                completion:^(BOOL finished) {
+                    individualMinesButton.buttonStateModel
+                        .tileSelectedIndicator = YES;
+                }];
+        });
+        time = dispatch_time(time, 0.3 * NSEC_PER_SEC);
     }
 }
 
+- (IBAction)levelNumberButtonPressed:(id)sender {
+    UIActionSheet *popup = [[UIActionSheet alloc]
+                 initWithTitle:@"Select Target Level"
+                      delegate:self
+             cancelButtonTitle:@"Cancel"
+        destructiveButtonTitle:nil
+             otherButtonTitles:@"Easy", @"Medium", @"Difficult", nil];
+    [popup showInView:[UIApplication sharedApplication].keyWindow];
+}
+
+- (void)actionSheet:(UIActionSheet *)popup
+    clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex < 3) {
+        self.levelNumberSelected = buttonIndex + 1;
+        [self.levelNumberButton
+            setTitle:[NSString
+                         stringWithFormat:@"Level %d", self.levelNumberSelected]
+            forState:UIControlStateNormal];
+    }
+}
 @end
