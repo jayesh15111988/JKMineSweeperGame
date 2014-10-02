@@ -106,6 +106,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" id="hvd-gc-g5P">
+                                <rect key="frame" x="0.0" y="112" width="1024" height="656"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" red="0.84430793150000005" green="1" blue="0.9261234974" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -119,6 +123,7 @@
                         <outlet property="levelNumberButton" destination="Jcs-qU-sB8" id="DPr-UK-y2c"/>
                         <outlet property="resetButton" destination="miQ-MB-SWc" id="qQA-wi-Hph"/>
                         <outlet property="revealMenuButton" destination="Pvu-Ac-RuH" id="1kN-zU-gdD"/>
+                        <outlet property="superParentScrollView" destination="hvd-gc-g5P" id="4tF-0E-Y9k"/>
                         <outlet property="verifyLossWinButton" destination="C0L-YA-Nfa" id="CNE-Ek-yMG"/>
                     </connections>
                 </viewController>

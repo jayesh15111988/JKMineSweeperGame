@@ -22,6 +22,7 @@ typedef void (^resetTilesFinishedBlock)();
 @property(strong, nonatomic) UIView *gridHolderView;
 @property(strong, nonatomic) NSMutableDictionary *minesLocationHolder;
 @property(assign, nonatomic) NSInteger totalNumberOfMinesOnGrid;
+@property(weak, nonatomic) IBOutlet UIScrollView *superParentScrollView;
 
 @property(strong, nonatomic) NSMutableArray *minesButtonsHolder;
 @property(strong, nonatomic) NSMutableArray *regularButtonsHolder;
@@ -134,7 +135,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 
     self.gridHolderView.frame =
-        CGRectMake(startingXPositionForGridView, 125, gridHeightAndWidth,
+        CGRectMake(startingXPositionForGridView - 20, 20, gridHeightAndWidth,
                    gridHeightAndWidth);
 
     [self.gridHolderView setBackgroundColor:[UIColor lightGrayColor]];
@@ -215,7 +216,26 @@ typedef void (^resetTilesFinishedBlock)();
         }
     }
 
-    [self.view addSubview:self.gridHolderView];
+    CGFloat contentSizeWidth = self.superParentScrollView.frame.size.width;
+    if (self.gridHolderView.frame.size.width >
+        self.superParentScrollView.frame.size.width) {
+
+        contentSizeWidth = self.gridHolderView.frame.size.width + 20;
+
+
+        self.superParentScrollView.contentInset =
+            UIEdgeInsetsMake(0, ((self.gridHolderView.frame.size.width -
+                                  self.superParentScrollView.frame.size.width) /
+                                 2) +
+                                    20,
+                             40, 0);
+    }
+
+
+    [self.superParentScrollView addSubview:self.gridHolderView];
+    [self.superParentScrollView
+        setContentSize:CGSizeMake(contentSizeWidth,
+                                  self.gridHolderView.frame.size.height + 40)];
 }
 
 - (JKCustomButton *)getButtonWithSequence:(NSInteger)buttonSequence {
