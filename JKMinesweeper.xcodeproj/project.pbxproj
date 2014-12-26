@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		14A28F902523ABDF7257EFE6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0355D560EDE95CEAB1CA87 /* libPods.a */; };
+		3836A11C1A4D0B06009E24B5 /* exploding_bomb.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */; };
+		3836A11E1A4D14EF009E24B5 /* skull.png in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11D1A4D14EF009E24B5 /* skull.png */; };
 		38A787411A4CEDDF0004B2B4 /* UIButton+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A787401A4CEDDF0004B2B4 /* UIButton+Utility.m */; };
 		38A787451A4CF07A0004B2B4 /* mine.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A787421A4CF07A0004B2B4 /* mine.png */; };
 		38A787461A4CF07A0004B2B4 /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A787431A4CF07A0004B2B4 /* normal.png */; };
@@ -37,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = exploding_bomb.gif; sourceTree = "<group>"; };
+		3836A11D1A4D14EF009E24B5 /* skull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skull.png; sourceTree = "<group>"; };
 		38A7873F1A4CEDDF0004B2B4 /* UIButton+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Utility.h"; sourceTree = "<group>"; };
 		38A787401A4CEDDF0004B2B4 /* UIButton+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Utility.m"; sourceTree = "<group>"; };
 		38A787421A4CF07A0004B2B4 /* mine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mine.png; sourceTree = "<group>"; };
@@ -93,6 +97,8 @@
 			children = (
 				38A787421A4CF07A0004B2B4 /* mine.png */,
 				38A787431A4CF07A0004B2B4 /* normal.png */,
+				3836A11D1A4D14EF009E24B5 /* skull.png */,
+				3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */,
 				38A787441A4CF07A0004B2B4 /* smiley.gif */,
 				38E778BC1A4CF4BB009E127A /* changeColor.png */,
 			);
@@ -327,12 +333,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				38A787451A4CF07A0004B2B4 /* mine.png in Resources */,
+				3836A11E1A4D14EF009E24B5 /* skull.png in Resources */,
 				38A787461A4CF07A0004B2B4 /* normal.png in Resources */,
 				91AA412719D8CAD8009CB397 /* Main.storyboard in Resources */,
 				38A787471A4CF07A0004B2B4 /* smiley.gif in Resources */,
 				38E778BD1A4CF4BB009E127A /* changeColor.png in Resources */,
 				91AA410C19D8C956009CB397 /* LaunchScreen.xib in Resources */,
 				91AA410919D8C956009CB397 /* Images.xcassets in Resources */,
+				3836A11C1A4D0B06009E24B5 /* exploding_bomb.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

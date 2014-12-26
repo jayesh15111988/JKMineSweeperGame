@@ -7,6 +7,8 @@
 //
 
 #import <HRColorPickerView.h>
+#import <FLAnimatedImage.h>
+
 #import "JKMinesweeperHomeViewController.h"
 #import "JKNeighbouringTilesProvider.h"
 #import "JKMineSweeperConstants.h"
@@ -496,15 +498,29 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (void)showAllMines {
 
+    __block FLAnimatedImage *image = nil;
+    
     dispatch_time_t time = DISPATCH_TIME_NOW;
-
+    
     for (JKCustomButton *individualMinesButton in self.minesButtonsHolder) {
 
         dispatch_after(time, dispatch_get_main_queue(), ^{
             [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
                 animations:^{
-                    [individualMinesButton
-                        addDecorationWithImage:[UIImage imageNamed:@"mine"] orColor:[UIColor blueColor]];
+                    //[individualMinesButton
+                      //  addDecorationWithImage:[UIImage imageNamed:@"mine"] orColor:[UIColor blueColor]];
+                    if(!image) {
+                     image = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://bigpinekey.com/wp-content/uploads/an_exploding_bomb.gif"]]];
+                    }
+                    FLAnimatedImageView *imageView = [[FLAnimatedImageView alloc] init];
+                    imageView.animatedImage = image;
+                    imageView.frame = CGRectMake(0.0, 0.0,DEFAULT_TILE_WIDTH, DEFAULT_TILE_WIDTH);
+                    [individualMinesButton addSubview:imageView];
+                    
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, GIF_IMAGE_ANIMATION_DURATION * NSEC_PER_SEC);
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        imageView.image = [UIImage imageNamed:@"skull"];
+                    });
                 }
                 completion:^(BOOL finished) {
                     individualMinesButton.buttonStateModel

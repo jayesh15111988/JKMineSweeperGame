@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-FLAnimatedImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,12 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>217D9B93DB1C3ECEDEF7BFF9</key>
+		<key>674BCE09665F11D634C1691F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8FA9488C5FC290627BA394AE</key>
+		<key>8A9AFA54E66AC20133486A8C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BB9D783EEC5967E3DF0FACE5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
