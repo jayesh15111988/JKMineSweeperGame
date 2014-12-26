@@ -1,13 +1,18 @@
 PODS:
   - Color-Picker-for-iOS (2.0)
   - FLAnimatedImage (1.0.7)
+  - Realm (0.89.1):
+    - Realm/Headers (= 0.89.1)
+  - Realm/Headers (0.89.1)
 
 DEPENDENCIES:
   - Color-Picker-for-iOS (~> 2.0)
   - FLAnimatedImage (~> 1.0)
+  - Realm
 
 SPEC CHECKSUMS:
   Color-Picker-for-iOS: 2eec454aa6b24a8b7c2537da0f61c6ead936949e
   FLAnimatedImage: d9e8422a9e1d8ee9a657b7433b4a9b073ef3efb3
+  Realm: 20b0bd13983d64fd22afeb47489729fd71b6b5c6
 
 COCOAPODS: 0.35.0

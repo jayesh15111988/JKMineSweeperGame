@@ -15,6 +15,10 @@
 #import "JKCustomButton.h"
 #import "UIButton+Utility.h"
 #import "JKButtonStateModel.h"
+#import "ScoreSaver.h"
+#import "JKMinesweeperScoresViewController.h"
+#import "JKMinesweeperSettingsViewController.h"
+#import "UIViewController+MJPopupViewController.h"
 
 typedef void (^resetTilesFinishedBlock)();
 
@@ -56,13 +60,20 @@ typedef void (^resetTilesFinishedBlock)();
 @property(assign, nonatomic) NSInteger currentScoreValue;
 @property(weak, nonatomic) IBOutlet UILabel *currentScore;
 
+@property(assign, nonatomic) NSInteger tileWidth;
+@property(assign, nonatomic) NSInteger gutterSpacing;
+@property(assign, nonatomic) BOOL toPlaySound;
+
+@property (strong, nonatomic) JKMinesweeperScoresViewController* pastScoresViewController;
+@property (strong, nonatomic) JKMinesweeperSettingsViewController* settingsViewController;
+
 @end
 
 @implementation JKMinesweeperHomeViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.levelNumberSelected = 1;
+    [self setupUIFromUserDefaultParameters];
     self.currentScoreValue = 0;
     self.gridHolderView = [[UIView alloc] init];
     self.minesLocationHolder = [NSMutableDictionary new];
@@ -70,6 +81,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.regularButtonsHolder = [NSMutableArray new];
     self.numberOfSurroundingMinesHolder = [NSMutableDictionary new];
     self.totalNumberOfTilesRevealed = 0;
+    [self.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld", (long)self.levelNumberSelected] forState:UIControlStateNormal];
     [self.createGridButton addTarget:self
                               action:@selector(createGridButtonPressed:)
                     forControlEvents:UIControlEventTouchUpInside];
@@ -83,9 +95,16 @@ typedef void (^resetTilesFinishedBlock)();
                      forControlEvents:UIControlEventTouchUpInside];
 }
 
+-(void)setupUIFromUserDefaultParameters {
+    self.levelNumberSelected = [[[NSUserDefaults standardUserDefaults] objectForKey:@"currentLevel"] integerValue];
+    self.tileWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"tileWidth"] integerValue];
+    self.gutterSpacing = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"] integerValue];
+    self.toPlaySound = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
+}
+
 - (IBAction)createGridButtonPressed:(UIButton *)sender {
 
-
+    [self setupUIFromUserDefaultParameters];
     [self resetRevealMenuButton];
     self.totalNumberOfRequiredTiles =
         [self.gridSizeInputText.text integerValue];
@@ -143,8 +162,8 @@ typedef void (^resetTilesFinishedBlock)();
               self.totalNumberOfRequiredTiles];
 
     NSInteger gridHeightAndWidth =
-        (DEFAULT_TILE_WIDTH * self.totalNumberOfRequiredTiles) +
-        (DEFAULT_GUTTER_WIDTH * (self.totalNumberOfRequiredTiles - 1));
+        (self.tileWidth * self.totalNumberOfRequiredTiles) +
+        (self.gutterSpacing * (self.totalNumberOfRequiredTiles - 1));
     CGFloat startingXPositionForGridView =
         self.view.center.x - (gridHeightAndWidth / 2);
 
@@ -161,7 +180,7 @@ typedef void (^resetTilesFinishedBlock)();
     NSInteger totalNumberOfMinesSurroundingGivenTile = 0;
 
     dispatch_time_t time = DISPATCH_TIME_NOW;
-    NSInteger successiveTilesDistanceIncrement = DEFAULT_TILE_WIDTH + DEFAULT_GUTTER_WIDTH;
+    NSInteger successiveTilesDistanceIncrement = self.tileWidth + self.gutterSpacing;
     
     for (NSInteger heightParamters = 0; heightParamters < gridHeightAndWidth;
          heightParamters += successiveTilesDistanceIncrement) {
@@ -260,11 +279,10 @@ typedef void (^resetTilesFinishedBlock)();
 - (void)longPress:(UILongPressGestureRecognizer*)gesture {
     if ( gesture.state == UIGestureRecognizerStateEnded ) {
         
-        
         JKCustomButton* longPressedButton = (JKCustomButton*)gesture.view;
-        longPressedButton.isInLongPressedMode = !longPressedButton.isInLongPressedMode;
+        longPressedButton.buttonStateModel.isQuestionMarked = !longPressedButton.buttonStateModel.isQuestionMarked;
         
-        if(longPressedButton.isInLongPressedMode) {
+        if(longPressedButton.buttonStateModel.isQuestionMarked) {
             [longPressedButton setTitle:@"?" forState:UIControlStateNormal];
             [longPressedButton setBackgroundColor:[UIColor whiteColor]];
         }
@@ -300,12 +318,10 @@ typedef void (^resetTilesFinishedBlock)();
 - (void)highlightNeighbouringButtonsForButtonSequence:
             (NSInteger)buttonSequence {
 
-
     JKCustomButton *buttonWithCurrentIdentifier =
         [self getButtonWithSequence:buttonSequence];
 
     if (!buttonWithCurrentIdentifier.isVisited) {
-
 
         [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
                          animations:^{
@@ -361,17 +377,49 @@ typedef void (^resetTilesFinishedBlock)();
                                   delegate:self
                          cancelButtonTitle:@"Start new game"
                          otherButtonTitles:@"Continue", nil];
+    gameOverAlertView.tag = 13;
     [gameOverAlertView show];
 }
 
 
 - (void)alertView:(UIAlertView *)alertView
     clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        [self resetGridWithNewTilesAndCompletionBlock:^{
-            [self createNewGridOnScreen];
-        }];
+    if(alertView.tag == 13) {
+        
+        if(_totalNumberOfTilesRevealed > 0) {
+            [self showSaveScoreDialogueBox];
+        }
+        
+        if (buttonIndex == 0) {
+            [self resetGridWithNewTilesAndCompletionBlock:^{
+                [self createNewGridOnScreen];
+            }];
+        }
     }
+    else {
+        
+        if(buttonIndex == 1) {
+            NSString* inputUserName = [[alertView textFieldAtIndex:0] text];
+            if(!inputUserName || inputUserName.length == 0) {
+                inputUserName = @"User";
+            }
+            [ScoreSaver saveScoreInDatabaseWithUserName:inputUserName andScoreValue:self.currentScore.text andSelectedGameLevel:self.levelNumberSelected];
+        }
+    }
+}
+
+
+-(void)showSaveScoreDialogueBox {
+    UIAlertView *saveGameScoreDialogue =
+    [[UIAlertView alloc] initWithTitle:@"Minesweeper"
+                               message:@"Please type your name for this score"
+                              delegate:self
+                     cancelButtonTitle:@"Cancel"
+                     otherButtonTitles:@"Ok", nil];
+    saveGameScoreDialogue.tag = 14;
+    saveGameScoreDialogue.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [[saveGameScoreDialogue textFieldAtIndex:0] setText:@"User"];
+    [saveGameScoreDialogue show];
 }
 
 - (void)populateMinesHolderWithMinesLocationsWithMaximumGridWidth:
@@ -514,12 +562,13 @@ typedef void (^resetTilesFinishedBlock)();
                     }
                     FLAnimatedImageView *imageView = [[FLAnimatedImageView alloc] init];
                     imageView.animatedImage = image;
-                    imageView.frame = CGRectMake(0.0, 0.0,DEFAULT_TILE_WIDTH, DEFAULT_TILE_WIDTH);
+                    imageView.frame = CGRectMake(0.0, 0.0,self.tileWidth, self.tileWidth);
                     [individualMinesButton addSubview:imageView];
                     
                     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, GIF_IMAGE_ANIMATION_DURATION * NSEC_PER_SEC);
                     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                         imageView.image = [UIImage imageNamed:@"skull"];
+                        [individualMinesButton setBackgroundColor:[UIColor redColor]];
                     });
                 }
                 completion:^(BOOL finished) {
@@ -557,6 +606,8 @@ typedef void (^resetTilesFinishedBlock)();
 
 -(void)setViewForSelectedLevelWithNumber:(NSInteger)levelNumber {
     self.levelNumberSelected = levelNumber;
+    [[NSUserDefaults standardUserDefaults] setObject:@(levelNumber) forKey:@"currentLevel"];
+    
     [self.levelNumberButton
      setTitle:[NSString
                stringWithFormat:@"Level %ld", (long)self.levelNumberSelected]
@@ -665,5 +716,21 @@ typedef void (^resetTilesFinishedBlock)();
 - (void)colorDidChanged:(HRColorPickerView *)pickerView {
     [self.currentViewForColorpicker setBackgroundColor:pickerView.color];
 }
+
+- (IBAction)showPastScores:(UIButton *)sender {
+    if(!self.pastScoresViewController) {
+        self.pastScoresViewController = [[JKMinesweeperScoresViewController alloc] initWithNibName:@"JKMinesweeperScoresViewController" bundle:nil];
+    }
+    [self presentPopupViewController:self.pastScoresViewController animationType:MJPopupViewAnimationSlideRightRight];
+}
+
+- (IBAction)goToSettingsButtonPressed:(UIButton*)sender {
+    if(!self.settingsViewController) {
+        self.settingsViewController = [[JKMinesweeperSettingsViewController alloc] initWithNibName:@"JKMinesweeperSettingsViewController" bundle:nil];
+    }
+    [self presentPopupViewController:self.settingsViewController animationType:MJPopupViewAnimationSlideRightRight];
+}
+
+
 
 @end

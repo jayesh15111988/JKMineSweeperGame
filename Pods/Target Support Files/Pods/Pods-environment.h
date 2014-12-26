@@ -18,3 +18,15 @@
 #define COCOAPODS_VERSION_MINOR_FLAnimatedImage 0
 #define COCOAPODS_VERSION_PATCH_FLAnimatedImage 7
 
+// Realm
+#define COCOAPODS_POD_AVAILABLE_Realm
+#define COCOAPODS_VERSION_MAJOR_Realm 0
+#define COCOAPODS_VERSION_MINOR_Realm 89
+#define COCOAPODS_VERSION_PATCH_Realm 1
+
+// Realm/Headers
+#define COCOAPODS_POD_AVAILABLE_Realm_Headers
+#define COCOAPODS_VERSION_MAJOR_Realm_Headers 0
+#define COCOAPODS_VERSION_MINOR_Realm_Headers 89
+#define COCOAPODS_VERSION_PATCH_Realm_Headers 1
+

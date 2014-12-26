@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#define DEFAULT_TILE_WIDTH 50
-#define DEFAULT_GUTTER_WIDTH 5
+//#define DEFAULT_TILE_WIDTH 50
+//#define DEFAULT_GUTTER_WIDTH 5
 #define MINES_NOT_REVEALED_STATE 14
 #define MINES_REVEALED_STATE 15
 #define SELECT_LEVEL_TITLE @"Select Target Level"
@@ -17,5 +17,4 @@
 #define MULTIPLE_ANIMATION_DURATION 0.04
 #define GIF_IMAGE_ANIMATION_DURATION 2.5
 @interface JKMineSweeperConstants : NSObject
-
 @end

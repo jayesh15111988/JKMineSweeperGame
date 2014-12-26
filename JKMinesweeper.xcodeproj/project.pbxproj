@@ -10,6 +10,20 @@
 		14A28F902523ABDF7257EFE6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0355D560EDE95CEAB1CA87 /* libPods.a */; };
 		3836A11C1A4D0B06009E24B5 /* exploding_bomb.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */; };
 		3836A11E1A4D14EF009E24B5 /* skull.png in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11D1A4D14EF009E24B5 /* skull.png */; };
+		389ACD921A4DDC0600637375 /* Score.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACD911A4DDC0600637375 /* Score.m */; };
+		389ACD941A4DDE0A00637375 /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 389ACD931A4DDE0A00637375 /* setting.png */; };
+		389ACD991A4DDEDD00637375 /* JKMinesweeperScoresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACD971A4DDEDD00637375 /* JKMinesweeperScoresViewController.m */; };
+		389ACD9E1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACD9C1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.m */; };
+		389ACDA61A4DE0FB00637375 /* MJPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACDA31A4DE0FB00637375 /* MJPopupBackgroundView.m */; };
+		389ACDA71A4DE0FB00637375 /* UIViewController+MJPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACDA51A4DE0FB00637375 /* UIViewController+MJPopupViewController.m */; };
+		389ACDA91A4DE17100637375 /* JKMinesweeperScoresViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 389ACDA81A4DE17100637375 /* JKMinesweeperScoresViewController.xib */; };
+		389ACDAB1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 389ACDAA1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib */; };
+		389ACDAF1A4DE7E800637375 /* ScoreSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACDAE1A4DE7E800637375 /* ScoreSaver.m */; };
+		389ACDB41A4DEC1600637375 /* JKScoresCustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACDB21A4DEC1600637375 /* JKScoresCustomTableViewCell.m */; };
+		389ACDB51A4DEC1600637375 /* JKScoresCustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 389ACDB31A4DEC1600637375 /* JKScoresCustomTableViewCell.xib */; };
+		389ACDB81A4DEF7100637375 /* JKMinesweeperAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACDB71A4DEF7100637375 /* JKMinesweeperAppearance.m */; };
+		389ACDBA1A4DF09C00637375 /* clearAll.png in Resources */ = {isa = PBXBuildFile; fileRef = 389ACDB91A4DF09C00637375 /* clearAll.png */; };
+		389ACDBD1A4DF19500637375 /* UIView+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACDBC1A4DF19500637375 /* UIView+Utility.m */; };
 		38A787411A4CEDDF0004B2B4 /* UIButton+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A787401A4CEDDF0004B2B4 /* UIButton+Utility.m */; };
 		38A787451A4CF07A0004B2B4 /* mine.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A787421A4CF07A0004B2B4 /* mine.png */; };
 		38A787461A4CF07A0004B2B4 /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A787431A4CF07A0004B2B4 /* normal.png */; };
@@ -41,6 +55,29 @@
 /* Begin PBXFileReference section */
 		3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = exploding_bomb.gif; sourceTree = "<group>"; };
 		3836A11D1A4D14EF009E24B5 /* skull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skull.png; sourceTree = "<group>"; };
+		389ACD901A4DDC0600637375 /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Score.h; sourceTree = "<group>"; };
+		389ACD911A4DDC0600637375 /* Score.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Score.m; sourceTree = "<group>"; };
+		389ACD931A4DDE0A00637375 /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
+		389ACD961A4DDEDD00637375 /* JKMinesweeperScoresViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKMinesweeperScoresViewController.h; sourceTree = "<group>"; };
+		389ACD971A4DDEDD00637375 /* JKMinesweeperScoresViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKMinesweeperScoresViewController.m; sourceTree = "<group>"; };
+		389ACD9B1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKMinesweeperSettingsViewController.h; sourceTree = "<group>"; };
+		389ACD9C1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKMinesweeperSettingsViewController.m; sourceTree = "<group>"; };
+		389ACDA21A4DE0FB00637375 /* MJPopupBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPopupBackgroundView.h; sourceTree = "<group>"; };
+		389ACDA31A4DE0FB00637375 /* MJPopupBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPopupBackgroundView.m; sourceTree = "<group>"; };
+		389ACDA41A4DE0FB00637375 /* UIViewController+MJPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MJPopupViewController.h"; sourceTree = "<group>"; };
+		389ACDA51A4DE0FB00637375 /* UIViewController+MJPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MJPopupViewController.m"; sourceTree = "<group>"; };
+		389ACDA81A4DE17100637375 /* JKMinesweeperScoresViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JKMinesweeperScoresViewController.xib; sourceTree = "<group>"; };
+		389ACDAA1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JKMinesweeperSettingsViewController.xib; sourceTree = "<group>"; };
+		389ACDAD1A4DE7E800637375 /* ScoreSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreSaver.h; sourceTree = "<group>"; };
+		389ACDAE1A4DE7E800637375 /* ScoreSaver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreSaver.m; sourceTree = "<group>"; };
+		389ACDB11A4DEC1600637375 /* JKScoresCustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKScoresCustomTableViewCell.h; sourceTree = "<group>"; };
+		389ACDB21A4DEC1600637375 /* JKScoresCustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKScoresCustomTableViewCell.m; sourceTree = "<group>"; };
+		389ACDB31A4DEC1600637375 /* JKScoresCustomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JKScoresCustomTableViewCell.xib; sourceTree = "<group>"; };
+		389ACDB61A4DEF7100637375 /* JKMinesweeperAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKMinesweeperAppearance.h; sourceTree = "<group>"; };
+		389ACDB71A4DEF7100637375 /* JKMinesweeperAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKMinesweeperAppearance.m; sourceTree = "<group>"; };
+		389ACDB91A4DF09C00637375 /* clearAll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clearAll.png; sourceTree = "<group>"; };
+		389ACDBB1A4DF19500637375 /* UIView+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Utility.h"; sourceTree = "<group>"; };
+		389ACDBC1A4DF19500637375 /* UIView+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utility.m"; sourceTree = "<group>"; };
 		38A7873F1A4CEDDF0004B2B4 /* UIButton+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Utility.h"; sourceTree = "<group>"; };
 		38A787401A4CEDDF0004B2B4 /* UIButton+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Utility.m"; sourceTree = "<group>"; };
 		38A787421A4CF07A0004B2B4 /* mine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mine.png; sourceTree = "<group>"; };
@@ -92,11 +129,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		389ACD951A4DDEA800637375 /* Popovers */ = {
+			isa = PBXGroup;
+			children = (
+				389ACD961A4DDEDD00637375 /* JKMinesweeperScoresViewController.h */,
+				389ACD971A4DDEDD00637375 /* JKMinesweeperScoresViewController.m */,
+				389ACDA81A4DE17100637375 /* JKMinesweeperScoresViewController.xib */,
+				389ACD9B1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.h */,
+				389ACD9C1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.m */,
+				389ACDAA1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib */,
+			);
+			name = Popovers;
+			sourceTree = "<group>";
+		};
+		389ACDA11A4DE0F500637375 /* Custom Popup Library */ = {
+			isa = PBXGroup;
+			children = (
+				389ACDA21A4DE0FB00637375 /* MJPopupBackgroundView.h */,
+				389ACDA31A4DE0FB00637375 /* MJPopupBackgroundView.m */,
+				389ACDA41A4DE0FB00637375 /* UIViewController+MJPopupViewController.h */,
+				389ACDA51A4DE0FB00637375 /* UIViewController+MJPopupViewController.m */,
+			);
+			name = "Custom Popup Library";
+			sourceTree = "<group>";
+		};
+		389ACDAC1A4DE7D100637375 /* Model Operations */ = {
+			isa = PBXGroup;
+			children = (
+				389ACDAD1A4DE7E800637375 /* ScoreSaver.h */,
+				389ACDAE1A4DE7E800637375 /* ScoreSaver.m */,
+			);
+			name = "Model Operations";
+			sourceTree = "<group>";
+		};
+		389ACDB01A4DEA3500637375 /* Custom Cells */ = {
+			isa = PBXGroup;
+			children = (
+				389ACDB11A4DEC1600637375 /* JKScoresCustomTableViewCell.h */,
+				389ACDB21A4DEC1600637375 /* JKScoresCustomTableViewCell.m */,
+				389ACDB31A4DEC1600637375 /* JKScoresCustomTableViewCell.xib */,
+			);
+			name = "Custom Cells";
+			sourceTree = "<group>";
+		};
 		38A7873D1A4CED560004B2B4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
 				38A787421A4CF07A0004B2B4 /* mine.png */,
 				38A787431A4CF07A0004B2B4 /* normal.png */,
+				389ACDB91A4DF09C00637375 /* clearAll.png */,
+				389ACD931A4DDE0A00637375 /* setting.png */,
 				3836A11D1A4D14EF009E24B5 /* skull.png */,
 				3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */,
 				38A787441A4CF07A0004B2B4 /* smiley.gif */,
@@ -110,6 +192,8 @@
 			children = (
 				38A7873F1A4CEDDF0004B2B4 /* UIButton+Utility.h */,
 				38A787401A4CEDDF0004B2B4 /* UIButton+Utility.m */,
+				389ACDBB1A4DF19500637375 /* UIView+Utility.h */,
+				389ACDBC1A4DF19500637375 /* UIView+Utility.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -127,6 +211,8 @@
 			children = (
 				91078BD519D8D63500F9B438 /* JKMineSweeperConstants.h */,
 				91078BD619D8D63500F9B438 /* JKMineSweeperConstants.m */,
+				389ACDB61A4DEF7100637375 /* JKMinesweeperAppearance.h */,
+				389ACDB71A4DEF7100637375 /* JKMinesweeperAppearance.m */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -163,6 +249,10 @@
 		91AA40FA19D8C956009CB397 /* JKMinesweeper */ = {
 			isa = PBXGroup;
 			children = (
+				389ACDB01A4DEA3500637375 /* Custom Cells */,
+				389ACDAC1A4DE7D100637375 /* Model Operations */,
+				389ACDA11A4DE0F500637375 /* Custom Popup Library */,
+				389ACD951A4DDEA800637375 /* Popovers */,
 				38A7873E1A4CEDCA0004B2B4 /* Categories */,
 				38A7873D1A4CED560004B2B4 /* Images */,
 				911DB8E619DBA0C800D16B6F /* Utility */,
@@ -237,6 +327,8 @@
 			children = (
 				91AA412A19D8CC80009CB397 /* JKButtonStateModel.h */,
 				91AA412B19D8CC80009CB397 /* JKButtonStateModel.m */,
+				389ACD901A4DDC0600637375 /* Score.h */,
+				389ACD911A4DDC0600637375 /* Score.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -333,13 +425,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				38A787451A4CF07A0004B2B4 /* mine.png in Resources */,
+				389ACDBA1A4DF09C00637375 /* clearAll.png in Resources */,
 				3836A11E1A4D14EF009E24B5 /* skull.png in Resources */,
 				38A787461A4CF07A0004B2B4 /* normal.png in Resources */,
 				91AA412719D8CAD8009CB397 /* Main.storyboard in Resources */,
+				389ACDA91A4DE17100637375 /* JKMinesweeperScoresViewController.xib in Resources */,
+				389ACDAB1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib in Resources */,
 				38A787471A4CF07A0004B2B4 /* smiley.gif in Resources */,
 				38E778BD1A4CF4BB009E127A /* changeColor.png in Resources */,
+				389ACDB51A4DEC1600637375 /* JKScoresCustomTableViewCell.xib in Resources */,
 				91AA410C19D8C956009CB397 /* LaunchScreen.xib in Resources */,
 				91AA410919D8C956009CB397 /* Images.xcassets in Resources */,
+				389ACD941A4DDE0A00637375 /* setting.png in Resources */,
 				3836A11C1A4D0B06009E24B5 /* exploding_bomb.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,12 +488,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				389ACDA71A4DE0FB00637375 /* UIViewController+MJPopupViewController.m in Sources */,
+				389ACDBD1A4DF19500637375 /* UIView+Utility.m in Sources */,
 				91AA412F19D8CC94009CB397 /* JKCustomButton.m in Sources */,
+				389ACDB41A4DEC1600637375 /* JKScoresCustomTableViewCell.m in Sources */,
 				91AA412419D8CA77009CB397 /* JKMinesweeperHomeViewController.m in Sources */,
 				911DB8E919DBA10E00D16B6F /* JKNeighbouringTilesProvider.m in Sources */,
+				389ACDAF1A4DE7E800637375 /* ScoreSaver.m in Sources */,
+				389ACD991A4DDEDD00637375 /* JKMinesweeperScoresViewController.m in Sources */,
+				389ACD921A4DDC0600637375 /* Score.m in Sources */,
 				91AA410119D8C956009CB397 /* AppDelegate.m in Sources */,
 				91078BD719D8D63500F9B438 /* JKMineSweeperConstants.m in Sources */,
 				91AA412C19D8CC80009CB397 /* JKButtonStateModel.m in Sources */,
+				389ACDA61A4DE0FB00637375 /* MJPopupBackgroundView.m in Sources */,
+				389ACD9E1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.m in Sources */,
+				389ACDB81A4DEF7100637375 /* JKMinesweeperAppearance.m in Sources */,
 				38A787411A4CEDDF0004B2B4 /* UIButton+Utility.m in Sources */,
 				91AA40FE19D8C956009CB397 /* main.m in Sources */,
 			);

@@ -17,7 +17,24 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [self performDatabaseMigration];
+    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"currentLevel"]) {
+        [self setInitialDefaults];
+    }
     return YES;
+}
+
+-(void) performDatabaseMigration {
+    
+}
+
+-(void)setInitialDefaults {
+    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"currentLevel"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"50" forKey:@"tileWidth"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"5" forKey:@"gutterSpacing"];
+    [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:@"sound"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
