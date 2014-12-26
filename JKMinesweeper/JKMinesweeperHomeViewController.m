@@ -10,6 +10,7 @@
 #import "JKNeighbouringTilesProvider.h"
 #import "JKMineSweeperConstants.h"
 #import "JKCustomButton.h"
+#import "UIButton+Utility.h"
 #import "JKButtonStateModel.h"
 
 typedef void (^resetTilesFinishedBlock)();
@@ -263,7 +264,7 @@ typedef void (^resetTilesFinishedBlock)();
         [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
                          animations:^{
                              [buttonWithCurrentIdentifier
-                                 setBackgroundColor:[UIColor redColor]];
+                                 addDecorationWithImage:[UIImage imageNamed:@"normal"] orColor:[UIColor redColor]];
                          }
                          completion:nil];
 
@@ -291,8 +292,8 @@ typedef void (^resetTilesFinishedBlock)();
         } else {
             [buttonWithCurrentIdentifier
                 setTitle:[NSString
-                             stringWithFormat:@"%d",
-                                              buttonWithCurrentIdentifier
+                             stringWithFormat:@"%ld",
+                                              (long)buttonWithCurrentIdentifier
                                                   .buttonStateModel
                                                   .numberOfNeighboringMines]
                 forState:UIControlStateNormal];
@@ -303,7 +304,7 @@ typedef void (^resetTilesFinishedBlock)();
                     .numberOfNeighboringMines;
         }
         self.currentScore.text =
-            [NSString stringWithFormat:@"%d", self.currentScoreValue];
+            [NSString stringWithFormat:@"%ld", (long)self.currentScoreValue];
     }
 }
 
@@ -412,7 +413,7 @@ typedef void (^resetTilesFinishedBlock)();
             [self.revealMenuButton setTitle:@"Hide" forState:UIControlStateNormal];
             for (
                  JKCustomButton *individualTileWithMine in self.minesButtonsHolder) {
-                individualTileWithMine.backgroundColor = [UIColor greenColor];
+                [individualTileWithMine addDecorationWithImage:[UIImage imageNamed:@"mine"] orColor:[UIColor greenColor]];
             }
         } else {
             sender.tag = MINES_NOT_REVEALED_STATE;
@@ -420,7 +421,7 @@ typedef void (^resetTilesFinishedBlock)();
                                forState:UIControlStateNormal];
             for (
                  JKCustomButton *individualTileWithMine in self.minesButtonsHolder) {
-                individualTileWithMine.backgroundColor = [UIColor orangeColor];
+                [individualTileWithMine addDecorationWithImage:nil orColor:[UIColor orangeColor]];
             }
         }
     }
@@ -460,7 +461,7 @@ typedef void (^resetTilesFinishedBlock)();
             [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
                 animations:^{
                     [individualMinesButton
-                        setBackgroundColor:[UIColor blueColor]];
+                        addDecorationWithImage:[UIImage imageNamed:@"mine"] orColor:[UIColor blueColor]];
                 }
                 completion:^(BOOL finished) {
                     individualMinesButton.buttonStateModel

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>DB9DD9AA-9E11-4ADA-8F12-B0F679F7CB4F</string>
+	<key>IDESourceControlProjectName</key>
+	<string>JKMinesweeper</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>4EDAA13B6A3CD5FC81350D4DF539631224FAF313</key>
+		<string>github.com:jayesh15111988/JKMineSweeperGame.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>JKMinesweeper.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>4EDAA13B6A3CD5FC81350D4DF539631224FAF313</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:jayesh15111988/JKMineSweeperGame.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>4EDAA13B6A3CD5FC81350D4DF539631224FAF313</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>4EDAA13B6A3CD5FC81350D4DF539631224FAF313</string>
+			<key>IDESourceControlWCCName</key>
+			<string>JKMineSweeperGame</string>
+		</dict>
+	</array>
+</dict>
+</plist>
