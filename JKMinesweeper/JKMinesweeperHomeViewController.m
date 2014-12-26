@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Jayesh Kawli. All rights reserved.
 //
 
+#import <HRColorPickerView.h>
 #import "JKMinesweeperHomeViewController.h"
 #import "JKNeighbouringTilesProvider.h"
 #import "JKMineSweeperConstants.h"
@@ -24,6 +25,11 @@ typedef void (^resetTilesFinishedBlock)();
 @property(strong, nonatomic) NSMutableDictionary *minesLocationHolder;
 @property(assign, nonatomic) NSInteger totalNumberOfMinesOnGrid;
 @property(weak, nonatomic) IBOutlet UIScrollView *superParentScrollView;
+@property (strong, nonatomic) UIView* currentViewForColorpicker;
+
+@property (strong, nonatomic) HRColorPickerView* colorPickerView;
+@property (strong, nonatomic) UIView* bottomViewForColorPicker;
+@property (strong, nonatomic) UIButton* changeGridBakcgroundColorButton;
 
 @property(strong, nonatomic) NSMutableArray *minesButtonsHolder;
 @property(strong, nonatomic) NSMutableArray *regularButtonsHolder;
@@ -146,6 +152,8 @@ typedef void (^resetTilesFinishedBlock)();
                    gridHeightAndWidth);
 
     [self.gridHolderView setBackgroundColor:[UIColor lightGrayColor]];
+    
+    
     NSInteger buttonSequenceNumber = 0;
     BOOL doesMineExistForTile = NO;
     NSInteger totalNumberOfMinesSurroundingGivenTile = 0;
@@ -236,12 +244,26 @@ typedef void (^resetTilesFinishedBlock)();
                                     20,
                              40, 0);
     }
-
-
+    [self setPositionOfChangeBackgroundColorButton];
     [self.superParentScrollView addSubview:self.gridHolderView];
     [self.superParentScrollView
         setContentSize:CGSizeMake(contentSizeWidth,
                                   self.gridHolderView.frame.size.height + 40)];
+}
+
+-(void)setPositionOfChangeBackgroundColorButton {
+    CGRect changeGridColorButtonUpdatedFrame = CGRectMake(self.gridHolderView.frame.size.width + self.gridHolderView.frame.origin.x + 10, self.gridHolderView.frame.origin.y, 30, 30);
+    
+    if(!self.changeGridBakcgroundColorButton) {
+        self.changeGridBakcgroundColorButton = [[UIButton alloc] initWithFrame:changeGridColorButtonUpdatedFrame];
+        [self.changeGridBakcgroundColorButton setBackgroundImage:[UIImage imageNamed:@"changeColor"] forState:UIControlStateNormal];
+        [self.changeGridBakcgroundColorButton addTarget:self action:@selector(changeGridBackgroundColorButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [self.superParentScrollView addSubview:self.changeGridBakcgroundColorButton];
+    }
+    else {
+        self.changeGridBakcgroundColorButton.frame = changeGridColorButtonUpdatedFrame;
+    }
+    
 }
 
 - (JKCustomButton *)getButtonWithSequence:(NSInteger)buttonSequence {
@@ -435,7 +457,6 @@ typedef void (^resetTilesFinishedBlock)();
                            andTotalTilesInSingleLine:
                                self.totalNumberOfRequiredTiles];
 
-
     for (NSString *individualNumber in resultantNeightbors) {
         if ([self.numberOfSurroundingMinesHolder
                 objectForKey:individualNumber]) {
@@ -500,7 +521,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.levelNumberSelected = levelNumber;
     [self.levelNumberButton
      setTitle:[NSString
-               stringWithFormat:@"Level %d", self.levelNumberSelected]
+               stringWithFormat:@"Level %ld", (long)self.levelNumberSelected]
      forState:UIControlStateNormal];
 }
 
@@ -554,4 +575,57 @@ typedef void (^resetTilesFinishedBlock)();
     
     [self presentViewController:alertController animated:YES completion:nil];
 }
+
+-(void)changeGridBackgroundColorButtonPressed {
+    self.currentViewForColorpicker = self.gridHolderView;
+    [self setupColorPickerView];
+}
+
+
+- (IBAction)changeScrollViewBackgroundColorPressed:(id)sender {
+    self.currentViewForColorpicker = self.superParentScrollView;
+    [self setupColorPickerView];
+}
+
+-(void)setupColorPickerView {
+    
+    if(!self.colorPickerView) {
+        self.colorPickerView = [[HRColorPickerView alloc] init];
+        self.colorPickerView.colorInfoView.hidden = YES;
+        self.colorPickerView.color = self.superParentScrollView.backgroundColor;
+        [self.colorPickerView addTarget:self
+                                 action:@selector(colorDidChanged:)
+                       forControlEvents:UIControlEventValueChanged];
+        self.colorPickerView.frame = CGRectMake(0, 0, 300, 300);
+        self.colorPickerView.center = self.view.center;
+        self.colorPickerView.alpha = 0.0;
+        [self.view addSubview:self.colorPickerView];
+        
+        self.bottomViewForColorPicker = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.colorPickerView.frame.size.height, 54)];
+        [self.bottomViewForColorPicker setBackgroundColor:[UIColor lightTextColor]];
+        UIButton* hideColorPickerButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 5, 100, 44)];
+        
+        hideColorPickerButton.center = self.bottomViewForColorPicker.center;
+        hideColorPickerButton.backgroundColor = [UIColor colorWithRed:200/255.0 green:210/255.0 blue:80/255.0 alpha:1.0];
+        [hideColorPickerButton setTitle:@"Ok" forState:UIControlStateNormal];
+        [hideColorPickerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [hideColorPickerButton addTarget:self action:@selector(hideColorPickerView:) forControlEvents:UIControlEventTouchUpInside];
+        [self.bottomViewForColorPicker addSubview:hideColorPickerButton];
+        self.bottomViewForColorPicker.frame = CGRectMake(self.colorPickerView.frame.origin.x, self.colorPickerView.frame.size.height + self.colorPickerView.frame.origin.y, self.bottomViewForColorPicker.frame.size.width, self.bottomViewForColorPicker.frame.size.height);
+        self.bottomViewForColorPicker.alpha = 0.0;
+        [self.view addSubview:self.bottomViewForColorPicker];
+    }
+    self.bottomViewForColorPicker.alpha = 1.0;
+    self.colorPickerView.alpha = 1.0;
+}
+
+-(IBAction)hideColorPickerView:(UIButton*)sender {
+    self.colorPickerView.alpha = 0.0;
+    self.bottomViewForColorPicker.alpha = 0.0;
+}
+
+- (void)colorDidChanged:(HRColorPickerView *)pickerView {
+    [self.currentViewForColorpicker setBackgroundColor:pickerView.color];
+}
+
 @end
