@@ -12,6 +12,7 @@
 #import "JKCustomButton.h"
 #import "JKButtonStateModel.h"
 
+#define SELECT_LEVEL_TITLE @"Select Target Level"
 typedef void (^resetTilesFinishedBlock)();
 
 @interface JKMinesweeperHomeViewController () <UIAlertViewDelegate,
@@ -77,8 +78,7 @@ typedef void (^resetTilesFinishedBlock)();
 - (IBAction)createGridButtonPressed:(UIButton *)sender {
 
 
-    self.revealMenuButton.tag = 14;
-    [self.revealMenuButton setTitle:@"Reveal" forState:UIControlStateNormal];
+    [self resetRevealMenuButton];
     self.totalNumberOfRequiredTiles =
         [self.gridSizeInputText.text integerValue];
 
@@ -93,31 +93,38 @@ typedef void (^resetTilesFinishedBlock)();
     [self createNewGridOnScreen];
 }
 
+-(void)resetRevealMenuButton {
+    self.revealMenuButton.tag = 14;
+    [self.revealMenuButton setTitle:@"Reveal" forState:UIControlStateNormal];
+}
+
 - (IBAction)verifyLossWinButtonPressed:(UIButton *)sender {
 
 
     BOOL didUserWinCurrentGame =
-        (self.totalNumberOfTilesRevealed ==
+        (_totalNumberOfTilesRevealed ==
          (self.maximumTileSequence - self.totalNumberOfMinesOnGrid));
-
     NSString *currentGameStatusMessage = @"N/A";
-
-    if (didUserWinCurrentGame) {
-        currentGameStatusMessage = @"You won this game. Click the button "
+    
+    if(_totalNumberOfTilesRevealed > 0) {
+        if (didUserWinCurrentGame) {
+            currentGameStatusMessage = @"You won this game. Click the button "
             @"below to start a new game";
-    } else {
-        currentGameStatusMessage = @"Sorry, you still need to unleash few "
+        } else {
+            currentGameStatusMessage = @"Sorry, you still need to unleash few "
             @"tiles before we could declare you as " @"Winner";
+        }
     }
-
+    else {
+        currentGameStatusMessage = @"You haven't started game yet. Please Start a new game verify the game state";
+    }
     [self showAlertViewWithMessage:currentGameStatusMessage];
 }
 
 - (void)createNewGridOnScreen {
 
-
+    [self resetRevealMenuButton];
     [self resetGridWithNewTilesAndCompletionBlock:nil];
-
 
     self.createGridButton.enabled = NO;
     self.resetButton.enabled = YES;
@@ -186,13 +193,9 @@ typedef void (^resetTilesFinishedBlock)();
                             @"game is now over"];
             };
 
-            //            __weak typeof(JKCustomButton*) weakButtonObject =
-            //            newRevealMineButton;
-
             newRevealMineButton.randomTileSelectedInstant =
                 ^(NSInteger buttonSequenceNumber) {
-                //              __strong __typeof(JKCustomButton*)
-                //              strongButtonObject = weakButtonObject;
+
                 __strong __typeof(weakSelf) strongSelf = weakSelf;
 
                 [strongSelf highlightNeighbouringButtonsForButtonSequence:
@@ -359,7 +362,9 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (IBAction)resetButtonPressed:(UIButton *)sender {
-    [self resetGridWithNewTilesAndCompletionBlock:nil];
+    [self resetGridWithNewTilesAndCompletionBlock:^{
+        [self createGridButtonPressed:nil];
+    }];
 }
 
 - (void)resetGridWithNewTilesAndCompletionBlock:
@@ -397,20 +402,22 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (IBAction)revealMinesButtonPressed:(UIButton *)sender {
 
-    if (sender.tag == 14) {
-        sender.tag = 15;
-        [self.revealMenuButton setTitle:@"Hide" forState:UIControlStateNormal];
-        for (
-            JKCustomButton *individualTileWithMine in self.minesButtonsHolder) {
-            individualTileWithMine.backgroundColor = [UIColor greenColor];
-        }
-    } else {
-        sender.tag = 14;
-        [self.revealMenuButton setTitle:@"Reveal"
+    if(self.minesButtonsHolder.count > 0) {
+        if (sender.tag == 14) {
+            sender.tag = 15;
+            [self.revealMenuButton setTitle:@"Hide" forState:UIControlStateNormal];
+            for (
+                 JKCustomButton *individualTileWithMine in self.minesButtonsHolder) {
+                individualTileWithMine.backgroundColor = [UIColor greenColor];
+            }
+        } else {
+            sender.tag = 14;
+            [self.revealMenuButton setTitle:@"Reveal"
                                forState:UIControlStateNormal];
-        for (
-            JKCustomButton *individualTileWithMine in self.minesButtonsHolder) {
-            individualTileWithMine.backgroundColor = [UIColor orangeColor];
+            for (
+                 JKCustomButton *individualTileWithMine in self.minesButtonsHolder) {
+                individualTileWithMine.backgroundColor = [UIColor orangeColor];
+            }
         }
     }
 }
@@ -461,23 +468,85 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (IBAction)levelNumberButtonPressed:(id)sender {
-    UIActionSheet *popup = [[UIActionSheet alloc]
-                 initWithTitle:@"Select Target Level"
-                      delegate:self
-             cancelButtonTitle:@"Cancel"
-        destructiveButtonTitle:nil
-             otherButtonTitles:@"Easy", @"Medium", @"Difficult", nil];
-    [popup showInView:[UIApplication sharedApplication].keyWindow];
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
+        //older than iOS 8 code here
+        UIActionSheet *popup = [[UIActionSheet alloc]
+                                initWithTitle:SELECT_LEVEL_TITLE
+                                delegate:self
+                                cancelButtonTitle:@"Cancel"
+                                destructiveButtonTitle:nil
+                                otherButtonTitles:@"Easy", @"Medium", @"Difficult", @"Expert", nil];
+        [popup showInView:[UIApplication sharedApplication].keyWindow];
+    } else {
+        //iOS 8 specific code here
+        [self showiOS8ActionSheet];
+    }
 }
 
 - (void)actionSheet:(UIActionSheet *)popup
     clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex < 3) {
-        self.levelNumberSelected = buttonIndex + 1;
-        [self.levelNumberButton
-            setTitle:[NSString
-                         stringWithFormat:@"Level %d", self.levelNumberSelected]
-            forState:UIControlStateNormal];
+    if (buttonIndex < 4) {
+        [self setViewForSelectedLevelWithNumber:buttonIndex + 1];
     }
+}
+
+-(void)setViewForSelectedLevelWithNumber:(NSInteger)levelNumber {
+    self.levelNumberSelected = levelNumber;
+    [self.levelNumberButton
+     setTitle:[NSString
+               stringWithFormat:@"Level %d", self.levelNumberSelected]
+     forState:UIControlStateNormal];
+}
+
+- (void)showiOS8ActionSheet {
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:SELECT_LEVEL_TITLE
+                                                                             message:@""
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *easyLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Easy", @"Easy action")
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *action)
+                                  {
+                                      [self setViewForSelectedLevelWithNumber:1];
+                                  }];
+    
+    UIAlertAction *mediumLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Medium", @"Medium action")
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *action)
+                                  {
+                                      [self setViewForSelectedLevelWithNumber:2];
+                                  }];
+    
+    UIAlertAction *difficultLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Difficult", @"Difficult action")
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action)
+                                   {
+                                       [self setViewForSelectedLevelWithNumber:3];
+                                       
+                                   }];
+    UIAlertAction *expertLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Expert", @"Expert action")
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action)
+                                   {
+                                       [self setViewForSelectedLevelWithNumber:4];
+                                       
+                                   }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction *action)
+                                    {
+                                        NSLog(@"Cancel Button Pressed");
+                                        
+                                    }];
+    
+    [alertController addAction:easyLevel];
+    [alertController addAction:mediumLevel];
+    [alertController addAction:difficultLevel];
+    [alertController addAction:expertLevel];
+    [alertController addAction:cancelAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 @end
