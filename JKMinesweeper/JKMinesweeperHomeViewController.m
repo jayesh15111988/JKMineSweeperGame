@@ -217,6 +217,10 @@ typedef void (^resetTilesFinishedBlock)();
             } else {
                 [self.regularButtonsHolder addObject:newRevealMineButton];
             }
+            
+            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+            [newRevealMineButton addGestureRecognizer:longPress];
+            
             [self.gridHolderView addSubview:newRevealMineButton];
             dispatch_after(time, dispatch_get_main_queue(), ^{
                 [UIView
@@ -249,6 +253,24 @@ typedef void (^resetTilesFinishedBlock)();
     [self.superParentScrollView
         setContentSize:CGSizeMake(contentSizeWidth,
                                   self.gridHolderView.frame.size.height + 40)];
+}
+
+- (void)longPress:(UILongPressGestureRecognizer*)gesture {
+    if ( gesture.state == UIGestureRecognizerStateEnded ) {
+        
+        
+        JKCustomButton* longPressedButton = (JKCustomButton*)gesture.view;
+        longPressedButton.isInLongPressedMode = !longPressedButton.isInLongPressedMode;
+        
+        if(longPressedButton.isInLongPressedMode) {
+            [longPressedButton setTitle:@"?" forState:UIControlStateNormal];
+            [longPressedButton setBackgroundColor:[UIColor whiteColor]];
+        }
+        else {
+            [longPressedButton setTitle:@"" forState:UIControlStateNormal];
+            [longPressedButton setBackgroundColor:[UIColor orangeColor]];
+        }
+    }
 }
 
 -(void)setPositionOfChangeBackgroundColorButton {

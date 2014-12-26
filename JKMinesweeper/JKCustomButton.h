@@ -18,6 +18,7 @@
 @property (nonatomic,strong) JKButtonStateModel* buttonStateModel;
 @property (nonatomic,assign) NSInteger buttonSequenceNumber;
 @property (nonatomic,assign) BOOL isVisited;
+@property (nonatomic,assign) BOOL isInLongPressedMode;
 
 typedef void (^gameOverBlock)();
 @property(strong, nonatomic) gameOverBlock gameOverInstant;

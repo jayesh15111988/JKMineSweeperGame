@@ -27,6 +27,7 @@
         self.buttonStateModel.isThisButtonMine = isMine;
         self.buttonStateModel.numberOfNeighboringMines =
             numberOfSurroundingMines;
+        self.isInLongPressedMode = NO;
         self.alpha = 0.0;
         // 0 55 110 165 220 275
 
@@ -39,7 +40,7 @@
         // While - Light blue - lightgreen
         UIColor *titleColor;
         if (numberOfSurroundingMines == 1) {
-            titleColor = [UIColor whiteColor];
+            titleColor = [UIColor blackColor];
         } else if (numberOfSurroundingMines < 4) {
             titleColor = [UIColor blueColor];
 
