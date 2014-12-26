@@ -12,7 +12,6 @@
 #import "JKCustomButton.h"
 #import "JKButtonStateModel.h"
 
-#define SELECT_LEVEL_TITLE @"Select Target Level"
 typedef void (^resetTilesFinishedBlock)();
 
 @interface JKMinesweeperHomeViewController () <UIAlertViewDelegate,
@@ -94,7 +93,7 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 -(void)resetRevealMenuButton {
-    self.revealMenuButton.tag = 14;
+    self.revealMenuButton.tag = MINES_NOT_REVEALED_STATE;
     [self.revealMenuButton setTitle:@"Reveal" forState:UIControlStateNormal];
 }
 
@@ -151,15 +150,16 @@ typedef void (^resetTilesFinishedBlock)();
     NSInteger totalNumberOfMinesSurroundingGivenTile = 0;
 
     dispatch_time_t time = DISPATCH_TIME_NOW;
-
+    NSInteger successiveTilesDistanceIncrement = DEFAULT_TILE_WIDTH + DEFAULT_GUTTER_WIDTH;
+    
     for (NSInteger heightParamters = 0; heightParamters < gridHeightAndWidth;
-         heightParamters += 55) {
+         heightParamters += successiveTilesDistanceIncrement) {
         for (NSInteger widthParameter = 0; widthParameter < gridHeightAndWidth;
-             widthParameter += 55) {
+             widthParameter += successiveTilesDistanceIncrement) {
 
             buttonSequenceNumber =
-                ((widthParameter / 55) +
-                 (heightParamters / 55) * self.totalNumberOfRequiredTiles);
+                ((widthParameter / successiveTilesDistanceIncrement) +
+                 (heightParamters / successiveTilesDistanceIncrement) * self.totalNumberOfRequiredTiles);
 
             doesMineExistForTile =
                 self.minesLocationHolder[@(buttonSequenceNumber)] ? YES : NO;
@@ -211,11 +211,13 @@ typedef void (^resetTilesFinishedBlock)();
             [self.gridHolderView addSubview:newRevealMineButton];
             dispatch_after(time, dispatch_get_main_queue(), ^{
                 [UIView
-                    animateWithDuration:0.2
-                             animations:^{ newRevealMineButton.alpha = 1.0; }
+                    animateWithDuration:REGULAR_ANIMATION_DURATION
+                             animations:^{
+                                 newRevealMineButton.alpha = 1.0;
+                             }
                              completion:nil];
             });
-            time = dispatch_time(time, 0.04 * NSEC_PER_SEC);
+            time = dispatch_time(time, MULTIPLE_ANIMATION_DURATION * NSEC_PER_SEC);
         }
     }
 
@@ -258,7 +260,7 @@ typedef void (^resetTilesFinishedBlock)();
     if (!buttonWithCurrentIdentifier.isVisited) {
 
 
-        [UIView animateWithDuration:0.5
+        [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
                          animations:^{
                              [buttonWithCurrentIdentifier
                                  setBackgroundColor:[UIColor redColor]];
@@ -387,13 +389,15 @@ typedef void (^resetTilesFinishedBlock)();
     for (UIView *individualButtonOnGrid in allButtonsInGridView) {
 
         dispatch_after(time, dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:0.2
-                animations:^{ individualButtonOnGrid.alpha = 0.0; }
+            [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
+                animations:^{
+                    individualButtonOnGrid.alpha = 0.0;
+                }
                 completion:^(BOOL finished) {
                     [individualButtonOnGrid removeFromSuperview];
                 }];
         });
-        time = dispatch_time(time, 0.04 * NSEC_PER_SEC);
+        time = dispatch_time(time, MULTIPLE_ANIMATION_DURATION * NSEC_PER_SEC);
     }
     if (resetTilesFinishedBlock) {
         resetTilesFinishedBlock();
@@ -403,15 +407,15 @@ typedef void (^resetTilesFinishedBlock)();
 - (IBAction)revealMinesButtonPressed:(UIButton *)sender {
 
     if(self.minesButtonsHolder.count > 0) {
-        if (sender.tag == 14) {
-            sender.tag = 15;
+        if (sender.tag == MINES_NOT_REVEALED_STATE) {
+            sender.tag = MINES_REVEALED_STATE;
             [self.revealMenuButton setTitle:@"Hide" forState:UIControlStateNormal];
             for (
                  JKCustomButton *individualTileWithMine in self.minesButtonsHolder) {
                 individualTileWithMine.backgroundColor = [UIColor greenColor];
             }
         } else {
-            sender.tag = 14;
+            sender.tag = MINES_NOT_REVEALED_STATE;
             [self.revealMenuButton setTitle:@"Reveal"
                                forState:UIControlStateNormal];
             for (
@@ -453,7 +457,7 @@ typedef void (^resetTilesFinishedBlock)();
     for (JKCustomButton *individualMinesButton in self.minesButtonsHolder) {
 
         dispatch_after(time, dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:0.3
+            [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
                 animations:^{
                     [individualMinesButton
                         setBackgroundColor:[UIColor blueColor]];
@@ -463,7 +467,7 @@ typedef void (^resetTilesFinishedBlock)();
                         .tileSelectedIndicator = YES;
                 }];
         });
-        time = dispatch_time(time, 0.3 * NSEC_PER_SEC);
+        time = dispatch_time(time, REGULAR_ANIMATION_DURATION * NSEC_PER_SEC);
     }
 }
 

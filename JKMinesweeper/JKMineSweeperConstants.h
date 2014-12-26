@@ -10,8 +10,11 @@
 
 #define DEFAULT_TILE_WIDTH 50
 #define DEFAULT_GUTTER_WIDTH 5
-
-
+#define MINES_NOT_REVEALED_STATE 14
+#define MINES_REVEALED_STATE 15
+#define SELECT_LEVEL_TITLE @"Select Target Level"
+#define REGULAR_ANIMATION_DURATION 0.3
+#define MULTIPLE_ANIMATION_DURATION 0.04
 @interface JKMineSweeperConstants : NSObject
 
 @end
