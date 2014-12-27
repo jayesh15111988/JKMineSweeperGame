@@ -8,6 +8,7 @@
 
 #import "JKMinesweeperScoresViewController.h"
 #import "JKScoresCustomTableViewCell.h"
+#import <Realm.h>
 #import <BlocksKit/UIAlertView+BlocksKit.h>
 #import "ScoreSaver.h"
 #import "JKMineSweeperConstants.h"
@@ -20,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) RLMResults* scoreObjectsCollection;
 @property (strong, nonatomic) NSArray* levelSequenceToNameMappings;
+@property (weak, nonatomic) IBOutlet UIButton *clearScoreButton;
+
 @end
 
 @implementation JKMinesweeperScoresViewController
@@ -32,7 +35,12 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated {
+    [self loadAllScores];
+}
+
+-(void)loadAllScores {
     self.scoreObjectsCollection = [ScoreSaver getAllScoresFromDatabase];
+    self.clearScoreButton.hidden = (self.scoreObjectsCollection.count == 0);
     [self.tableView reloadData];
 }
 
@@ -63,7 +71,17 @@
 - (IBAction)clearAllScoresButtonPressed:(UIButton*)sender {
     [UIAlertView bk_showAlertViewWithTitle:@"Scores History" message:@"Are you sure you want to clear all the previous scores?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Ok"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
         if(buttonIndex == 1) {
-            NSLog(@"Deleting all recrods");
+            if([ScoreSaver removeAllEntriesFromScore]) {
+                [self loadAllScores];
+                [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Successfully cleared all scores from database" cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
+            }
+            else {
+                [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Failed to clear scores from database" cancelButtonTitle:@"Ok" otherButtonTitles:@[@"Retry" ] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                    if(buttonIndex == 1) {
+                        [self clearAllScoresButtonPressed:nil];
+                    }
+                }];
+            }
         }
     }];
 }

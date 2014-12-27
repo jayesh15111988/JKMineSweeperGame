@@ -12,4 +12,5 @@
 @interface ScoreSaver : NSObject
 +(void)saveScoreInDatabaseWithUserName:(NSString*)userName andScoreValue:(NSString*)currentScore andSelectedGameLevel:(NSInteger)gameLevel;
 +(RLMResults*)getAllScoresFromDatabase;
++(BOOL)removeAllEntriesFromScore;
 @end
