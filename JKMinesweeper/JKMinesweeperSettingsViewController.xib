@@ -15,7 +15,7 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        <view alpha="0.0" contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -33,9 +33,6 @@
                                 </label>
                                 <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="9lg-7G-WF6">
                                     <rect key="frame" x="400" y="8" width="94" height="29"/>
-                                    <connections>
-                                        <action selector="stepperValueChanged:" destination="-1" eventType="valueChanged" id="8Z8-1F-aCR"/>
-                                    </connections>
                                 </stepper>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IAl-lx-qyn">
                                     <rect key="frame" x="290" y="8" width="80" height="30"/>
@@ -44,7 +41,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.84430793150000005" green="1" blue="0.9261234974" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lWx-aQ-5QO">
                             <rect key="frame" x="0.0" y="58" width="540" height="44"/>
@@ -57,9 +54,6 @@
                                 </label>
                                 <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="LJ1-EU-8xw">
                                     <rect key="frame" x="400" y="8" width="94" height="29"/>
-                                    <connections>
-                                        <action selector="stepperValueChanged:" destination="-1" eventType="valueChanged" id="fhE-Gj-wEu"/>
-                                    </connections>
                                 </stepper>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bzp-v0-23Z">
                                     <rect key="frame" x="290" y="8" width="80" height="30"/>
@@ -68,7 +62,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="1" green="0.93710191730000003" blue="0.82475943519999995" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wBy-2S-Fne">
                             <rect key="frame" x="0.0" y="106" width="540" height="44"/>
@@ -82,17 +76,30 @@
                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JdD-av-6NX">
                                     <rect key="frame" x="422" y="8" width="51" height="31"/>
                                     <connections>
-                                        <action selector="soundSwitchChanged:" destination="-1" eventType="valueChanged" id="RWp-AC-F8Z"/>
+                                        <action selector="soundSwitchChanged:" destination="-1" eventType="valueChanged" id="Cqf-ba-knk"/>
                                     </connections>
                                 </switch>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.84430793150000005" green="1" blue="0.9261234974" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.69992987409999996" green="0.91616981909999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vvQ-1t-lNa">
+                    <rect key="frame" x="570" y="285" width="30" height="30"/>
+                    <color key="backgroundColor" red="0.98774157072368418" green="1" blue="0.95686274509803682" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" image="backButtonSmall.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="dismissCurrentViewPressed:" destination="-1" eventType="touchUpInside" id="i9L-Cy-Rxs"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
         </view>
     </objects>
+    <resources>
+        <image name="backButtonSmall.png" width="40" height="40"/>
+    </resources>
 </document>

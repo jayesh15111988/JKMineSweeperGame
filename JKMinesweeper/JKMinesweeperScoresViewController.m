@@ -8,7 +8,9 @@
 
 #import "JKMinesweeperScoresViewController.h"
 #import "JKScoresCustomTableViewCell.h"
+#import <BlocksKit/UIAlertView+BlocksKit.h>
 #import "ScoreSaver.h"
+#import "JKMineSweeperConstants.h"
 #import "UIView+Utility.h"
 #import "Score.h"
 
@@ -59,7 +61,11 @@
 }
 
 - (IBAction)clearAllScoresButtonPressed:(UIButton*)sender {
-    NSLog(@"Clearing all past records");
+    [UIAlertView bk_showAlertViewWithTitle:@"Scores History" message:@"Are you sure you want to clear all the previous scores?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Ok"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if(buttonIndex == 1) {
+            NSLog(@"Deleting all recrods");
+        }
+    }];
 }
 
 -(void)addFooterView {
@@ -67,6 +73,11 @@
     [footerView setBackgroundColor:[UIColor lightGrayColor]];
     self.tableView.tableFooterView = footerView;
 }
+
+- (IBAction)dismissCurrentViewPressed:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:HIDE_POPOVER_VIEW_NOTIFICATION object:nil];
+}
+
 
 
 @end

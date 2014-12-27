@@ -4,12 +4,22 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-BlocksKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Color-Picker-for-iOS.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods-FLAnimatedImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-ReactiveCocoa.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -27,22 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>000E3287D841BA06E7F83C32</key>
+		<key>39FAF4722217716303A2414E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1D4C08399DF8A0CFB24222FB</key>
+		<key>7F622F4A8231B3C99B978BA5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>83483DEAA84A9D618B45B4CB</key>
+		<key>9693385F8890DF2C1A1F940F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F3E693B38412BEAE8F2DF50E</key>
+		<key>9E990772722A1436BF8D2C97</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A388E946DF37AE0DEBF46744</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A44C7E70167BD301F7158732</key>
 		<dict>
 			<key>primary</key>
 			<true/>

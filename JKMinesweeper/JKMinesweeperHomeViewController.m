@@ -8,6 +8,7 @@
 
 #import <HRColorPickerView.h>
 #import <FLAnimatedImage.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "JKMinesweeperHomeViewController.h"
 #import "JKNeighbouringTilesProvider.h"
@@ -93,6 +94,20 @@ typedef void (^resetTilesFinishedBlock)();
     [self.levelNumberButton addTarget:self
                                action:@selector(levelNumberButtonPressed:)
                      forControlEvents:UIControlEventTouchUpInside];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissPresentedViewController) name:HIDE_POPOVER_VIEW_NOTIFICATION object:nil];
+    
+   [RACObserve(self, levelNumberSelected) subscribeNext:^(NSNumber *newLevelnumber) {
+       [[NSUserDefaults standardUserDefaults] setObject:newLevelnumber forKey:@"currentLevel"];
+       [self.levelNumberButton
+        setTitle:[NSString
+               stringWithFormat:@"Level %@", newLevelnumber]
+        forState:UIControlStateNormal];
+   }];
+}
+
+-(void)dismissPresentedViewController {
+    [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideRightRight];
 }
 
 -(void)setupUIFromUserDefaultParameters {
@@ -194,7 +209,6 @@ typedef void (^resetTilesFinishedBlock)();
             doesMineExistForTile =
                 self.minesLocationHolder[@(buttonSequenceNumber)] ? YES : NO;
 
-
             totalNumberOfMinesSurroundingGivenTile =
                 [self.numberOfSurroundingMinesHolder[
                     @(buttonSequenceNumber)] integerValue];
@@ -202,6 +216,7 @@ typedef void (^resetTilesFinishedBlock)();
             JKCustomButton *newRevealMineButton = [[JKCustomButton alloc]
                            initWithPosition:CGPointMake(widthParameter,
                                                         heightParamters)
+                           andWidth:self.tileWidth
                                   andIsMine:doesMineExistForTile
                     andButtonSequenceNumber:buttonSequenceNumber
                 andNumberOfSurroundingMines:
@@ -606,12 +621,6 @@ typedef void (^resetTilesFinishedBlock)();
 
 -(void)setViewForSelectedLevelWithNumber:(NSInteger)levelNumber {
     self.levelNumberSelected = levelNumber;
-    [[NSUserDefaults standardUserDefaults] setObject:@(levelNumber) forKey:@"currentLevel"];
-    
-    [self.levelNumberButton
-     setTitle:[NSString
-               stringWithFormat:@"Level %ld", (long)self.levelNumberSelected]
-     forState:UIControlStateNormal];
 }
 
 - (void)showiOS8ActionSheet {

@@ -16,5 +16,6 @@
 #define REGULAR_ANIMATION_DURATION 0.3
 #define MULTIPLE_ANIMATION_DURATION 0.04
 #define GIF_IMAGE_ANIMATION_DURATION 2.5
+#define HIDE_POPOVER_VIEW_NOTIFICATION @"dismissCurrentViewController"
 @interface JKMineSweeperConstants : NSObject
 @end

@@ -13,6 +13,7 @@
 @implementation JKCustomButton
 
 - (JKCustomButton *)initWithPosition:(CGPoint)buttonPositionOnScreen
+                             andWidth:(NSInteger)tileWidth
                            andIsMine:(BOOL)isMine
              andButtonSequenceNumber:(NSInteger)buttonSequenceNumber
          andNumberOfSurroundingMines:(NSInteger)numberOfSurroundingMines {
@@ -30,10 +31,10 @@
         self.isInLongPressedMode = NO;
         self.alpha = 0.0;
         // 0 55 110 165 220 275
-
+        
         self.frame =
             CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y,
-                       DEFAULT_TILE_WIDTH, DEFAULT_TILE_WIDTH);
+                       tileWidth, tileWidth);
 
         // Change color of title based on number of surrounding mines for given
         // tile

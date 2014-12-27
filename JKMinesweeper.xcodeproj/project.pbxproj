@@ -24,6 +24,7 @@
 		389ACDB81A4DEF7100637375 /* JKMinesweeperAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACDB71A4DEF7100637375 /* JKMinesweeperAppearance.m */; };
 		389ACDBA1A4DF09C00637375 /* clearAll.png in Resources */ = {isa = PBXBuildFile; fileRef = 389ACDB91A4DF09C00637375 /* clearAll.png */; };
 		389ACDBD1A4DF19500637375 /* UIView+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACDBC1A4DF19500637375 /* UIView+Utility.m */; };
+		389ACDBF1A4E274D00637375 /* backButtonSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 389ACDBE1A4E274D00637375 /* backButtonSmall.png */; };
 		38A787411A4CEDDF0004B2B4 /* UIButton+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A787401A4CEDDF0004B2B4 /* UIButton+Utility.m */; };
 		38A787451A4CF07A0004B2B4 /* mine.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A787421A4CF07A0004B2B4 /* mine.png */; };
 		38A787461A4CF07A0004B2B4 /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A787431A4CF07A0004B2B4 /* normal.png */; };
@@ -78,6 +79,7 @@
 		389ACDB91A4DF09C00637375 /* clearAll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clearAll.png; sourceTree = "<group>"; };
 		389ACDBB1A4DF19500637375 /* UIView+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Utility.h"; sourceTree = "<group>"; };
 		389ACDBC1A4DF19500637375 /* UIView+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utility.m"; sourceTree = "<group>"; };
+		389ACDBE1A4E274D00637375 /* backButtonSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backButtonSmall.png; sourceTree = "<group>"; };
 		38A7873F1A4CEDDF0004B2B4 /* UIButton+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Utility.h"; sourceTree = "<group>"; };
 		38A787401A4CEDDF0004B2B4 /* UIButton+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Utility.m"; sourceTree = "<group>"; };
 		38A787421A4CF07A0004B2B4 /* mine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mine.png; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			children = (
 				38A787421A4CF07A0004B2B4 /* mine.png */,
 				38A787431A4CF07A0004B2B4 /* normal.png */,
+				389ACDBE1A4E274D00637375 /* backButtonSmall.png */,
 				389ACDB91A4DF09C00637375 /* clearAll.png */,
 				389ACD931A4DDE0A00637375 /* setting.png */,
 				3836A11D1A4D14EF009E24B5 /* skull.png */,
@@ -428,6 +431,7 @@
 				389ACDBA1A4DF09C00637375 /* clearAll.png in Resources */,
 				3836A11E1A4D14EF009E24B5 /* skull.png in Resources */,
 				38A787461A4CF07A0004B2B4 /* normal.png in Resources */,
+				389ACDBF1A4E274D00637375 /* backButtonSmall.png in Resources */,
 				91AA412719D8CAD8009CB397 /* Main.storyboard in Resources */,
 				389ACDA91A4DE17100637375 /* JKMinesweeperScoresViewController.xib in Resources */,
 				389ACDAB1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib in Resources */,

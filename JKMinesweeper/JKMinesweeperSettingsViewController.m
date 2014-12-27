@@ -7,6 +7,9 @@
 //
 
 #import "JKMinesweeperSettingsViewController.h"
+#import "JKMineSweeperConstants.h"
+#import <BlocksKit/UIAlertView+BlocksKit.h>
+#import <ReactiveCocoa.h>
 
 @interface JKMinesweeperSettingsViewController ()
 @property (weak, nonatomic) IBOutlet UIStepper *tileWidthStepper;
@@ -29,19 +32,22 @@
     self.gutterSpaceLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"];
     self.tileWidthStepper.value = [self.tileWidthLabel.text integerValue];
     self.gutterSpacingStepper.value = [self.gutterSpaceLabel.text integerValue];
+    
+    [RACObserve(self, tileWidthStepper.value) subscribeNext:^(NSNumber* newTileWidth) {
+        NSString* currentStepperValue = [NSString stringWithFormat:@"%ld",(long)[newTileWidth integerValue]];
+        self.tileWidthLabel.text = currentStepperValue;
+        [[NSUserDefaults standardUserDefaults] setObject:self.tileWidthLabel.text forKey:@"tileWidth"];
+    }];
+    
+    [RACObserve(self, gutterSpacingStepper.value) subscribeNext:^(NSNumber *newGutterWidth) {
+        NSString* currentStepperValue = [NSString stringWithFormat:@"%ld",(long)[newGutterWidth integerValue]];
+        self.gutterSpaceLabel.text = currentStepperValue;
+        [[NSUserDefaults standardUserDefaults] setObject:self.gutterSpaceLabel.text forKey:@"gutterSpacing"];
+    }];
 }
 
-
-- (IBAction)stepperValueChanged:(UIStepper *)sender {
-    
-    NSString* currentStepperValue = [NSString stringWithFormat:@"%ld",(long)sender.value];
-    
-    if(sender == self.tileWidthStepper) {
-        self.tileWidthLabel.text = currentStepperValue;
-    }
-    else if(sender == self.gutterSpacingStepper) {
-        self.gutterSpaceLabel.text = currentStepperValue;
-    }
+- (IBAction)dismissCurrentViewPressed:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:HIDE_POPOVER_VIEW_NOTIFICATION object:nil];
 }
 
 - (IBAction)soundSwitchChanged:(UISwitch *)sender {
@@ -49,9 +55,11 @@
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
-    [[NSUserDefaults standardUserDefaults] setObject:self.tileWidthLabel.text forKey:@"tileWidth"];
-    [[NSUserDefaults standardUserDefaults] setObject:self.gutterSpaceLabel.text forKey:@"gutterSpacing"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    /*
+     [UIAlertView bk_showAlertViewWithTitle:@"Settings" message:@"Your settings are successfully stored. Please restart the game to reflect all changes" cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
+     */
 }
 
 
