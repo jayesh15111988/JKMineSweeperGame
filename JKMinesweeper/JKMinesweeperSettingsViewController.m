@@ -32,6 +32,8 @@
     [super viewWillAppear:animated];
     self.tileWidthLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"tileWidth"];
     self.gutterSpaceLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"];
+    self.soundEffectSwitch.on = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
+    
     self.tileWidthStepper.value = [self.tileWidthLabel.text integerValue];
     self.gutterSpacingStepper.value = [self.gutterSpaceLabel.text integerValue];
     
@@ -55,11 +57,13 @@
 - (IBAction)soundSwitchChanged:(UISwitch *)sender {
     if(sender == self.soundEffectSwitch) {
         [[NSUserDefaults standardUserDefaults] setObject:@(sender.isOn) forKey:@"sound"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SOUND_SETTINGS_CHANGED object:nil];
     }
     else {
         [[NSUserDefaults standardUserDefaults] setObject:@(sender.isOn) forKey:@"timer"];
         [[NSNotificationCenter defaultCenter] postNotificationName:TIMER_VALUE_CHANGED object:nil];
     }
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated {

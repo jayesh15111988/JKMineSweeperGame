@@ -11,7 +11,18 @@
 		3836A11C1A4D0B06009E24B5 /* exploding_bomb.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */; };
 		3836A11E1A4D14EF009E24B5 /* skull.png in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11D1A4D14EF009E24B5 /* skull.png */; };
 		388C744A1A4E6C620094BC96 /* JKTimerProviderUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */; };
-		388C744C1A4E7BEC0094BC96 /* afraid.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C744B1A4E7BEC0094BC96 /* afraid.wav */; };
+		388C74551A4F36650094BC96 /* background.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C744F1A4F36650094BC96 /* background.wav */; };
+		388C74571A4F36650094BC96 /* explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C74511A4F36650094BC96 /* explosion.wav */; };
+		388C74581A4F36650094BC96 /* nuclearexplosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C74521A4F36650094BC96 /* nuclearexplosion.wav */; };
+		388C74591A4F36650094BC96 /* start.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C74531A4F36650094BC96 /* start.wav */; };
+		388C745C1A4F37EC0094BC96 /* question.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C745A1A4F37EC0094BC96 /* question.wav */; };
+		388C745D1A4F37EC0094BC96 /* revealed.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C745B1A4F37EC0094BC96 /* revealed.wav */; };
+		388C74611A4F404F0094BC96 /* JKAudioOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 388C74601A4F404F0094BC96 /* JKAudioOperations.m */; };
+		388C74651A4F43390094BC96 /* tilereveal.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C74621A4F43390094BC96 /* tilereveal.wav */; };
+		388C74661A4F43390094BC96 /* openmenu.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C74631A4F43390094BC96 /* openmenu.wav */; };
+		388C74671A4F43390094BC96 /* gamewin.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C74641A4F43390094BC96 /* gamewin.wav */; };
+		388C746B1A4F47850094BC96 /* clocktick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C746A1A4F47850094BC96 /* clocktick.wav */; };
+		388C746D1A4F6B5E0094BC96 /* clockcirclecomplete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C746C1A4F6B5E0094BC96 /* clockcirclecomplete.wav */; };
 		389ACD921A4DDC0600637375 /* Score.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACD911A4DDC0600637375 /* Score.m */; };
 		389ACD941A4DDE0A00637375 /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 389ACD931A4DDE0A00637375 /* setting.png */; };
 		389ACD991A4DDEDD00637375 /* JKMinesweeperScoresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACD971A4DDEDD00637375 /* JKMinesweeperScoresViewController.m */; };
@@ -60,8 +71,20 @@
 		3836A11D1A4D14EF009E24B5 /* skull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skull.png; sourceTree = "<group>"; };
 		388C74481A4E6C620094BC96 /* JKTimerProviderUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKTimerProviderUtility.h; sourceTree = "<group>"; };
 		388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKTimerProviderUtility.m; sourceTree = "<group>"; };
-		388C744B1A4E7BEC0094BC96 /* afraid.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = afraid.wav; sourceTree = "<group>"; };
 		388C744D1A4F13EC0094BC96 /* JKMinesweeper-PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JKMinesweeper-PrefixHeader.pch"; sourceTree = "<group>"; };
+		388C744F1A4F36650094BC96 /* background.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = background.wav; sourceTree = "<group>"; };
+		388C74511A4F36650094BC96 /* explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explosion.wav; sourceTree = "<group>"; };
+		388C74521A4F36650094BC96 /* nuclearexplosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = nuclearexplosion.wav; sourceTree = "<group>"; };
+		388C74531A4F36650094BC96 /* start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = start.wav; sourceTree = "<group>"; };
+		388C745A1A4F37EC0094BC96 /* question.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = question.wav; sourceTree = "<group>"; };
+		388C745B1A4F37EC0094BC96 /* revealed.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = revealed.wav; sourceTree = "<group>"; };
+		388C745F1A4F404F0094BC96 /* JKAudioOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKAudioOperations.h; sourceTree = "<group>"; };
+		388C74601A4F404F0094BC96 /* JKAudioOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKAudioOperations.m; sourceTree = "<group>"; };
+		388C74621A4F43390094BC96 /* tilereveal.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tilereveal.wav; sourceTree = "<group>"; };
+		388C74631A4F43390094BC96 /* openmenu.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = openmenu.wav; sourceTree = "<group>"; };
+		388C74641A4F43390094BC96 /* gamewin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gamewin.wav; sourceTree = "<group>"; };
+		388C746A1A4F47850094BC96 /* clocktick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = clocktick.wav; sourceTree = "<group>"; };
+		388C746C1A4F6B5E0094BC96 /* clockcirclecomplete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = clockcirclecomplete.wav; sourceTree = "<group>"; };
 		389ACD901A4DDC0600637375 /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Score.h; sourceTree = "<group>"; };
 		389ACD911A4DDC0600637375 /* Score.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Score.m; sourceTree = "<group>"; };
 		389ACD931A4DDE0A00637375 /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
@@ -140,8 +163,29 @@
 		388C74471A4E65D00094BC96 /* Audio Files */ = {
 			isa = PBXGroup;
 			children = (
+				388C744F1A4F36650094BC96 /* background.wav */,
+				388C74621A4F43390094BC96 /* tilereveal.wav */,
+				388C74631A4F43390094BC96 /* openmenu.wav */,
+				388C74641A4F43390094BC96 /* gamewin.wav */,
+				388C745A1A4F37EC0094BC96 /* question.wav */,
+				388C746A1A4F47850094BC96 /* clocktick.wav */,
+				388C745B1A4F37EC0094BC96 /* revealed.wav */,
+				388C74511A4F36650094BC96 /* explosion.wav */,
+				388C746C1A4F6B5E0094BC96 /* clockcirclecomplete.wav */,
+				388C74521A4F36650094BC96 /* nuclearexplosion.wav */,
+				388C74531A4F36650094BC96 /* start.wav */,
 			);
 			name = "Audio Files";
+			sourceTree = "<group>";
+		};
+		388C745E1A4F40370094BC96 /* Audio Support */ = {
+			isa = PBXGroup;
+			children = (
+				388C74471A4E65D00094BC96 /* Audio Files */,
+				388C745F1A4F404F0094BC96 /* JKAudioOperations.h */,
+				388C74601A4F404F0094BC96 /* JKAudioOperations.m */,
+			);
+			name = "Audio Support";
 			sourceTree = "<group>";
 		};
 		389ACD951A4DDEA800637375 /* Popovers */ = {
@@ -268,8 +312,7 @@
 		91AA40FA19D8C956009CB397 /* JKMinesweeper */ = {
 			isa = PBXGroup;
 			children = (
-				388C744B1A4E7BEC0094BC96 /* afraid.wav */,
-				388C74471A4E65D00094BC96 /* Audio Files */,
+				388C745E1A4F40370094BC96 /* Audio Support */,
 				389ACDB01A4DEA3500637375 /* Custom Cells */,
 				389ACDAC1A4DE7D100637375 /* Model Operations */,
 				389ACDA11A4DE0F500637375 /* Custom Popup Library */,
@@ -451,20 +494,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				38A787451A4CF07A0004B2B4 /* mine.png in Resources */,
+				388C745C1A4F37EC0094BC96 /* question.wav in Resources */,
 				389ACDBA1A4DF09C00637375 /* clearAll.png in Resources */,
+				388C74551A4F36650094BC96 /* background.wav in Resources */,
 				3836A11E1A4D14EF009E24B5 /* skull.png in Resources */,
+				388C746B1A4F47850094BC96 /* clocktick.wav in Resources */,
+				388C74591A4F36650094BC96 /* start.wav in Resources */,
+				388C74661A4F43390094BC96 /* openmenu.wav in Resources */,
 				38A787461A4CF07A0004B2B4 /* normal.png in Resources */,
 				389ACDBF1A4E274D00637375 /* backButtonSmall.png in Resources */,
 				91AA412719D8CAD8009CB397 /* Main.storyboard in Resources */,
 				389ACDA91A4DE17100637375 /* JKMinesweeperScoresViewController.xib in Resources */,
 				389ACDAB1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib in Resources */,
+				388C74571A4F36650094BC96 /* explosion.wav in Resources */,
+				388C746D1A4F6B5E0094BC96 /* clockcirclecomplete.wav in Resources */,
 				38A787471A4CF07A0004B2B4 /* smiley.gif in Resources */,
 				38E778BD1A4CF4BB009E127A /* changeColor.png in Resources */,
+				388C74671A4F43390094BC96 /* gamewin.wav in Resources */,
 				389ACDB51A4DEC1600637375 /* JKScoresCustomTableViewCell.xib in Resources */,
+				388C74651A4F43390094BC96 /* tilereveal.wav in Resources */,
 				91AA410C19D8C956009CB397 /* LaunchScreen.xib in Resources */,
+				388C74581A4F36650094BC96 /* nuclearexplosion.wav in Resources */,
 				91AA410919D8C956009CB397 /* Images.xcassets in Resources */,
-				388C744C1A4E7BEC0094BC96 /* afraid.wav in Resources */,
 				389ACD941A4DDE0A00637375 /* setting.png in Resources */,
+				388C745D1A4F37EC0094BC96 /* revealed.wav in Resources */,
 				3836A11C1A4D0B06009E24B5 /* exploding_bomb.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -517,6 +570,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				389ACDA71A4DE0FB00637375 /* UIViewController+MJPopupViewController.m in Sources */,
+				388C74611A4F404F0094BC96 /* JKAudioOperations.m in Sources */,
 				389ACDBD1A4DF19500637375 /* UIView+Utility.m in Sources */,
 				91AA412F19D8CC94009CB397 /* JKCustomButton.m in Sources */,
 				389ACDB41A4DEC1600637375 /* JKScoresCustomTableViewCell.m in Sources */,

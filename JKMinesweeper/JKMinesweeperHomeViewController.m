@@ -9,10 +9,9 @@
 #import <HRColorPickerView.h>
 #import <FLAnimatedImage.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import <AudioToolbox/AudioToolbox.h>
-#import <AVFoundation/AVFoundation.h>
 #import "UIViewController+MJPopupViewController.h"
 
+#import "JKAudioOperations.h"
 #import "JKMinesweeperHomeViewController.h"
 #import "JKNeighbouringTilesProvider.h"
 #import "JKMineSweeperConstants.h"
@@ -32,8 +31,16 @@ enum {
     OverAndWin,
     OverAndLoss
 };
-typedef NSInteger CurrentGameState;
 
+
+enum {
+    Foreground,
+    Background,
+    Timer
+};
+
+typedef NSInteger CurrentGameState;
+typedef NSInteger SoundCategory;
 
 @interface JKMinesweeperHomeViewController () <UIAlertViewDelegate,
                                                UIActionSheetDelegate>
@@ -48,6 +55,7 @@ typedef NSInteger CurrentGameState;
 
 @property (strong, nonatomic) HRColorPickerView* colorPickerView;
 @property (assign, nonatomic) CurrentGameState gameState;
+@property (assign, nonatomic) SoundCategory soundCategory;
 @property (strong, nonatomic) UIView* bottomViewForColorPicker;
 @property (strong, nonatomic) UIButton* changeGridBakcgroundColorButton;
 
@@ -55,7 +63,6 @@ typedef NSInteger CurrentGameState;
 @property(strong, nonatomic) NSMutableArray *regularButtonsHolder;
 
 @property(assign, nonatomic) NSInteger totalNumberOfRequiredTiles;
-@property (strong, nonatomic) AVAudioPlayer *player;
 @property(strong, nonatomic)
     NSMutableDictionary *numberOfSurroundingMinesHolder;
 - (IBAction)resetButtonPressed:(id)sender;
@@ -81,6 +88,7 @@ typedef NSInteger CurrentGameState;
 
 @property (strong, nonatomic) JKMinesweeperScoresViewController* pastScoresViewController;
 @property (strong, nonatomic) JKMinesweeperSettingsViewController* settingsViewController;
+@property (strong, nonatomic) JKAudioOperations* audioOperationsManager;
 
 @property (weak, nonatomic) IBOutlet UIButton *saveButton;
 @property (weak, nonatomic) IBOutlet UIButton *loadButton;
@@ -94,6 +102,7 @@ typedef NSInteger CurrentGameState;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.audioOperationsManager = [[JKAudioOperations alloc] init];
     [self setupUIFromUserDefaultParameters];
     self.currentScoreValue = 0;
     self.gridHolderView = [[UIView alloc] init];
@@ -116,18 +125,7 @@ typedef NSInteger CurrentGameState;
                      forControlEvents:UIControlEventTouchUpInside];
     [self setupRACSignalsAndNotifications];
     
-    
-    NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:@"afraid"
-                                                              ofType:@"wav"];
-    
-    NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
-    
-    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL
-                                                                   error:nil];
-    
-    self.player.numberOfLoops = 0;
-    
-    [self.player play];
+    [self playGameStartSound];
 }
 
 -(void)setupRACSignalsAndNotifications {
@@ -135,6 +133,8 @@ typedef NSInteger CurrentGameState;
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissPresentedViewController) name:HIDE_POPOVER_VIEW_NOTIFICATION object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNewTimeValue) name:TIMER_VALUE_CHANGED object:nil];
+    
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSounds) name:SOUND_SETTINGS_CHANGED object:nil];
     
     [RACObserve(self, levelNumberSelected) subscribeNext:^(NSNumber *newLevelnumber) {
         [[NSUserDefaults standardUserDefaults] setObject:newLevelnumber forKey:@"currentLevel"];
@@ -174,6 +174,7 @@ typedef NSInteger CurrentGameState;
         DLog(@"Timer Button Pressed");
         
         if(self.timerProviderUtility.currentTimerState == TimerIsPlaying) {
+            [self.audioOperationsManager stopBackgroundMusic];
             [self.timerProviderUtility pauseTimer];
         }
         else {
@@ -183,8 +184,19 @@ typedef NSInteger CurrentGameState;
     }];
 }
 
+-(void)updateSounds {
+    BOOL isSoundEnabled = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
+    
+    if(isSoundEnabled) {
+        [self playBackgroundSound];
+    }
+    else {
+        [self.audioOperationsManager stopBackgroundMusic];
+    }
+}
 
 -(void)dismissPresentedViewController {
+    [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
     [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideRightRight];
 }
 
@@ -239,12 +251,14 @@ typedef NSInteger CurrentGameState;
         self.totalNumberOfRequiredTiles * self.levelNumberSelected;
 
     [self createNewGridOnScreen];
+    [self playBackgroundSound];
 }
 
 -(void)resetRevealMenuButton {
     self.revealMenuButton.tag = MINES_NOT_REVEALED_STATE;
     [self.revealMenuButton setTitle:@"Reveal" forState:UIControlStateNormal];
     [self.timerIndicatorButton setTitle:@"00 : 00" forState:UIControlStateNormal];
+    [self.audioOperationsManager stopBackgroundMusic];
 }
 
 - (IBAction)verifyLossWinButtonPressed:(UIButton *)sender {
@@ -257,6 +271,8 @@ typedef NSInteger CurrentGameState;
     
     if(self.gameState != NotStarted) {
         if (didUserWinCurrentGame) {
+            [self.audioOperationsManager playForegroundSoundFXnamed:@"gamewin.wav" loop:NO];
+            [self.audioOperationsManager stopBackgroundMusic];
             self.gameState = OverAndWin;
             currentGameStatusMessage = @"You won this game. Click the button "
             @"below to start a new game";
@@ -345,6 +361,9 @@ typedef NSInteger CurrentGameState;
                 strongSelf.gameState = OverAndLoss;
                 [strongSelf showAlertViewWithMessage:@"You clicked on mine and "
                             @"game is now over"];
+                
+                [strongSelf playGameOverSound];
+                
             };
 
             newRevealMineButton.randomTileSelectedInstant =
@@ -400,6 +419,28 @@ typedef NSInteger CurrentGameState;
                                   self.gridHolderView.frame.size.height + 40)];
 }
 
+-(void)playGameOverSound {
+    [self.audioOperationsManager stopBackgroundMusic];
+    [self.audioOperationsManager playForegroundSoundFXnamed:@"explosion.wav"  loop:NO];
+    
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.audioOperationsManager playForegroundSoundFXnamed:@"nuclearexplosion.wav" loop:NO];
+    });
+}
+
+-(void)playBackgroundSound {
+        [self.audioOperationsManager playBackgroundSoundFXnamed:@"background.wav" loop:YES];
+}
+
+-(void)playGameStartSound {
+    [self.audioOperationsManager playBackgroundSoundFXnamed:@"start.wav" loop:NO];
+}
+
+-(void)playQuestionMarkSound {
+    [self.audioOperationsManager playForegroundSoundFXnamed:@"question.wav" loop:NO];
+}
+
 - (void)longPress:(UILongPressGestureRecognizer*)gesture {
     if ( gesture.state == UIGestureRecognizerStateEnded ) {
         
@@ -425,6 +466,7 @@ typedef NSInteger CurrentGameState;
             [longPressedButton setTitle:@"" forState:UIControlStateNormal];
             [longPressedButton setBackgroundColor:[UIColor orangeColor]];
         }
+        [self playQuestionMarkSound];
     }
 }
 
@@ -453,6 +495,8 @@ typedef NSInteger CurrentGameState;
 - (void)highlightNeighbouringButtonsForButtonSequence:
             (NSInteger)buttonSequence {
 
+    [self.audioOperationsManager playForegroundSoundFXnamed:@"tilereveal.wav" loop:NO];
+    
     JKCustomButton *buttonWithCurrentIdentifier =
         [self getButtonWithSequence:buttonSequence];
 
@@ -634,8 +678,9 @@ typedef NSInteger CurrentGameState;
 }
 
 - (IBAction)revealMinesButtonPressed:(UIButton *)sender {
-
+    
     if(self.minesButtonsHolder.count > 0) {
+        [self.audioOperationsManager playForegroundSoundFXnamed:@"revealed.wav" loop:NO];
         if (sender.tag == MINES_NOT_REVEALED_STATE) {
             sender.tag = MINES_REVEALED_STATE;
             [self.revealMenuButton setTitle:@"Hide" forState:UIControlStateNormal];
@@ -715,7 +760,7 @@ typedef NSInteger CurrentGameState;
 }
 
 - (IBAction)levelNumberButtonPressed:(id)sender {
-    
+    [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
         //older than iOS 8 code here
         UIActionSheet *popup = [[UIActionSheet alloc]
@@ -739,6 +784,7 @@ typedef NSInteger CurrentGameState;
 }
 
 -(void)setViewForSelectedLevelWithNumber:(NSInteger)levelNumber {
+    [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
     self.levelNumberSelected = levelNumber;
 }
 
@@ -846,6 +892,7 @@ typedef NSInteger CurrentGameState;
 }
 
 - (IBAction)showPastScores:(UIButton *)sender {
+    [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
     if(!self.pastScoresViewController) {
         self.pastScoresViewController = [[JKMinesweeperScoresViewController alloc] initWithNibName:@"JKMinesweeperScoresViewController" bundle:nil];
     }
@@ -853,6 +900,7 @@ typedef NSInteger CurrentGameState;
 }
 
 - (IBAction)goToSettingsButtonPressed:(UIButton*)sender {
+    [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
     if(!self.settingsViewController) {
         self.settingsViewController = [[JKMinesweeperSettingsViewController alloc] initWithNibName:@"JKMinesweeperSettingsViewController" bundle:nil];
     }

@@ -7,6 +7,7 @@
 //
 
 #import "JKTimerProviderUtility.h"
+#import "JKAudioOperations.h"
 
 @interface JKTimerProviderUtility ()
 @property (assign, nonatomic) NSInteger currentNumberOfSeconds;
@@ -15,6 +16,8 @@
 //Parameters to keep track of timer time when it is paused for a while
 @property (strong, nonatomic) NSDate* pauseStart;
 @property (strong, nonatomic) NSDate* previousFireDate;
+@property (assign, nonatomic) BOOL isSoundEffectOn;
+@property (strong, nonatomic) JKAudioOperations* audioOperationManager;
 @end
 
 @implementation JKTimerProviderUtility
@@ -23,6 +26,7 @@
     if (self = [super init]) {
         self.currentNumberOfSeconds = 0;
         self.currentTimerState = TimerNotStarted;
+        self.audioOperationManager = [[JKAudioOperations alloc] init];
         return self;
     }
     return nil;
@@ -36,6 +40,14 @@
 }
 
 -(NSString*)getMinutesAndSecondsStringFromSeconds {
+    
+    if(self.isSoundEffectOn) {
+        //Play this cukoo alarm once every minute to give sense of current time
+        if(self.currentNumberOfSeconds % 60 == 0) {
+            [self.audioOperationManager playForegroundSoundFXnamed:@"clockcirclecomplete.wav" loop:NO];
+        }
+    }
+    
     NSInteger minutes = self.currentNumberOfSeconds / 60;
     NSInteger seconds = self.currentNumberOfSeconds % 60;
     return [NSString stringWithFormat:@"%02d : %02d",minutes, seconds];
@@ -44,6 +56,7 @@
 
 -(void)startTimer {
     if(self.currentTimerState == TimerNotStarted) {
+        self.isSoundEffectOn = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(increaseTimerCount) userInfo:nil repeats:YES];
         [self.timer fire];
         self.currentTimerState = TimerIsPlaying;
