@@ -11,6 +11,7 @@
                 <outlet property="soundEffectSwitch" destination="JdD-av-6NX" id="ibf-be-9d1"/>
                 <outlet property="tileWidthLabel" destination="IAl-lx-qyn" id="RPW-mk-zY1"/>
                 <outlet property="tileWidthStepper" destination="9lg-7G-WF6" id="ILb-zn-KBd"/>
+                <outlet property="timerSwitch" destination="fCm-Vx-7vd" id="M9h-MW-Jbg"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Cyn-yK-qfc"/>
             </connections>
         </placeholder>
@@ -81,6 +82,24 @@
                                 </switch>
                             </subviews>
                             <color key="backgroundColor" red="0.84430793150000005" green="1" blue="0.9261234974" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WoV-n8-UDG">
+                            <rect key="frame" x="0.0" y="154" width="540" height="44"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Timer?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5hm-mX-oFk">
+                                    <rect key="frame" x="10" y="7" width="250" height="30"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fCm-Vx-7vd">
+                                    <rect key="frame" x="422" y="8" width="51" height="31"/>
+                                    <connections>
+                                        <action selector="soundSwitchChanged:" destination="-1" eventType="valueChanged" id="Yvu-I4-Fjs"/>
+                                    </connections>
+                                </switch>
+                            </subviews>
+                            <color key="backgroundColor" red="1" green="0.93710191730000003" blue="0.82475943519999995" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.69992987409999996" green="0.91616981909999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>

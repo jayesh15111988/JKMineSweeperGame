@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-//#define DEFAULT_TILE_WIDTH 50
-//#define DEFAULT_GUTTER_WIDTH 5
 #define MINES_NOT_REVEALED_STATE 14
 #define MINES_REVEALED_STATE 15
 #define SELECT_LEVEL_TITLE @"Select Target Level"
@@ -17,7 +15,7 @@
 #define MULTIPLE_ANIMATION_DURATION 0.04
 #define GIF_IMAGE_ANIMATION_DURATION 2.5
 #define HIDE_POPOVER_VIEW_NOTIFICATION @"dismissCurrentViewController"
-
+#define TIMER_VALUE_CHANGED @"timer_changed"
 // Logging macros
 #ifdef DEBUG
 #define DLog(xx, ...) NSLog (@"%s(%d): " xx, ((strrchr (__FILE__, '/') ?: __FILE__ - 1) + 1), __LINE__, ##__VA_ARGS__)

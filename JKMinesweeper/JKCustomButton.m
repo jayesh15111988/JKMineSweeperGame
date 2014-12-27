@@ -26,8 +26,7 @@
         self.buttonSequenceNumber = buttonSequenceNumber;
         self.buttonStateModel.currentTileState = TileIsNotSelected;
         self.buttonStateModel.isThisButtonMine = isMine;
-        self.buttonStateModel.numberOfNeighboringMines =
-            numberOfSurroundingMines;
+        self.buttonStateModel.numberOfNeighboringMines = numberOfSurroundingMines;
         self.isInLongPressedMode = NO;
         self.alpha = 0.0;
         // 0 55 110 165 220 275
@@ -48,7 +47,7 @@
         }
         // Any Value >3
         else {
-            titleColor = [UIColor orangeColor];
+            titleColor = [UIColor yellowColor];
         }
 
         self.backgroundColor = [UIColor orangeColor];

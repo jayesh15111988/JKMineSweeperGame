@@ -20,6 +20,7 @@
 #import "ScoreSaver.h"
 #import "JKMinesweeperScoresViewController.h"
 #import "JKMinesweeperSettingsViewController.h"
+#import "JKTimerProviderUtility.h"
 
 typedef void (^resetTilesFinishedBlock)();
 
@@ -80,7 +81,9 @@ typedef NSInteger CurrentGameState;
 
 @property (weak, nonatomic) IBOutlet UIButton *saveButton;
 @property (weak, nonatomic) IBOutlet UIButton *loadButton;
+@property (weak, nonatomic) IBOutlet UIButton *timerIndicatorButton;
 
+@property (strong, nonatomic) JKTimerProviderUtility* timerProviderUtility;
 
 @end
 
@@ -115,6 +118,8 @@ typedef NSInteger CurrentGameState;
     
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissPresentedViewController) name:HIDE_POPOVER_VIEW_NOTIFICATION object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNewTimeValue) name:TIMER_VALUE_CHANGED object:nil];
+    
     [RACObserve(self, levelNumberSelected) subscribeNext:^(NSNumber *newLevelnumber) {
         [[NSUserDefaults standardUserDefaults] setObject:newLevelnumber forKey:@"currentLevel"];
         [self.levelNumberButton
@@ -134,6 +139,7 @@ typedef NSInteger CurrentGameState;
     [RACObserve(self, gameState) subscribeNext:^(NSNumber *currentGameState) {
         DLog(@"%d current value of game state is ", [currentGameState integerValue]);
         self.saveButton.hidden = (self.gameState != InProgress);
+        [self updateUIWithNewTimeValue];
     }];
     
     
@@ -147,6 +153,18 @@ typedef NSInteger CurrentGameState;
         DLog(@"Load Button was pressed!");
         return [RACSignal empty];
     }];
+    
+    self.timerIndicatorButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
+        DLog(@"Timer Button Pressed");
+        
+        if(self.timerProviderUtility.currentTimerState == TimerIsPlaying) {
+            [self.timerProviderUtility pauseTimer];
+        }
+        else {
+            [self.timerProviderUtility startTimer];
+        }
+        return [RACSignal empty];
+    }];
 }
 
 
@@ -154,11 +172,38 @@ typedef NSInteger CurrentGameState;
     [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideRightRight];
 }
 
+-(void)updateUIWithNewTimeValue {
+    self.timerIndicatorButton.hidden = ![[[NSUserDefaults standardUserDefaults] objectForKey:@"timer"] boolValue];
+    if(!self.timerIndicatorButton.hidden) {
+        if(self.gameState == InProgress) {
+            if(self.timerProviderUtility.currentTimerState != TimerIsPaused) {
+                if(!self.timerProviderUtility) {
+                    self.timerProviderUtility = [[JKTimerProviderUtility alloc] init];
+                    __weak typeof(self) weakSelf = self;
+                    self.timerProviderUtility.UpdateTimerLabelBlock = ^(NSString* updatedTimerLabelValue) {
+                    __strong typeof(self) strongSelf = weakSelf;
+                    [strongSelf.timerIndicatorButton setTitle:updatedTimerLabelValue forState:UIControlStateNormal];
+                    };
+                }
+                [self.timerProviderUtility startTimer];
+            }
+        }
+        else {
+            [self.timerProviderUtility resetTimer];
+        }
+    }
+}
+
+-(BOOL)isGameOver {
+    return (self.gameState == OverAndWin || self.gameState == OverAndLoss);
+}
+
 -(void)setupUIFromUserDefaultParameters {
     self.levelNumberSelected = [[[NSUserDefaults standardUserDefaults] objectForKey:@"currentLevel"] integerValue];
     self.tileWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"tileWidth"] integerValue];
     self.gutterSpacing = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"] integerValue];
     self.toPlaySound = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
+    [self updateUIWithNewTimeValue];
 }
 
 - (IBAction)createGridButtonPressed:(UIButton *)sender {
@@ -183,6 +228,7 @@ typedef NSInteger CurrentGameState;
 -(void)resetRevealMenuButton {
     self.revealMenuButton.tag = MINES_NOT_REVEALED_STATE;
     [self.revealMenuButton setTitle:@"Reveal" forState:UIControlStateNormal];
+    [self.timerIndicatorButton setTitle:@"00 : 00" forState:UIControlStateNormal];
 }
 
 - (IBAction)verifyLossWinButtonPressed:(UIButton *)sender {
@@ -248,14 +294,12 @@ typedef NSInteger CurrentGameState;
     dispatch_time_t time = DISPATCH_TIME_NOW;
     NSInteger successiveTilesDistanceIncrement = self.tileWidth + self.gutterSpacing;
     
-    for (NSInteger heightParamters = 0; heightParamters < gridHeightAndWidth;
-         heightParamters += successiveTilesDistanceIncrement) {
-        for (NSInteger widthParameter = 0; widthParameter < gridHeightAndWidth;
-             widthParameter += successiveTilesDistanceIncrement) {
+    for (NSInteger yPosition = 0; yPosition < gridHeightAndWidth; yPosition += successiveTilesDistanceIncrement) {
+        for (NSInteger xPosition = 0; xPosition < gridHeightAndWidth; xPosition += successiveTilesDistanceIncrement) {
 
             buttonSequenceNumber =
-                ((widthParameter / successiveTilesDistanceIncrement) +
-                 (heightParamters / successiveTilesDistanceIncrement) * self.totalNumberOfRequiredTiles);
+                ((xPosition / successiveTilesDistanceIncrement) +
+                 (yPosition / successiveTilesDistanceIncrement) * self.totalNumberOfRequiredTiles);
 
             doesMineExistForTile =
                 self.minesLocationHolder[@(buttonSequenceNumber)] ? YES : NO;
@@ -265,9 +309,8 @@ typedef NSInteger CurrentGameState;
                     @(buttonSequenceNumber)] integerValue];
 
             JKCustomButton *newRevealMineButton = [[JKCustomButton alloc]
-                           initWithPosition:CGPointMake(widthParameter,
-                                                        heightParamters)
-                           andWidth:self.tileWidth
+                           initWithPosition:CGPointMake(xPosition, yPosition)
+                                   andWidth:self.tileWidth
                                   andIsMine:doesMineExistForTile
                     andButtonSequenceNumber:buttonSequenceNumber
                 andNumberOfSurroundingMines:
@@ -275,10 +318,8 @@ typedef NSInteger CurrentGameState;
 
             newRevealMineButton.buttonStateModel.sequenceOfNeighbouringTiles =
                 [JKNeighbouringTilesProvider
-                    getNeighbouringTilesForGivenTileWithSequence:
-                        buttonSequenceNumber
-                                       andTotalTilesInSingleLine:
-                                           self.totalNumberOfRequiredTiles];
+                    getNeighbouringTilesForGivenTileWithSequence: buttonSequenceNumber
+                                       andTotalTilesInSingleLine: self.totalNumberOfRequiredTiles];
 
             __weak typeof(self) weakSelf = self;
 
@@ -292,11 +333,11 @@ typedef NSInteger CurrentGameState;
 
             newRevealMineButton.randomTileSelectedInstant =
                 ^(NSInteger buttonSequenceNumber) {
-
-                __strong __typeof(weakSelf) strongSelf = weakSelf;
-
-                [strongSelf highlightNeighbouringButtonsForButtonSequence:
-                                buttonSequenceNumber];
+                   
+                    if(![self isGameOver]) {
+                        __strong __typeof(weakSelf) strongSelf = weakSelf;
+                        [strongSelf highlightNeighbouringButtonsForButtonSequence: buttonSequenceNumber];
+                    }
             };
 
 
@@ -469,7 +510,7 @@ typedef NSInteger CurrentGameState;
         
         if (buttonIndex == 0) {
             [self resetGridWithNewTilesAndCompletionBlock:^{
-                [self createNewGridOnScreen];
+                [self createGridButtonPressed:nil];
             }];
         }
     }

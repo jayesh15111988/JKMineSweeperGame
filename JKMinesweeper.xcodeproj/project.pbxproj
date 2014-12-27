@@ -10,6 +10,7 @@
 		14A28F902523ABDF7257EFE6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0355D560EDE95CEAB1CA87 /* libPods.a */; };
 		3836A11C1A4D0B06009E24B5 /* exploding_bomb.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */; };
 		3836A11E1A4D14EF009E24B5 /* skull.png in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11D1A4D14EF009E24B5 /* skull.png */; };
+		388C744A1A4E6C620094BC96 /* JKTimerProviderUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */; };
 		389ACD921A4DDC0600637375 /* Score.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACD911A4DDC0600637375 /* Score.m */; };
 		389ACD941A4DDE0A00637375 /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 389ACD931A4DDE0A00637375 /* setting.png */; };
 		389ACD991A4DDEDD00637375 /* JKMinesweeperScoresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACD971A4DDEDD00637375 /* JKMinesweeperScoresViewController.m */; };
@@ -56,6 +57,8 @@
 /* Begin PBXFileReference section */
 		3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = exploding_bomb.gif; sourceTree = "<group>"; };
 		3836A11D1A4D14EF009E24B5 /* skull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skull.png; sourceTree = "<group>"; };
+		388C74481A4E6C620094BC96 /* JKTimerProviderUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKTimerProviderUtility.h; sourceTree = "<group>"; };
+		388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKTimerProviderUtility.m; sourceTree = "<group>"; };
 		389ACD901A4DDC0600637375 /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Score.h; sourceTree = "<group>"; };
 		389ACD911A4DDC0600637375 /* Score.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Score.m; sourceTree = "<group>"; };
 		389ACD931A4DDE0A00637375 /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
@@ -131,6 +134,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		388C74471A4E65D00094BC96 /* Audio Files */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Audio Files";
+			sourceTree = "<group>";
+		};
 		389ACD951A4DDEA800637375 /* Popovers */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +235,8 @@
 			children = (
 				911DB8E719DBA10E00D16B6F /* JKNeighbouringTilesProvider.h */,
 				911DB8E819DBA10E00D16B6F /* JKNeighbouringTilesProvider.m */,
+				388C74481A4E6C620094BC96 /* JKTimerProviderUtility.h */,
+				388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -252,6 +264,7 @@
 		91AA40FA19D8C956009CB397 /* JKMinesweeper */ = {
 			isa = PBXGroup;
 			children = (
+				388C74471A4E65D00094BC96 /* Audio Files */,
 				389ACDB01A4DEA3500637375 /* Custom Cells */,
 				389ACDAC1A4DE7D100637375 /* Model Operations */,
 				389ACDA11A4DE0F500637375 /* Custom Popup Library */,
@@ -498,6 +511,7 @@
 				389ACDB41A4DEC1600637375 /* JKScoresCustomTableViewCell.m in Sources */,
 				91AA412419D8CA77009CB397 /* JKMinesweeperHomeViewController.m in Sources */,
 				911DB8E919DBA10E00D16B6F /* JKNeighbouringTilesProvider.m in Sources */,
+				388C744A1A4E6C620094BC96 /* JKTimerProviderUtility.m in Sources */,
 				389ACDAF1A4DE7E800637375 /* ScoreSaver.m in Sources */,
 				389ACD991A4DDEDD00637375 /* JKMinesweeperScoresViewController.m in Sources */,
 				389ACD921A4DDC0600637375 /* Score.m in Sources */,

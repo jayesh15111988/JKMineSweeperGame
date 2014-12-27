@@ -12,8 +12,10 @@
 #import <ReactiveCocoa.h>
 
 @interface JKMinesweeperSettingsViewController ()
+
 @property (weak, nonatomic) IBOutlet UIStepper *tileWidthStepper;
 @property (weak, nonatomic) IBOutlet UISwitch *soundEffectSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *timerSwitch;
 @property (weak, nonatomic) IBOutlet UIStepper *gutterSpacingStepper;
 @property (weak, nonatomic) IBOutlet UILabel *tileWidthLabel;
 @property (weak, nonatomic) IBOutlet UILabel *gutterSpaceLabel;
@@ -51,15 +53,17 @@
 }
 
 - (IBAction)soundSwitchChanged:(UISwitch *)sender {
-    [[NSUserDefaults standardUserDefaults] setObject:@(sender.isOn) forKey:@"sound"];
+    if(sender == self.soundEffectSwitch) {
+        [[NSUserDefaults standardUserDefaults] setObject:@(sender.isOn) forKey:@"sound"];
+    }
+    else {
+        [[NSUserDefaults standardUserDefaults] setObject:@(sender.isOn) forKey:@"timer"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:TIMER_VALUE_CHANGED object:nil];
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    /*
-     [UIAlertView bk_showAlertViewWithTitle:@"Settings" message:@"Your settings are successfully stored. Please restart the game to reflect all changes" cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
-     */
 }
 
 

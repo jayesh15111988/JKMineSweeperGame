@@ -34,6 +34,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:@"50" forKey:@"tileWidth"];
     [[NSUserDefaults standardUserDefaults] setObject:@"5" forKey:@"gutterSpacing"];
     [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:@"sound"];
+    [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:@"timer"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
