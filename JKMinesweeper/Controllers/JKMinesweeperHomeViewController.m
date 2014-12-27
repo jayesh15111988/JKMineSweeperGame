@@ -46,7 +46,6 @@ typedef NSInteger SoundCategory;
                                                UIActionSheetDelegate>
 
 @property(weak, nonatomic) IBOutlet UITextField *gridSizeInputText;
-@property(weak, nonatomic) IBOutlet UIButton *createGridButton;
 @property(strong, nonatomic) UIView *gridHolderView;
 @property(strong, nonatomic) NSMutableDictionary *minesLocationHolder;
 @property(assign, nonatomic) NSInteger totalNumberOfMinesOnGrid;
@@ -112,9 +111,6 @@ typedef NSInteger SoundCategory;
     self.numberOfSurroundingMinesHolder = [NSMutableDictionary new];
     self.totalNumberOfTilesRevealed = 0;
     [self.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld", (long)self.levelNumberSelected] forState:UIControlStateNormal];
-    [self.createGridButton addTarget:self
-                              action:@selector(createGridButtonPressed:)
-                    forControlEvents:UIControlEventTouchUpInside];
 
     [self.verifyLossWinButton addTarget:self
                                  action:@selector(verifyLossWinButtonPressed:)
@@ -126,6 +122,7 @@ typedef NSInteger SoundCategory;
     [self setupRACSignalsAndNotifications];
     
     [self playGameStartSound];
+    [self createNewGridWithParameters];
 }
 
 -(void)setupRACSignalsAndNotifications {
@@ -234,7 +231,7 @@ typedef NSInteger SoundCategory;
     [self updateUIWithNewTimeValue];
 }
 
-- (IBAction)createGridButtonPressed:(UIButton *)sender {
+- (void)createNewGridWithParameters {
     
     self.gameState = NotStarted;
     [self setupUIFromUserDefaultParameters];
@@ -297,7 +294,6 @@ typedef NSInteger SoundCategory;
     [self resetRevealMenuButton];
     [self resetGridWithNewTilesAndCompletionBlock:nil];
 
-    self.createGridButton.enabled = NO;
     self.resetButton.enabled = YES;
     self.revealMenuButton.enabled = YES;
 
@@ -570,7 +566,7 @@ typedef NSInteger SoundCategory;
         
         if (buttonIndex == 0) {
             [self resetGridWithNewTilesAndCompletionBlock:^{
-                [self createGridButtonPressed:nil];
+                [self createNewGridWithParameters];
             }];
         }
     }
@@ -638,14 +634,13 @@ typedef NSInteger SoundCategory;
 
 - (IBAction)resetButtonPressed:(UIButton *)sender {
     [self resetGridWithNewTilesAndCompletionBlock:^{
-        [self createGridButtonPressed:nil];
+        [self createNewGridWithParameters];
     }];
 }
 
 - (void)resetGridWithNewTilesAndCompletionBlock:
             (void (^)())resetTilesFinishedBlock {
 
-    self.createGridButton.enabled = YES;
     self.resetButton.enabled = NO;
     self.revealMenuButton.enabled = NO;
 

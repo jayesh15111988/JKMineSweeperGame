@@ -33,6 +33,7 @@
     self.tileWidthLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"tileWidth"];
     self.gutterSpaceLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"];
     self.soundEffectSwitch.on = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
+    self.timerSwitch.on = [[[NSUserDefaults standardUserDefaults] objectForKey:@"timer"] boolValue];
     
     self.tileWidthStepper.value = [self.tileWidthLabel.text integerValue];
     self.gutterSpacingStepper.value = [self.gutterSpaceLabel.text integerValue];
