@@ -93,6 +93,22 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="PgT-vY-oPe">
+                                        <rect key="frame" x="240" y="8" width="50" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                                        <state key="normal" title="Load">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="a6U-v5-Hrx">
+                                        <rect key="frame" x="181" y="8" width="50" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                                        <state key="normal" title="Save">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" id="9wb-yx-klb">
                                         <rect key="frame" x="728" y="8" width="45" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -152,8 +168,10 @@
                         <outlet property="currentScore" destination="9wb-yx-klb" id="mu9-nc-A9h"/>
                         <outlet property="gridSizeInputText" destination="Y7E-V4-PaI" id="ITp-B1-RBq"/>
                         <outlet property="levelNumberButton" destination="Jcs-qU-sB8" id="DPr-UK-y2c"/>
+                        <outlet property="loadButton" destination="PgT-vY-oPe" id="uUW-SR-ZoA"/>
                         <outlet property="resetButton" destination="miQ-MB-SWc" id="qQA-wi-Hph"/>
                         <outlet property="revealMenuButton" destination="Pvu-Ac-RuH" id="1kN-zU-gdD"/>
+                        <outlet property="saveButton" destination="a6U-v5-Hrx" id="7bj-hn-eCv"/>
                         <outlet property="superParentScrollView" destination="hvd-gc-g5P" id="4tF-0E-Y9k"/>
                         <outlet property="verifyLossWinButton" destination="C0L-YA-Nfa" id="CNE-Ek-yMG"/>
                     </connections>

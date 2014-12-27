@@ -24,7 +24,7 @@
         self.positionOnScreen = buttonPositionOnScreen;
         self.buttonStateModel = [JKButtonStateModel new];
         self.buttonSequenceNumber = buttonSequenceNumber;
-        self.buttonStateModel.tileSelectedIndicator = NO;
+        self.buttonStateModel.currentTileState = TileIsNotSelected;
         self.buttonStateModel.isThisButtonMine = isMine;
         self.buttonStateModel.numberOfNeighboringMines =
             numberOfSurroundingMines;
@@ -48,7 +48,7 @@
         }
         // Any Value >3
         else {
-            titleColor = [UIColor redColor];
+            titleColor = [UIColor orangeColor];
         }
 
         self.backgroundColor = [UIColor orangeColor];
@@ -65,9 +65,8 @@
 - (IBAction)tileButtonSelected:(JKCustomButton *)sender {
 
     // Go in the block only if tile is not previously selected by the user
-    if (!self.buttonStateModel.tileSelectedIndicator) {
-        self.buttonStateModel.tileSelectedIndicator =
-            !self.buttonStateModel.tileSelectedIndicator;
+    if (self.buttonStateModel.currentTileState == TileIsNotSelected) {
+        self.buttonStateModel.currentTileState = TileIsSelected;
 
         if (self.buttonStateModel.isThisButtonMine) {
             // Game Over for player
@@ -81,7 +80,7 @@
             }
         }
     } else {
-        NSLog(@"Tile was already selected");
+        DLog(@"Tile was already selected");
     }
 }
 

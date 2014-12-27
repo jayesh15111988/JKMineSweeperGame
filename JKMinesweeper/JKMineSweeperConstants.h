@@ -17,5 +17,13 @@
 #define MULTIPLE_ANIMATION_DURATION 0.04
 #define GIF_IMAGE_ANIMATION_DURATION 2.5
 #define HIDE_POPOVER_VIEW_NOTIFICATION @"dismissCurrentViewController"
+
+// Logging macros
+#ifdef DEBUG
+#define DLog(xx, ...) NSLog (@"%s(%d): " xx, ((strrchr (__FILE__, '/') ?: __FILE__ - 1) + 1), __LINE__, ##__VA_ARGS__)
+#else
+#define DLog(xx, ...) ((void)0)
+#endif
+
 @interface JKMineSweeperConstants : NSObject
 @end

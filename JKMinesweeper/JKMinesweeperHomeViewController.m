@@ -9,6 +9,7 @@
 #import <HRColorPickerView.h>
 #import <FLAnimatedImage.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import "UIViewController+MJPopupViewController.h"
 
 #import "JKMinesweeperHomeViewController.h"
 #import "JKNeighbouringTilesProvider.h"
@@ -19,9 +20,17 @@
 #import "ScoreSaver.h"
 #import "JKMinesweeperScoresViewController.h"
 #import "JKMinesweeperSettingsViewController.h"
-#import "UIViewController+MJPopupViewController.h"
 
 typedef void (^resetTilesFinishedBlock)();
+
+enum {
+    NotStarted,
+    InProgress,
+    OverAndWin,
+    OverAndLoss
+};
+typedef NSInteger CurrentGameState;
+
 
 @interface JKMinesweeperHomeViewController () <UIAlertViewDelegate,
                                                UIActionSheetDelegate>
@@ -35,6 +44,7 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) UIView* currentViewForColorpicker;
 
 @property (strong, nonatomic) HRColorPickerView* colorPickerView;
+@property (assign, nonatomic) CurrentGameState gameState;
 @property (strong, nonatomic) UIView* bottomViewForColorPicker;
 @property (strong, nonatomic) UIButton* changeGridBakcgroundColorButton;
 
@@ -68,6 +78,10 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) JKMinesweeperScoresViewController* pastScoresViewController;
 @property (strong, nonatomic) JKMinesweeperSettingsViewController* settingsViewController;
 
+@property (weak, nonatomic) IBOutlet UIButton *saveButton;
+@property (weak, nonatomic) IBOutlet UIButton *loadButton;
+
+
 @end
 
 @implementation JKMinesweeperHomeViewController
@@ -94,17 +108,47 @@ typedef void (^resetTilesFinishedBlock)();
     [self.levelNumberButton addTarget:self
                                action:@selector(levelNumberButtonPressed:)
                      forControlEvents:UIControlEventTouchUpInside];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissPresentedViewController) name:HIDE_POPOVER_VIEW_NOTIFICATION object:nil];
-    
-   [RACObserve(self, levelNumberSelected) subscribeNext:^(NSNumber *newLevelnumber) {
-       [[NSUserDefaults standardUserDefaults] setObject:newLevelnumber forKey:@"currentLevel"];
-       [self.levelNumberButton
-        setTitle:[NSString
-               stringWithFormat:@"Level %@", newLevelnumber]
-        forState:UIControlStateNormal];
-   }];
+    [self setupRACSignalsAndNotifications];
 }
+
+-(void)setupRACSignalsAndNotifications {
+    
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissPresentedViewController) name:HIDE_POPOVER_VIEW_NOTIFICATION object:nil];
+    
+    [RACObserve(self, levelNumberSelected) subscribeNext:^(NSNumber *newLevelnumber) {
+        [[NSUserDefaults standardUserDefaults] setObject:newLevelnumber forKey:@"currentLevel"];
+        [self.levelNumberButton
+         setTitle:[NSString
+                   stringWithFormat:@"Level %@", newLevelnumber]
+         forState:UIControlStateNormal];
+    }];
+    
+    
+    [RACObserve(self, totalNumberOfTilesRevealed) subscribeNext:^(NSNumber *numberOfTilesUnleashed) {
+        DLog(@"%d number is",[numberOfTilesUnleashed integerValue]);
+        if([numberOfTilesUnleashed integerValue] > 0) {
+            self.gameState = InProgress;
+        }
+    }];
+    
+    [RACObserve(self, gameState) subscribeNext:^(NSNumber *currentGameState) {
+        DLog(@"%d current value of game state is ", [currentGameState integerValue]);
+        self.saveButton.hidden = (self.gameState != InProgress);
+    }];
+    
+    
+    self.saveButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
+        DLog(@"Save Button was pressed!");
+        return [RACSignal empty];
+    }];
+    
+    
+    self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
+        DLog(@"Load Button was pressed!");
+        return [RACSignal empty];
+    }];
+}
+
 
 -(void)dismissPresentedViewController {
     [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideRightRight];
@@ -118,7 +162,8 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (IBAction)createGridButtonPressed:(UIButton *)sender {
-
+    
+    self.gameState = NotStarted;
     [self setupUIFromUserDefaultParameters];
     [self resetRevealMenuButton];
     self.totalNumberOfRequiredTiles =
@@ -148,13 +193,19 @@ typedef void (^resetTilesFinishedBlock)();
          (self.maximumTileSequence - self.totalNumberOfMinesOnGrid));
     NSString *currentGameStatusMessage = @"N/A";
     
-    if(_totalNumberOfTilesRevealed > 0) {
+    if(self.gameState != NotStarted) {
         if (didUserWinCurrentGame) {
+            self.gameState = OverAndWin;
             currentGameStatusMessage = @"You won this game. Click the button "
             @"below to start a new game";
         } else {
-            currentGameStatusMessage = @"Sorry, you still need to unleash few "
-            @"tiles before we could declare you as " @"Winner";
+            if(self.gameState != OverAndLoss) {
+                currentGameStatusMessage = @"Sorry, you still need to unleash few "
+                @"tiles before we could declare you as " @"Winner";
+            }
+            else {
+                currentGameStatusMessage =@"Sorry you have lost in this game. Please click reset button to generate new game";
+            }
         }
     }
     else {
@@ -234,6 +285,7 @@ typedef void (^resetTilesFinishedBlock)();
             newRevealMineButton.gameOverInstant = ^() {
                 __strong __typeof(weakSelf) strongSelf = weakSelf;
                 [strongSelf showAllMines];
+                strongSelf.gameState = OverAndLoss;
                 [strongSelf showAlertViewWithMessage:@"You clicked on mine and "
                             @"game is now over"];
             };
@@ -295,9 +347,20 @@ typedef void (^resetTilesFinishedBlock)();
     if ( gesture.state == UIGestureRecognizerStateEnded ) {
         
         JKCustomButton* longPressedButton = (JKCustomButton*)gesture.view;
-        longPressedButton.buttonStateModel.isQuestionMarked = !longPressedButton.buttonStateModel.isQuestionMarked;
         
-        if(longPressedButton.buttonStateModel.isQuestionMarked) {
+        //Tile is already revealed, do not bother to decorate it with question mark
+        if(longPressedButton.buttonStateModel.currentTileState == TileIsSelected) {
+            return;
+        }
+        
+        if(longPressedButton.buttonStateModel.currentTileState == TileIsQuestionMarked) {
+            longPressedButton.buttonStateModel.currentTileState = TileIsNotSelected;
+        }
+        else {
+            longPressedButton.buttonStateModel.currentTileState = TileIsQuestionMarked;
+        }
+        
+        if(longPressedButton.buttonStateModel.currentTileState == TileIsQuestionMarked) {
             [longPressedButton setTitle:@"?" forState:UIControlStateNormal];
             [longPressedButton setBackgroundColor:[UIColor whiteColor]];
         }
@@ -346,10 +409,9 @@ typedef void (^resetTilesFinishedBlock)();
                          completion:nil];
 
         self.totalNumberOfTilesRevealed++;
-
         buttonWithCurrentIdentifier.isVisited = YES;
-        buttonWithCurrentIdentifier.buttonStateModel.tileSelectedIndicator =
-            buttonWithCurrentIdentifier.isVisited;
+        buttonWithCurrentIdentifier.buttonStateModel.currentTileState =
+            TileIsSelected;
 
         if ((buttonWithCurrentIdentifier.buttonStateModel
                  .numberOfNeighboringMines == 0)) {
@@ -401,7 +463,7 @@ typedef void (^resetTilesFinishedBlock)();
     clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(alertView.tag == 13) {
         
-        if(_totalNumberOfTilesRevealed > 0) {
+        if(self.gameState == OverAndWin || self.gameState == OverAndLoss) {
             [self showSaveScoreDialogueBox];
         }
         
@@ -588,7 +650,7 @@ typedef void (^resetTilesFinishedBlock)();
                 }
                 completion:^(BOOL finished) {
                     individualMinesButton.buttonStateModel
-                        .tileSelectedIndicator = YES;
+                        .currentTileState = TileIsSelected;
                 }];
         });
         time = dispatch_time(time, REGULAR_ANIMATION_DURATION * NSEC_PER_SEC);
@@ -661,7 +723,7 @@ typedef void (^resetTilesFinishedBlock)();
                                                             style:UIAlertActionStyleDestructive
                                                           handler:^(UIAlertAction *action)
                                     {
-                                        NSLog(@"Cancel Button Pressed");
+                                        DLog(@"Cancel Button Pressed");
                                         
                                     }];
     

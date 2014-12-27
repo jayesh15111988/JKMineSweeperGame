@@ -7,6 +7,7 @@
 //
 
 #import <Realm.h>
+#import "JKMineSweeperConstants.h"
 #import "ScoreSaver.h"
 #import "Score.h"
 
@@ -20,7 +21,7 @@
     scoreObject.scrore = [currentScore integerValue];
     scoreObject.timestamp = [[NSDate date] timeIntervalSince1970];
     scoreObject.gameLevel = gameLevel;
-    NSLog(@"%@",scoreObject);
+    DLog(@"%@",scoreObject);
     [currentRealm beginWriteTransaction];
     [currentRealm addObject:scoreObject];
     [currentRealm commitWriteTransaction];
