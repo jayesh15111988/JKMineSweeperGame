@@ -9,6 +9,8 @@
 #import <HRColorPickerView.h>
 #import <FLAnimatedImage.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
 #import "UIViewController+MJPopupViewController.h"
 
 #import "JKMinesweeperHomeViewController.h"
@@ -53,6 +55,7 @@ typedef NSInteger CurrentGameState;
 @property(strong, nonatomic) NSMutableArray *regularButtonsHolder;
 
 @property(assign, nonatomic) NSInteger totalNumberOfRequiredTiles;
+@property (strong, nonatomic) AVAudioPlayer *player;
 @property(strong, nonatomic)
     NSMutableDictionary *numberOfSurroundingMinesHolder;
 - (IBAction)resetButtonPressed:(id)sender;
@@ -112,6 +115,19 @@ typedef NSInteger CurrentGameState;
                                action:@selector(levelNumberButtonPressed:)
                      forControlEvents:UIControlEventTouchUpInside];
     [self setupRACSignalsAndNotifications];
+    
+    
+    NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:@"afraid"
+                                                              ofType:@"wav"];
+    
+    NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
+    
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL
+                                                                   error:nil];
+    
+    self.player.numberOfLoops = 0;
+    
+    [self.player play];
 }
 
 -(void)setupRACSignalsAndNotifications {

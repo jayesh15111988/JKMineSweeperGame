@@ -11,6 +11,7 @@
 		3836A11C1A4D0B06009E24B5 /* exploding_bomb.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */; };
 		3836A11E1A4D14EF009E24B5 /* skull.png in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11D1A4D14EF009E24B5 /* skull.png */; };
 		388C744A1A4E6C620094BC96 /* JKTimerProviderUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */; };
+		388C744C1A4E7BEC0094BC96 /* afraid.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C744B1A4E7BEC0094BC96 /* afraid.wav */; };
 		389ACD921A4DDC0600637375 /* Score.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACD911A4DDC0600637375 /* Score.m */; };
 		389ACD941A4DDE0A00637375 /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 389ACD931A4DDE0A00637375 /* setting.png */; };
 		389ACD991A4DDEDD00637375 /* JKMinesweeperScoresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACD971A4DDEDD00637375 /* JKMinesweeperScoresViewController.m */; };
@@ -59,6 +60,7 @@
 		3836A11D1A4D14EF009E24B5 /* skull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skull.png; sourceTree = "<group>"; };
 		388C74481A4E6C620094BC96 /* JKTimerProviderUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKTimerProviderUtility.h; sourceTree = "<group>"; };
 		388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKTimerProviderUtility.m; sourceTree = "<group>"; };
+		388C744B1A4E7BEC0094BC96 /* afraid.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = afraid.wav; sourceTree = "<group>"; };
 		389ACD901A4DDC0600637375 /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Score.h; sourceTree = "<group>"; };
 		389ACD911A4DDC0600637375 /* Score.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Score.m; sourceTree = "<group>"; };
 		389ACD931A4DDE0A00637375 /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 		91AA40FA19D8C956009CB397 /* JKMinesweeper */ = {
 			isa = PBXGroup;
 			children = (
+				388C744B1A4E7BEC0094BC96 /* afraid.wav */,
 				388C74471A4E65D00094BC96 /* Audio Files */,
 				389ACDB01A4DEA3500637375 /* Custom Cells */,
 				389ACDAC1A4DE7D100637375 /* Model Operations */,
@@ -409,6 +412,11 @@
 				TargetAttributes = {
 					91AA40F719D8C956009CB397 = {
 						CreatedOnToolsVersion = 6.0.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 					91AA411019D8C956009CB397 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -453,6 +461,7 @@
 				389ACDB51A4DEC1600637375 /* JKScoresCustomTableViewCell.xib in Resources */,
 				91AA410C19D8C956009CB397 /* LaunchScreen.xib in Resources */,
 				91AA410919D8C956009CB397 /* Images.xcassets in Resources */,
+				388C744C1A4E7BEC0094BC96 /* afraid.wav in Resources */,
 				389ACD941A4DDE0A00637375 /* setting.png in Resources */,
 				3836A11C1A4D0B06009E24B5 /* exploding_bomb.gif in Resources */,
 			);
@@ -640,7 +649,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = JKMinesweeper/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -653,7 +662,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = JKMinesweeper/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 2;
