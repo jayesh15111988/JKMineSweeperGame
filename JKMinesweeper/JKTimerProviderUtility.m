@@ -7,7 +7,6 @@
 //
 
 #import "JKTimerProviderUtility.h"
-#import <UIKit/UIKit.h>
 
 @interface JKTimerProviderUtility ()
 @property (assign, nonatomic) NSInteger currentNumberOfSeconds;

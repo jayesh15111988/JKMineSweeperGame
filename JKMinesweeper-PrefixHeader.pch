@@ -1,0 +1,25 @@
+//
+//  JKMinesweeper-PrefixHeader.pch
+//  JKMinesweeper
+//
+//  Created by Jayesh Kawli Backup on 12/27/14.
+//  Copyright (c) 2014 Jayesh Kawli. All rights reserved.
+//
+
+#ifndef JKMinesweeper_JKMinesweeper_PrefixHeader_pch
+#define JKMinesweeper_JKMinesweeper_PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif
+
+// Logging macros
+#ifdef DEBUG
+#define DLog(xx, ...) NSLog (@"%s(%d): " xx, ((strrchr (__FILE__, '/') ?: __FILE__ - 1) + 1), __LINE__, ##__VA_ARGS__)
+#else
+#define DLog(xx, ...) ((void)0)
+#endif
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>

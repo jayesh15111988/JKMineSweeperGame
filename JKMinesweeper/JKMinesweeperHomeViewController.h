@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Jayesh Kawli. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface JKMinesweeperHomeViewController : UIViewController
 
 @end

@@ -61,6 +61,7 @@
 		388C74481A4E6C620094BC96 /* JKTimerProviderUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKTimerProviderUtility.h; sourceTree = "<group>"; };
 		388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKTimerProviderUtility.m; sourceTree = "<group>"; };
 		388C744B1A4E7BEC0094BC96 /* afraid.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = afraid.wav; sourceTree = "<group>"; };
+		388C744D1A4F13EC0094BC96 /* JKMinesweeper-PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JKMinesweeper-PrefixHeader.pch"; sourceTree = "<group>"; };
 		389ACD901A4DDC0600637375 /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Score.h; sourceTree = "<group>"; };
 		389ACD911A4DDC0600637375 /* Score.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Score.m; sourceTree = "<group>"; };
 		389ACD931A4DDE0A00637375 /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
@@ -246,6 +247,7 @@
 		91AA40EF19D8C956009CB397 = {
 			isa = PBXGroup;
 			children = (
+				388C744D1A4F13EC0094BC96 /* JKMinesweeper-PrefixHeader.pch */,
 				91AA40FA19D8C956009CB397 /* JKMinesweeper */,
 				91AA411419D8C956009CB397 /* JKMinesweeperTests */,
 				91AA40F919D8C956009CB397 /* Products */,
@@ -648,6 +650,7 @@
 			baseConfigurationReference = 530AE55A35649DF415A25DF6 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = "JKMinesweeper-PrefixHeader.pch";
 				INFOPLIST_FILE = JKMinesweeper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -661,6 +664,7 @@
 			baseConfigurationReference = E4DD45CB6933177D60E7EFF8 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = "JKMinesweeper-PrefixHeader.pch";
 				INFOPLIST_FILE = JKMinesweeper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
