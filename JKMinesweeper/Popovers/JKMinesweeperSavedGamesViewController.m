@@ -8,9 +8,12 @@
 
 #import "JKMinesweeperSavedGamesViewController.h"
 #import "UIView+Utility.h"
+#import "SavedGameOperation.h"
 #import "JKScoresCustomTableViewCell.h"
 #import "JKMineSweeperConstants.h"
 #import "SaveGameModel.h"
+
+#import <UIAlertView+BlocksKit.h>
 #import <RLMResults.h>
 
 @interface JKMinesweeperSavedGamesViewController ()
@@ -80,5 +83,25 @@
 - (IBAction)dismissCurrentViewPressed:(id)sender {
     [[NSNotificationCenter defaultCenter] postNotificationName:HIDE_POPOVER_VIEW_NOTIFICATION object:nil];
 }
+
+- (IBAction)clearAllScoresButtonPressed:(UIButton*)sender {
+    [UIAlertView bk_showAlertViewWithTitle:@"Saved Games" message:@"Are you sure you want to clear all the previous games?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Ok"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if(buttonIndex == 1) {
+            if([SavedGameOperation removeAllEntriesFromSavedGames]) {
+                [self loadSavedGames];
+                [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Successfully cleared all games from database" cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
+            }
+            else {
+                [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Failed to clear stored games from database" cancelButtonTitle:@"Ok" otherButtonTitles:@[@"Retry" ] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                    if(buttonIndex == 1) {
+                        [self clearAllScoresButtonPressed:nil];
+                    }
+                }];
+            }
+        }
+    }];
+}
+
+
 
 @end
