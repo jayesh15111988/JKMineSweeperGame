@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Jayesh Kawli. All rights reserved.
 //
 
+
+#import <RLMMigration.h>
+#import <RLMRealm.h>
+#import "SaveGameModel.h"
 #import "AppDelegate.h"
 
 @interface AppDelegate ()
@@ -18,14 +22,51 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    [self performDatabaseMigration];
+    
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"currentLevel"]) {
         [self setInitialDefaults];
     }
+    
+    [self performDatabaseMigration];
+    
+    //Test code
+    /*Sample* sam1 = [Sample new];
+    sam1.p1 = @"jayesh";
+    sam1.p2 = CGPointMake(100, 200);
+    sam1.p3 = 26;
+    sam1.p4 = YES;
+    
+    Sample* sam2 = [Sample new];
+    sam2.p1 = @"archana";
+    sam2.p2 = CGPointMake(36, 28);
+    sam2.p3 = 26;
+    sam2.p4 = NO;
+    
+    NSData *data1=[NSKeyedArchiver archivedDataWithRootObject:sam1];
+    NSData *data2=[NSKeyedArchiver archivedDataWithRootObject:sam2];
+    
+    
+    Sample *s1=[NSKeyedUnarchiver unarchiveObjectWithData:data1];
+    Sample *s2=[NSKeyedUnarchiver unarchiveObjectWithData:data2];
+    
+    DLog(@"%@ and %@",s1,s2);
+*/
+    
     return YES;
 }
 
 -(void) performDatabaseMigration {
+    
+    [RLMRealm setSchemaVersion:1 withMigrationBlock:^(RLMMigration *migration, NSUInteger oldSchemaVersion) {
+        
+        if (oldSchemaVersion < 1) {
+            
+            [migration enumerateObjects: SaveGameModel.className
+                                  block:^(RLMObject *oldObject, RLMObject *newObject) {
+                                      newObject[@"score"] = @(0);
+                                  }];
+        }
+    }];
     
 }
 

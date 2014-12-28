@@ -15,8 +15,6 @@
 #import "UIView+Utility.h"
 #import "Score.h"
 
-#define cellIdentifier @"JKScoresCustomTableViewCell"
-
 @interface JKMinesweeperScoresViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) RLMResults* scoreObjectsCollection;

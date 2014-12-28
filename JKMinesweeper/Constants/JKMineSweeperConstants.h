@@ -13,6 +13,9 @@
 #define MULTIPLE_ANIMATION_DURATION 0.04
 #define GIF_IMAGE_ANIMATION_DURATION 2.5
 
+#define ANIMATED_IMAGE_URL @"http://bigpinekey.com/wp-content/uploads/an_exploding_bomb.gif"
+
+#define cellIdentifier @"JKScoresCustomTableViewCell"
 #define SELECT_LEVEL_TITLE @"Select Target Level"
 #define HIDE_POPOVER_VIEW_NOTIFICATION @"dismissCurrentViewController"
 #define TIMER_VALUE_CHANGED @"timer_changed"

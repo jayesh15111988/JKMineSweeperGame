@@ -27,7 +27,6 @@
         self.buttonStateModel.currentTileState = TileIsNotSelected;
         self.buttonStateModel.isThisButtonMine = isMine;
         self.buttonStateModel.numberOfNeighboringMines = numberOfSurroundingMines;
-        self.isInLongPressedMode = NO;
         self.alpha = 0.0;
         // 0 55 110 165 220 275
         
@@ -61,9 +60,55 @@
     return self;
 }
 
+-(void)configurePreviousButton:(CGPoint)buttonPositionOnScreen andWidth:(NSInteger)tileWidth andButtonState:(JKButtonStateModel*)previousButtonState {
+    
+
+    self.buttonStateModel = previousButtonState;
+    self.frame =
+    CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y,
+               tileWidth, tileWidth);
+    
+    // Change color of title based on number of surrounding mines for given
+    // tile
+    // While - Light blue - lightgreen
+    NSInteger numberOfSurroundingMines = previousButtonState.numberOfNeighboringMines;
+    UIColor *titleColor;
+    if (numberOfSurroundingMines == 1) {
+        titleColor = [UIColor blackColor];
+    } else if (numberOfSurroundingMines < 4) {
+        titleColor = [UIColor blueColor];
+        
+    }
+    // Any Value >3
+    else {
+        titleColor = [UIColor yellowColor];
+    }
+    
+    self.backgroundColor = [UIColor orangeColor];
+    [self setTitleColor:titleColor forState:UIControlStateNormal];
+    
+    if(previousButtonState.currentTileState == TileIsSelected) {
+        [self setBackgroundColor:[UIColor redColor]];
+        [self setTitle:[NSString stringWithFormat:@"%d",numberOfSurroundingMines] forState:UIControlStateNormal];
+    }
+    else if (previousButtonState.currentTileState == TileIsQuestionMarked) {
+        [self setTitle:@"?" forState:UIControlStateNormal];
+        [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
+    
+    
+    [self addTarget:self
+             action:@selector(tileButtonSelected:)
+   forControlEvents:UIControlEventTouchUpInside];
+    
+}
+
+
+
 - (IBAction)tileButtonSelected:(JKCustomButton *)sender {
 
     // Go in the block only if tile is not previously selected by the user
+    DLog(@"%d",self.buttonStateModel.currentTileState);
     if (self.buttonStateModel.currentTileState == TileIsNotSelected) {
         self.buttonStateModel.currentTileState = TileIsSelected;
 
@@ -81,6 +126,23 @@
     } else {
         DLog(@"Tile was already selected");
     }
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:[NSValue valueWithCGPoint:self.positionOnScreen] forKey:@"positionOnScreen"];
+    [coder encodeObject:self.buttonStateModel forKey:@"buttonStateModel"];
+    [coder encodeObject:@(self.buttonSequenceNumber) forKey:@"buttonSequenceNumber"];
+    [coder encodeObject:@(self.isVisited) forKey:@"isVisited"];
+
+}
+- (JKCustomButton*)initWithCoder:(NSCoder *)decoder {
+    if (self = [super init]) {
+        self.positionOnScreen = [[decoder decodeObjectForKey:@"positionOnScreen"] CGPointValue];
+        self.buttonStateModel = [decoder decodeObjectForKey:@"buttonStateModel"];
+        self.buttonSequenceNumber = [[decoder decodeObjectForKey:@"buttonSequenceNumber"] integerValue];
+        self.isVisited = [[decoder decodeObjectForKey:@"isVisited"] boolValue];
+    }
+    return self;
 }
 
 @end
