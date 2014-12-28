@@ -46,8 +46,14 @@ enum {
     Timer
 };
 
+enum {
+    NewGame,
+    SavedGame
+};
+
 typedef NSInteger CurrentGameState;
 typedef NSInteger SoundCategory;
+typedef NSInteger GameState;
 
 @interface JKMinesweeperHomeViewController () <UIAlertViewDelegate,
                                                UIActionSheetDelegate>
@@ -64,6 +70,8 @@ typedef NSInteger SoundCategory;
 @property (strong, nonatomic) HRColorPickerView* colorPickerView;
 @property (assign, nonatomic) CurrentGameState gameState;
 @property (assign, nonatomic) SoundCategory soundCategory;
+@property (assign, nonatomic) GameState gameStateNewLoaded;
+
 @property (strong, nonatomic) UIView* bottomViewForColorPicker;
 @property (strong, nonatomic) UIButton* changeGridBakcgroundColorButton;
 
@@ -179,8 +187,8 @@ typedef NSInteger SoundCategory;
         saveGameScoreDialogue.tag = 15;
         saveGameScoreDialogue.alertViewStyle = UIAlertViewStylePlainTextInput;
         [[saveGameScoreDialogue textFieldAtIndex:0] setText:[formatter stringFromDate:[NSDate date]]];
-        [saveGameScoreDialogue show];
         
+        [saveGameScoreDialogue show];
         return [RACSignal empty];
     }];
     
@@ -195,16 +203,8 @@ typedef NSInteger SoundCategory;
                 
                 __strong typeof(self) strongSelf = weakSelf;
                 
-                
                 [strongSelf resetGameBeforeLoadingPreviousGame:selectedGameModel];
-                
-              
-                
-                
                 [strongSelf dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideRightRight];
-                
-                
-#warning to make replacement to this function call
                 
                 //Now load all tiles on the front page
                 NSArray *allCustomButtonCollection=[NSKeyedUnarchiver unarchiveObjectWithData:selectedGameModel.savedGameData];
@@ -231,8 +231,10 @@ typedef NSInteger SoundCategory;
                     else {
                         [strongSelf.regularButtonsHolder addObject:individualButton];
                     }
-    
-                    #warning To continue here
+                    
+                    //For each button retrieved from database, we will add long press gesture to it
+                    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:strongSelf action:@selector(longPress:)];
+                    [individualButton addGestureRecognizer:longPress];
                     
                     individualButton.gameOverInstant = ^() {
                         [strongSelf showAllMines];
@@ -253,7 +255,7 @@ typedef NSInteger SoundCategory;
                     [strongSelf.gridHolderView addSubview:individualButton];
                 }
                 
-                 DLog(@"%d and %d %d",strongSelf.regularButtonsHolder.count,strongSelf.minesButtonsHolder.count,self.gridHolderView.subviews.count);
+                 DLog(@"%d and %d %d",strongSelf.regularButtonsHolder.count,strongSelf.minesButtonsHolder.count,strongSelf.gridHolderView.subviews.count);
             };
         }
         
@@ -284,6 +286,7 @@ typedef NSInteger SoundCategory;
         [self resetRevealMenuButton];
     }
     
+    self.gameStateNewLoaded = SavedGame;
     self.currentScoreValue = selectedGameModel.score;
     self.currentScore.text = [NSString stringWithFormat:@"%ld",(long)self.currentScoreValue];
     DLog(@"current score is %d",selectedGameModel.score);
@@ -359,6 +362,8 @@ typedef NSInteger SoundCategory;
 - (void)createNewGridWithParameters {
 
     self.gameState = NotStarted;
+    self.gameStateNewLoaded = NewGame;
+    
     [self setupUIFromUserDefaultParameters];
     [self resetRevealMenuButton];
     self.totalNumberOfRequiredTiles =
@@ -502,6 +507,7 @@ typedef NSInteger SoundCategory;
             } else {
                 [self.regularButtonsHolder addObject:newRevealMineButton];
             }
+            
             
             UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
             [newRevealMineButton addGestureRecognizer:longPress];
@@ -708,13 +714,29 @@ typedef NSInteger SoundCategory;
     else if (alertView.tag == 15) {
         if(buttonIndex == 1) {
             NSString* saveGameName = [[alertView textFieldAtIndex:0] text];
-            [self saveCurrentGameInDataBaseWithName:saveGameName];
+            
+            //If it is a new game, save it with creation of new object
+            if(self.gameStateNewLoaded == NewGame) {
+                    [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
+            }
+            else{
+                [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:@"Do you want to overwrite the existing game?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                    if(buttonIndex == 0){
+                        [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
+                    }
+                    else {
+                        [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:NO];
+                    }
+                }];
+            }
+            
+            
         }
     }
 }
 
 
--(void)saveCurrentGameInDataBaseWithName:(NSString*)gameName {
+-(void)saveCurrentGameInDataBaseWithName:(NSString*)gameName andToCreateNewObject:(BOOL)toCreateNewGame {
     
     RLMRealm* currentRealm = [RLMRealm defaultRealm];
     
@@ -724,24 +746,15 @@ typedef NSInteger SoundCategory;
     
     NSData* gameDataToArchive = [NSKeyedArchiver archivedDataWithRootObject:collectionOfAllButtons];
     
-    RLMResults* savedGamesWithCurrentIdentifier = [SaveGameModel objectsWhere:[NSString stringWithFormat:@"identifier = '%@'",self.currentGameIdentifier]];
-
-    
-    if([savedGamesWithCurrentIdentifier count] > 0) {
-        SaveGameModel* previouslyStoredModel = [savedGamesWithCurrentIdentifier firstObject];
-        [currentRealm beginWriteTransaction];
-        previouslyStoredModel.savedGameName = gameName;
-        previouslyStoredModel.timestampOfSave = [[NSDate date] timeIntervalSince1970];
-        previouslyStoredModel.savedGameData = gameDataToArchive;
-        previouslyStoredModel.score = self.currentScoreValue;
-        [currentRealm commitWriteTransaction];
-        DLog(@"Updated game model");
-    }
-    else{
-        
+    if(toCreateNewGame) {
         SaveGameModel* gameToStore = [SaveGameModel new];
         gameToStore.savedGameName = gameName;
-        gameToStore.identifier = self.currentGameIdentifier;
+        if(self.gameStateNewLoaded == NewGame) {
+            gameToStore.identifier = self.currentGameIdentifier;
+        }
+        else {
+            gameToStore.identifier = [JKRandomStringGenerator generateRandomStringWithLength:6];
+        }
         gameToStore.timestampOfSave = [[NSDate date] timeIntervalSince1970];
         gameToStore.savedGameData = gameDataToArchive;
         gameToStore.levelNumber = self.levelNumberSelected;
@@ -753,7 +766,21 @@ typedef NSInteger SoundCategory;
         [currentRealm commitWriteTransaction];
         DLog(@"Created new game model");
     }
-        [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:[NSString stringWithFormat:@"Game %@ Successfully stored in the database",gameName] cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
+    else {
+        RLMResults* savedGamesWithCurrentIdentifier = [SaveGameModel objectsWhere:[NSString stringWithFormat:@"identifier = '%@'",self.currentGameIdentifier]];
+        if(([savedGamesWithCurrentIdentifier count] > 0) || !toCreateNewGame) {
+            SaveGameModel* previouslyStoredModel = [savedGamesWithCurrentIdentifier firstObject];
+            [currentRealm beginWriteTransaction];
+            previouslyStoredModel.savedGameName = gameName;
+            previouslyStoredModel.timestampOfSave = [[NSDate date] timeIntervalSince1970];
+            previouslyStoredModel.savedGameData = gameDataToArchive;
+            previouslyStoredModel.score = self.currentScoreValue;
+            [currentRealm commitWriteTransaction];
+            DLog(@"Updated game model");
+    }
+}
+    
+    [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:[NSString stringWithFormat:@"Game %@ Successfully stored in the database",gameName] cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
 }
 
 

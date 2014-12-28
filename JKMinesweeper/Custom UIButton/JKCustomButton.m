@@ -93,7 +93,8 @@
     }
     else if (previousButtonState.currentTileState == TileIsQuestionMarked) {
         [self setTitle:@"?" forState:UIControlStateNormal];
-        [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self setBackgroundColor:[UIColor whiteColor]];
     }
     
     
