@@ -184,6 +184,7 @@ typedef NSInteger SoundCategory;
         return [RACSignal empty];
     }];
     
+
     
     self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
         DLog(@"Load Button was pressed!");
@@ -194,41 +195,28 @@ typedef NSInteger SoundCategory;
                 
                 __strong typeof(self) strongSelf = weakSelf;
                 
-                //Unreveal all tiles if they are revealed in the previous game
-                if(strongSelf.revealMenuButton.tag == MINES_REVEALED_STATE) {
-                    [strongSelf resetRevealMenuButton];
-                }
                 
-                if(strongSelf.gameState != NotStarted) {
-                    [strongSelf createNewGridWithParameters];
-                }
-                [strongSelf.regularButtonsHolder removeAllObjects];
-                [strongSelf.minesButtonsHolder removeAllObjects];
+                [strongSelf resetGameBeforeLoadingPreviousGame:selectedGameModel];
+                
+              
+                
                 
                 [strongSelf dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideRightRight];
-                strongSelf.currentScoreValue = selectedGameModel.score;
-                strongSelf.currentScore.text = [NSString stringWithFormat:@"%ld",(long)strongSelf.currentScoreValue];
-                DLog(@"current score is %d",selectedGameModel.score);
-                [strongSelf.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld",(long)(selectedGameModel.levelNumber)] forState:UIControlStateNormal];
-                strongSelf.levelNumberSelected = selectedGameModel.levelNumber;
-                strongSelf.gridSizeInputText.text = selectedGameModel.numberOfTilesInRow;
                 
-                NSArray *allButtonsInGridView = [strongSelf.gridHolderView subviews];
-                for (UIView *individualButtonOnGrid in allButtonsInGridView) {
-                    [individualButtonOnGrid removeFromSuperview];
-                }
+                
+#warning to make replacement to this function call
                 
                 //Now load all tiles on the front page
                 NSArray *allCustomButtonCollection=[NSKeyedUnarchiver unarchiveObjectWithData:selectedGameModel.savedGameData];
                 
-                
- //               - (NSArray *)bk_select:(BOOL (^)(id obj))block;
-                NSArray* filteredArray = [allCustomButtonCollection bk_select:^BOOL(JKCustomButton* currentButtonObject) {
+                NSArray* collectionWithSelectedTiles = [allCustomButtonCollection bk_select:^BOOL(JKCustomButton* currentButtonObject) {
                     TileStateRepresentationValue currentButtonState = currentButtonObject.buttonStateModel.currentTileState;
                     return (currentButtonState == TileIsSelected || currentButtonState == TileIsQuestionMarked);
                 }];
+                
                 DLog(@"%d and %d",strongSelf.regularButtonsHolder.count,strongSelf.minesButtonsHolder.count);
-                strongSelf.totalNumberOfTilesRevealed = [filteredArray count];
+                
+                strongSelf.totalNumberOfTilesRevealed = [collectionWithSelectedTiles count];
                 
                 for(JKCustomButton* individualButton in allCustomButtonCollection) {
                     DLog(@"In button mine %d Sequence number %d current tile state %d ",individualButton.buttonStateModel.isThisButtonMine, individualButton.buttonSequenceNumber, individualButton.buttonStateModel.currentTileState);
@@ -287,6 +275,35 @@ typedef NSInteger SoundCategory;
         }
         return [RACSignal empty];
     }];
+}
+
+-(void)resetGameBeforeLoadingPreviousGame:(SaveGameModel*)selectedGameModel {
+    
+    //Unreveal all tiles if they are revealed in the previous game
+    if(self.revealMenuButton.tag == MINES_REVEALED_STATE) {
+        [self resetRevealMenuButton];
+    }
+    
+    self.currentScoreValue = selectedGameModel.score;
+    self.currentScore.text = [NSString stringWithFormat:@"%ld",(long)self.currentScoreValue];
+    DLog(@"current score is %d",selectedGameModel.score);
+    [self.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld",(long)(selectedGameModel.levelNumber)] forState:UIControlStateNormal];
+    self.levelNumberSelected = selectedGameModel.levelNumber;
+    self.gridSizeInputText.text = selectedGameModel.numberOfTilesInRow;
+         
+    self.totalNumberOfRequiredTiles = [self.gridSizeInputText.text integerValue];
+         
+    if (self.totalNumberOfRequiredTiles < 3) {
+        self.totalNumberOfRequiredTiles = 3;
+    }
+    //We will use previous identifier and will use to overwrite existing game
+    self.currentGameIdentifier = selectedGameModel.identifier;//[JKRandomStringGenerator generateRandomStringWithLength:6];
+    NSArray *allButtonsInGridView = [self.gridHolderView subviews];
+    for (UIView *individualButtonOnGrid in allButtonsInGridView) {
+        [individualButtonOnGrid removeFromSuperview];
+    }
+    [self.regularButtonsHolder removeAllObjects];
+    [self.minesButtonsHolder removeAllObjects];
 }
 
 -(void)updateSounds {

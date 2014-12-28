@@ -14,6 +14,7 @@
 		38059DA61A4F8E8C00F7A02F /* SaveGameModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38059DA51A4F8E8C00F7A02F /* SaveGameModel.m */; };
 		3833997C1A4FB5DA004B9D60 /* JKMinesweeperSavedGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3833997A1A4FB5DA004B9D60 /* JKMinesweeperSavedGamesViewController.m */; };
 		3833997D1A4FB5DA004B9D60 /* JKMinesweeperSavedGamesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3833997B1A4FB5DA004B9D60 /* JKMinesweeperSavedGamesViewController.xib */; };
+		383399801A5080D3004B9D60 /* SavedGameOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3833997F1A5080D3004B9D60 /* SavedGameOperation.m */; };
 		3836A11C1A4D0B06009E24B5 /* exploding_bomb.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */; };
 		3836A11E1A4D14EF009E24B5 /* skull.png in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11D1A4D14EF009E24B5 /* skull.png */; };
 		388C744A1A4E6C620094BC96 /* JKTimerProviderUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */; };
@@ -84,6 +85,8 @@
 		383399791A4FB5DA004B9D60 /* JKMinesweeperSavedGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKMinesweeperSavedGamesViewController.h; sourceTree = "<group>"; };
 		3833997A1A4FB5DA004B9D60 /* JKMinesweeperSavedGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKMinesweeperSavedGamesViewController.m; sourceTree = "<group>"; };
 		3833997B1A4FB5DA004B9D60 /* JKMinesweeperSavedGamesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JKMinesweeperSavedGamesViewController.xib; sourceTree = "<group>"; };
+		3833997E1A5080D3004B9D60 /* SavedGameOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SavedGameOperation.h; sourceTree = "<group>"; };
+		3833997F1A5080D3004B9D60 /* SavedGameOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavedGameOperation.m; sourceTree = "<group>"; };
 		3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = exploding_bomb.gif; sourceTree = "<group>"; };
 		3836A11D1A4D14EF009E24B5 /* skull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skull.png; sourceTree = "<group>"; };
 		388C74481A4E6C620094BC96 /* JKTimerProviderUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKTimerProviderUtility.h; sourceTree = "<group>"; };
@@ -255,6 +258,8 @@
 			children = (
 				389ACDAD1A4DE7E800637375 /* ScoreSaver.h */,
 				389ACDAE1A4DE7E800637375 /* ScoreSaver.m */,
+				3833997E1A5080D3004B9D60 /* SavedGameOperation.h */,
+				3833997F1A5080D3004B9D60 /* SavedGameOperation.m */,
 			);
 			path = "Model Operations";
 			sourceTree = "<group>";
@@ -620,6 +625,7 @@
 				389ACDBD1A4DF19500637375 /* UIView+Utility.m in Sources */,
 				91AA412F19D8CC94009CB397 /* JKCustomButton.m in Sources */,
 				389ACDB41A4DEC1600637375 /* JKScoresCustomTableViewCell.m in Sources */,
+				383399801A5080D3004B9D60 /* SavedGameOperation.m in Sources */,
 				91AA412419D8CA77009CB397 /* JKMinesweeperHomeViewController.m in Sources */,
 				911DB8E919DBA10E00D16B6F /* JKNeighbouringTilesProvider.m in Sources */,
 				388C744A1A4E6C620094BC96 /* JKTimerProviderUtility.m in Sources */,
