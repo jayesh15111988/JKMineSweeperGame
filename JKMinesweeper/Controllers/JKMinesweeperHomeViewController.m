@@ -886,8 +886,6 @@ typedef NSInteger GameState;
     }
 }
 
-
-
 - (IBAction)revealMinesButtonPressed:(UIButton *)sender {
     
     if(self.minesButtonsHolder.count > 0) {
@@ -1113,7 +1111,6 @@ typedef NSInteger GameState;
     }
     [self presentPopupViewController:self.settingsViewController animationType:MJPopupViewAnimationSlideRightRight];
 }
-
 
 
 @end
