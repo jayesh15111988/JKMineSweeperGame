@@ -11,12 +11,7 @@
 @implementation UIButton (Utility)
 
 -(void)addDecorationWithImage:(UIImage*)image orColor:(UIColor*)color {
-    if(NO) {
-        [self setBackgroundImage:image forState:UIControlStateNormal];
-    }
-    else {
         [self setBackgroundColor:color];
-    }
 }
 
 @end

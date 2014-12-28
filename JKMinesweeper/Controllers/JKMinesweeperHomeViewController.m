@@ -295,7 +295,11 @@ typedef NSInteger GameState;
     self.gridSizeInputText.text = selectedGameModel.numberOfTilesInRow;
          
     self.totalNumberOfRequiredTiles = [self.gridSizeInputText.text integerValue];
-         
+    
+    //Setup Grid size to match the one number of tiles here
+    
+    [self setupGridHolderView];
+    
     if (self.totalNumberOfRequiredTiles < 3) {
         self.totalNumberOfRequiredTiles = 3;
     }
@@ -421,6 +425,23 @@ typedef NSInteger GameState;
     [self showAlertViewWithMessage:currentGameStatusMessage];
 }
 
+-(NSInteger)setupGridHolderView {
+    
+    NSInteger gridHeightAndWidth =
+    (self.tileWidth * self.totalNumberOfRequiredTiles) +
+    (self.gutterSpacing * (self.totalNumberOfRequiredTiles - 1));
+    CGFloat startingXPositionForGridView =
+    self.view.center.x - (gridHeightAndWidth / 2);
+    
+    
+    self.gridHolderView.frame =
+    CGRectMake(startingXPositionForGridView - 20, 20, gridHeightAndWidth,
+               gridHeightAndWidth);
+    
+    [self setPositionOfChangeBackgroundColorButton];
+    return gridHeightAndWidth;
+}
+
 - (void)createNewGridOnScreen {
 
     [self resetGridWithNewTilesAndCompletionBlock:nil];
@@ -430,18 +451,9 @@ typedef NSInteger GameState;
 
     [self populateMinesHolderWithMinesLocationsWithMaximumGridWidth:
               self.totalNumberOfRequiredTiles];
-
-    NSInteger gridHeightAndWidth =
-        (self.tileWidth * self.totalNumberOfRequiredTiles) +
-        (self.gutterSpacing * (self.totalNumberOfRequiredTiles - 1));
-    CGFloat startingXPositionForGridView =
-        self.view.center.x - (gridHeightAndWidth / 2);
-
-
-    self.gridHolderView.frame =
-        CGRectMake(startingXPositionForGridView - 20, 20, gridHeightAndWidth,
-                   gridHeightAndWidth);
-
+    
+    NSInteger gridHeightAndWidth = [self setupGridHolderView];
+    
     [self.gridHolderView setBackgroundColor:[UIColor lightGrayColor]];
     
     
@@ -539,7 +551,6 @@ typedef NSInteger GameState;
                                     20,
                              40, 0);
     }
-    [self setPositionOfChangeBackgroundColorButton];
     [self.superParentScrollView addSubview:self.gridHolderView];
     [self.superParentScrollView
         setContentSize:CGSizeMake(contentSizeWidth,
@@ -781,6 +792,7 @@ typedef NSInteger GameState;
 }
     
     [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:[NSString stringWithFormat:@"Game %@ Successfully stored in the database",gameName] cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
+    [self.view endEditing:YES];
 }
 
 
@@ -1039,7 +1051,6 @@ typedef NSInteger GameState;
     self.currentViewForColorpicker = self.gridHolderView;
     [self setupColorPickerView];
 }
-
 
 - (IBAction)changeScrollViewBackgroundColorPressed:(id)sender {
     self.currentViewForColorpicker = self.superParentScrollView;
