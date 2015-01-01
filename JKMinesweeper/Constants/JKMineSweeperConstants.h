@@ -16,11 +16,34 @@
 #define ANIMATED_IMAGE_URL @"http://bigpinekey.com/wp-content/uploads/an_exploding_bomb.gif"
 
 #define cellIdentifier @"JKScoresCustomTableViewCell"
-#define SELECT_LEVEL_TITLE @"Select Target Level"
+
 #define HIDE_POPOVER_VIEW_NOTIFICATION @"dismissCurrentViewController"
 #define TIMER_VALUE_CHANGED @"timer_changed"
 #define SOUND_SETTINGS_CHANGED @"soundSettingsChanged"
-//Defines for sound effect file names
+
+//Define enums used in the program
+enum {
+    NotStarted,
+    InProgress,
+    OverAndWin,
+    OverAndLoss
+};
+
+
+enum {
+    Foreground,
+    Background,
+    Timer
+};
+
+enum {
+    NewGame,
+    SavedGame
+};
+
+typedef NSInteger CurrentGameState;
+typedef NSInteger SoundCategory;
+typedef NSInteger GameState;
 
 
 @interface JKMineSweeperConstants : NSObject

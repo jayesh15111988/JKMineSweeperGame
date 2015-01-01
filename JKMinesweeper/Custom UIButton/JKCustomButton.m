@@ -89,7 +89,7 @@
     
     if(previousButtonState.currentTileState == TileIsSelected) {
         [self setBackgroundColor:[UIColor redColor]];
-        [self setTitle:[NSString stringWithFormat:@"%d",numberOfSurroundingMines] forState:UIControlStateNormal];
+        [self setTitle:[NSString stringWithFormat:@"%ld",(long)numberOfSurroundingMines] forState:UIControlStateNormal];
     }
     else if (previousButtonState.currentTileState == TileIsQuestionMarked) {
         [self setTitle:@"?" forState:UIControlStateNormal];
@@ -109,7 +109,7 @@
 - (IBAction)tileButtonSelected:(JKCustomButton *)sender {
 
     // Go in the block only if tile is not previously selected by the user
-    DLog(@"%d",self.buttonStateModel.currentTileState);
+    DLog(@"%ld",(long)self.buttonStateModel.currentTileState);
     if (self.buttonStateModel.currentTileState == TileIsNotSelected) {
         self.buttonStateModel.currentTileState = TileIsSelected;
 

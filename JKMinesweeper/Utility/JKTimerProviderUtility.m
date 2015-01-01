@@ -50,7 +50,7 @@
     
     NSInteger minutes = self.currentNumberOfSeconds / 60;
     NSInteger seconds = self.currentNumberOfSeconds % 60;
-    return [NSString stringWithFormat:@"%02d : %02d",minutes, seconds];
+    return [NSString stringWithFormat:@"%02ld : %02ld",(long)minutes, (long)seconds];
 }
 
 

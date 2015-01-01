@@ -32,31 +32,7 @@
 
 typedef void (^resetTilesFinishedBlock)();
 
-enum {
-    NotStarted,
-    InProgress,
-    OverAndWin,
-    OverAndLoss
-};
-
-
-enum {
-    Foreground,
-    Background,
-    Timer
-};
-
-enum {
-    NewGame,
-    SavedGame
-};
-
-typedef NSInteger CurrentGameState;
-typedef NSInteger SoundCategory;
-typedef NSInteger GameState;
-
-@interface JKMinesweeperHomeViewController () <UIAlertViewDelegate,
-                                               UIActionSheetDelegate>
+@interface JKMinesweeperHomeViewController () <UIAlertViewDelegate, UIActionSheetDelegate>
 
 @property(weak, nonatomic) IBOutlet UITextField *gridSizeInputText;
 @property(strong, nonatomic) UIView *gridHolderView;
@@ -79,8 +55,7 @@ typedef NSInteger GameState;
 @property(strong, nonatomic) NSMutableArray *regularButtonsHolder;
 
 @property(assign, nonatomic) NSInteger totalNumberOfRequiredTiles;
-@property(strong, nonatomic)
-    NSMutableDictionary *numberOfSurroundingMinesHolder;
+@property(strong, nonatomic) NSMutableDictionary *numberOfSurroundingMinesHolder;
 - (IBAction)resetButtonPressed:(id)sender;
 - (IBAction)revealMinesButtonPressed:(id)sender;
 @property(weak, nonatomic) IBOutlet UIButton *revealMenuButton;
@@ -191,7 +166,6 @@ typedef NSInteger GameState;
         [saveGameScoreDialogue show];
         return [RACSignal empty];
     }];
-    
 
     
     self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
@@ -214,12 +188,12 @@ typedef NSInteger GameState;
                     return (currentButtonState == TileIsSelected || currentButtonState == TileIsQuestionMarked);
                 }];
                 
-                DLog(@"%d and %d",strongSelf.regularButtonsHolder.count,strongSelf.minesButtonsHolder.count);
+                DLog(@"%ld and %ld", (long)strongSelf.regularButtonsHolder.count, (long)strongSelf.minesButtonsHolder.count);
                 
                 strongSelf.totalNumberOfTilesRevealed = [collectionWithSelectedTiles count];
                 
                 for(JKCustomButton* individualButton in allCustomButtonCollection) {
-                    DLog(@"In button mine %d Sequence number %d current tile state %d ",individualButton.buttonStateModel.isThisButtonMine, individualButton.buttonSequenceNumber, individualButton.buttonStateModel.currentTileState);
+                    DLog(@"In button mine %ld Sequence number %ld current tile state %ld ", (long)individualButton.buttonStateModel.isThisButtonMine, (long)individualButton.buttonSequenceNumber, (long)individualButton.buttonStateModel.currentTileState);
                     individualButton.frame = CGRectMake(individualButton.positionOnScreen.x, individualButton.positionOnScreen.y, strongSelf.tileWidth, strongSelf.tileWidth);
                     
                     [individualButton configurePreviousButton:individualButton.positionOnScreen andWidth:strongSelf.tileWidth andButtonState:individualButton.buttonStateModel];
@@ -255,7 +229,7 @@ typedef NSInteger GameState;
                     [strongSelf.gridHolderView addSubview:individualButton];
                 }
                 
-                 DLog(@"%d and %d %d",strongSelf.regularButtonsHolder.count,strongSelf.minesButtonsHolder.count,strongSelf.gridHolderView.subviews.count);
+                 DLog(@"%ld and %ld %ld", (long)strongSelf.regularButtonsHolder.count, (long)strongSelf.minesButtonsHolder.count,(long)strongSelf.gridHolderView.subviews.count);
             };
         }
         
@@ -289,7 +263,7 @@ typedef NSInteger GameState;
     self.gameStateNewLoaded = SavedGame;
     self.currentScoreValue = selectedGameModel.score;
     self.currentScore.text = [NSString stringWithFormat:@"%ld",(long)self.currentScoreValue];
-    DLog(@"current score is %d",selectedGameModel.score);
+    DLog(@"current score is %ld", (long)selectedGameModel.score);
     [self.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld",(long)(selectedGameModel.levelNumber)] forState:UIControlStateNormal];
     self.levelNumberSelected = selectedGameModel.levelNumber;
     self.gridSizeInputText.text = selectedGameModel.numberOfTilesInRow;
@@ -396,10 +370,10 @@ typedef NSInteger GameState;
 
 - (IBAction)verifyLossWinButtonPressed:(UIButton *)sender {
 
-
-    BOOL didUserWinCurrentGame =
-        (_totalNumberOfTilesRevealed ==
-         (self.maximumTileSequence - self.totalNumberOfMinesOnGrid));
+    //We are prechecking if user has won this game after checking status for each tile revealed. Sender is nil if user has already won this game. If button has manual entry, then user is probably still in the game
+    
+    BOOL didUserWinCurrentGame = (sender == nil);
+    
     NSString *currentGameStatusMessage = @"N/A";
     
     if(self.gameState != NotStarted) {
@@ -424,6 +398,11 @@ typedef NSInteger GameState;
     }
     [self showAlertViewWithMessage:currentGameStatusMessage];
 }
+
+-(BOOL)didWinUserCurrentGameLiveCheck {
+    return  (_totalNumberOfTilesRevealed == (self.maximumTileSequence - self.totalNumberOfMinesOnGrid));
+}
+
 
 -(NSInteger)setupGridHolderView {
     
@@ -547,10 +526,9 @@ typedef NSInteger GameState;
         self.superParentScrollView.contentInset =
             UIEdgeInsetsMake(0, ((self.gridHolderView.frame.size.width -
                                   self.superParentScrollView.frame.size.width) /
-                                 2) +
-                                    20,
-                             40, 0);
+                                 2) + 20, 40, 0);
     }
+    
     [self.superParentScrollView addSubview:self.gridHolderView];
     [self.superParentScrollView
         setContentSize:CGSizeMake(contentSizeWidth,
@@ -651,7 +629,7 @@ typedef NSInteger GameState;
         buttonWithCurrentIdentifier.isVisited = YES;
         buttonWithCurrentIdentifier.buttonStateModel.currentTileState =
             TileIsSelected;
-        DLog(@"%d tiles revealed",self.totalNumberOfTilesRevealed);
+        DLog(@"%ld tiles revealed", (long)self.totalNumberOfTilesRevealed);
         if ((buttonWithCurrentIdentifier.buttonStateModel
                  .numberOfNeighboringMines == 0)) {
 
@@ -683,6 +661,10 @@ typedef NSInteger GameState;
         }
         self.currentScore.text =
             [NSString stringWithFormat:@"%ld", (long)self.currentScoreValue];
+        //After each revelation check if user has won the game or not
+        if([self didWinUserCurrentGameLiveCheck]) {
+            [self verifyLossWinButtonPressed:nil];
+        }
     }
 }
 
@@ -746,7 +728,6 @@ typedef NSInteger GameState;
     }
 }
 
-
 -(void)saveCurrentGameInDataBaseWithName:(NSString*)gameName andToCreateNewObject:(BOOL)toCreateNewGame {
     
     RLMRealm* currentRealm = [RLMRealm defaultRealm];
@@ -799,7 +780,7 @@ typedef NSInteger GameState;
 -(void)showSaveScoreDialogueBox {
     UIAlertView *saveGameScoreDialogue =
     [[UIAlertView alloc] initWithTitle:@"Minesweeper"
-                               message:@"Please type your name for this score"
+                               message:@"Please type name for this score"
                               delegate:self
                      cancelButtonTitle:@"Cancel"
                      otherButtonTitles:@"Ok", nil];
@@ -970,7 +951,7 @@ typedef NSInteger GameState;
     if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
         //older than iOS 8 code here
         UIActionSheet *popup = [[UIActionSheet alloc]
-                                initWithTitle:SELECT_LEVEL_TITLE
+                                initWithTitle:@"Select Target Level"
                                 delegate:self
                                 cancelButtonTitle:@"Cancel"
                                 destructiveButtonTitle:nil
@@ -996,7 +977,7 @@ typedef NSInteger GameState;
 
 - (void)showiOS8ActionSheet {
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:SELECT_LEVEL_TITLE
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Select Target Level"
                                                                              message:@""
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     

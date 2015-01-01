@@ -28,7 +28,7 @@
 }
 
 -(NSString*)description {
-    return [NSString stringWithFormat:@"%@ %@ %d, %d",self.p1,NSStringFromCGPoint(self.p2),self.p3,self.p4];
+    return [NSString stringWithFormat:@"%@ %@ %ld, %ld",self.p1,NSStringFromCGPoint(self.p2), (long)self.p3, (long)self.p4];
 }
 
 @end
