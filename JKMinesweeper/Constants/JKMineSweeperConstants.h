@@ -13,6 +13,8 @@
 #define MULTIPLE_ANIMATION_DURATION 0.04
 #define GIF_IMAGE_ANIMATION_DURATION 2.5
 
+#define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+
 #define ANIMATED_IMAGE_URL @"http://bigpinekey.com/wp-content/uploads/an_exploding_bomb.gif"
 
 #define cellIdentifier @"JKScoresCustomTableViewCell"

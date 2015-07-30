@@ -17,6 +17,7 @@
 #import <KLCPopup.h>
 
 #import "SaveGameModel.h"
+#import <JKAutolayoutReadyScrollView/ScrollViewAutolayoutCreator.h>
 #import "JKAudioOperations.h"
 #import "JKRandomStringGenerator.h"
 #import "JKMinesweeperHomeViewController.h"
@@ -39,7 +40,10 @@ typedef void (^resetTilesFinishedBlock)();
 @property(strong, nonatomic) UIView *gridHolderView;
 @property(strong, nonatomic) NSMutableDictionary *minesLocationHolder;
 @property(assign, nonatomic) NSInteger totalNumberOfMinesOnGrid;
-@property(weak, nonatomic) IBOutlet UIScrollView *superParentScrollView;
+@property (weak, nonatomic) IBOutlet UIView *topHeaderOptionsView;
+@property (strong, nonatomic) ScrollViewAutolayoutCreator* scrollViewAutoLayout;
+@property (weak, nonatomic) IBOutlet UIView *gridHolderSuperView;
+
 @property (strong, nonatomic) UIView* currentViewForColorpicker;
 @property (strong, nonatomic) NSString* currentGameIdentifier;
 @property (strong, nonatomic) FLAnimatedImage *animatedExplosionImage;
@@ -100,6 +104,7 @@ typedef void (^resetTilesFinishedBlock)();
     [self setupUIFromUserDefaultParameters];
     self.currentScoreValue = 0;
     self.gridHolderView = [[UIView alloc] init];
+    self.gridHolderView.translatesAutoresizingMaskIntoConstraints = NO;
     self.minesLocationHolder = [NSMutableDictionary new];
     self.minesButtonsHolder = [NSMutableArray new];
     self.regularButtonsHolder = [NSMutableArray new];
@@ -256,7 +261,10 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (void)showInPopupWithView:(UIView*)inputPopupView {
     self.popupView = [KLCPopup popupWithContentView:inputPopupView showType:KLCPopupShowTypeSlideInFromTop dismissType:KLCPopupDismissTypeSlideOutToTop maskType:KLCPopupMaskTypeDimmed dismissOnBackgroundTouch:YES dismissOnContentTouch:NO];
-    inputPopupView.transform = CGAffineTransformMakeRotation(-M_PI/2);
+    
+    if (IS_OS_8_OR_LATER) {
+        inputPopupView.transform = CGAffineTransformMakeRotation(-M_PI/2);
+    }
     [self.popupView show];
 }
 
@@ -416,14 +424,9 @@ typedef void (^resetTilesFinishedBlock)();
     NSInteger gridHeightAndWidth =
     (self.tileWidth * self.totalNumberOfRequiredTiles) +
     (self.gutterSpacing * (self.totalNumberOfRequiredTiles - 1));
-    CGFloat startingXPositionForGridView =
-    self.view.center.x - (gridHeightAndWidth / 2);
-    DLog(@"%@", NSStringFromCGRect(self.view.frame));
     self.gridHolderView.frame =
     CGRectMake(self.view.center.y - gridHeightAndWidth/2,20, gridHeightAndWidth,
                gridHeightAndWidth);
-    //self.gridHolderView.center = CGPointMake(self.view.center.y, self.view.center.x);
-
     [self setPositionOfChangeBackgroundColorButton];
     return gridHeightAndWidth;
 }
@@ -523,23 +526,36 @@ typedef void (^resetTilesFinishedBlock)();
         }
     }
 
-    CGFloat contentSizeWidth = self.superParentScrollView.frame.size.width;
-    if (self.gridHolderView.frame.size.width >
-        self.superParentScrollView.frame.size.width) {
-
-        contentSizeWidth = self.gridHolderView.frame.size.width + 20;
-
-
-        self.superParentScrollView.contentInset =
-            UIEdgeInsetsMake(0, ((self.gridHolderView.frame.size.width -
-                                  self.superParentScrollView.frame.size.width) /
-                                 2) + 20, 40, 0);
-    }
+//    CGFloat contentSizeWidth = self.superParentScrollView.frame.size.width;
+//    if (self.gridHolderView.frame.size.width >
+//        self.superParentScrollView.frame.size.width) {
+//
+//        contentSizeWidth = self.gridHolderView.frame.size.width + 20;
+//
+//
+//        self.superParentScrollView.contentInset =
+//            UIEdgeInsetsMake(0, ((self.gridHolderView.frame.size.width -
+//                                  self.superParentScrollView.frame.size.width) /
+//                                 2) + 20, 40, 0);
+//    }
+//    
+//    [self.superParentScrollView addSubview:self.gridHolderView];
+//    [self.superParentScrollView
+//        setContentSize:CGSizeMake(contentSizeWidth,
+//                                  self.gridHolderView.frame.size.height + 40)];
     
-    [self.superParentScrollView addSubview:self.gridHolderView];
-    [self.superParentScrollView
-        setContentSize:CGSizeMake(contentSizeWidth,
-                                  self.gridHolderView.frame.size.height + 40)];
+    self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.gridHolderSuperView];
+    [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderView];
+    [self.gridHolderSuperView addSubview:self.changeGridBakcgroundColorButton];
+    [self.gridHolderSuperView setBackgroundColor:[UIColor colorWithRed:0.94 green:0.67 blue:0.3 alpha:1.0]];
+    self.gridHolderView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.gridHolderView.frame.size.width]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_gridHolderView(totalGridViewHeight)]" options:kNilOptions metrics:@{@"totalGridViewHeight": @(self.gridHolderView.frame.size.height)} views:NSDictionaryOfVariableBindings(_gridHolderView)]];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_gridHolderView]-10-[_changeGridBakcgroundColorButton(30)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_gridHolderView, _changeGridBakcgroundColorButton)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_changeGridBakcgroundColorButton(30)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings( _changeGridBakcgroundColorButton)]];
+    
 }
 
 -(void)playGameOverSound {
@@ -594,18 +610,13 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 -(void)setPositionOfChangeBackgroundColorButton {
-    CGRect changeGridColorButtonUpdatedFrame = CGRectMake(self.gridHolderView.frame.size.width + self.gridHolderView.frame.origin.x + 10, self.gridHolderView.frame.origin.y, 30, 30);
-    
+   
     if(!self.changeGridBakcgroundColorButton) {
-        self.changeGridBakcgroundColorButton = [[UIButton alloc] initWithFrame:changeGridColorButtonUpdatedFrame];
+        self.changeGridBakcgroundColorButton = [[UIButton alloc] init];
+        self.changeGridBakcgroundColorButton.translatesAutoresizingMaskIntoConstraints = NO;
         [self.changeGridBakcgroundColorButton setBackgroundImage:[UIImage imageNamed:@"changeColor"] forState:UIControlStateNormal];
         [self.changeGridBakcgroundColorButton addTarget:self action:@selector(changeGridBackgroundColorButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        [self.superParentScrollView addSubview:self.changeGridBakcgroundColorButton];
     }
-    else {
-        self.changeGridBakcgroundColorButton.frame = changeGridColorButtonUpdatedFrame;
-    }
-    
 }
 
 - (JKCustomButton *)getButtonWithSequence:(NSInteger)buttonSequence {
@@ -1040,7 +1051,7 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (IBAction)changeScrollViewBackgroundColorPressed:(id)sender {
-    self.currentViewForColorpicker = self.superParentScrollView;
+    self.currentViewForColorpicker = self.gridHolderSuperView;
     [self setupColorPickerView];
 }
 
@@ -1048,32 +1059,51 @@ typedef void (^resetTilesFinishedBlock)();
     
     if(!self.colorPickerView) {
         self.colorPickerView = [[HRColorPickerView alloc] init];
+        self.colorPickerView.translatesAutoresizingMaskIntoConstraints = NO;
         self.colorPickerView.colorInfoView.hidden = YES;
-        self.colorPickerView.color = self.superParentScrollView.backgroundColor;
+        self.colorPickerView.alpha = 0.0;
+        
+        self.colorPickerView.color = self.gridHolderSuperView.backgroundColor;
         [self.colorPickerView addTarget:self
                                  action:@selector(colorDidChanged:)
                        forControlEvents:UIControlEventValueChanged];
-        self.colorPickerView.frame = CGRectMake(0, 0, 300, 300);
-        self.colorPickerView.center = self.view.center;
-        self.colorPickerView.alpha = 0.0;
-        [self.view addSubview:self.colorPickerView];
+        [self.gridHolderSuperView addSubview:self.colorPickerView];
         
-        self.bottomViewForColorPicker = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.colorPickerView.frame.size.height, 54)];
+        
+        
+        self.bottomViewForColorPicker = [[UIView alloc] init];
+        self.bottomViewForColorPicker.translatesAutoresizingMaskIntoConstraints = NO;
         [self.bottomViewForColorPicker setBackgroundColor:[UIColor lightTextColor]];
-        UIButton* hideColorPickerButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 5, 100, 44)];
+        [self.gridHolderSuperView addSubview:self.bottomViewForColorPicker];
         
+        [self addConstraintsToColorPickerView];
+        
+        UIButton* hideColorPickerButton = [[UIButton alloc] init];//WithFrame:CGRectMake(0, 5, 100, 44)];
+        hideColorPickerButton.translatesAutoresizingMaskIntoConstraints = NO;
         hideColorPickerButton.center = self.bottomViewForColorPicker.center;
         hideColorPickerButton.backgroundColor = [UIColor colorWithRed:200/255.0 green:210/255.0 blue:80/255.0 alpha:1.0];
         [hideColorPickerButton setTitle:@"Ok" forState:UIControlStateNormal];
         [hideColorPickerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [hideColorPickerButton addTarget:self action:@selector(hideColorPickerView:) forControlEvents:UIControlEventTouchUpInside];
         [self.bottomViewForColorPicker addSubview:hideColorPickerButton];
-        self.bottomViewForColorPicker.frame = CGRectMake(self.colorPickerView.frame.origin.x, self.colorPickerView.frame.size.height + self.colorPickerView.frame.origin.y, self.bottomViewForColorPicker.frame.size.width, self.bottomViewForColorPicker.frame.size.height);
         self.bottomViewForColorPicker.alpha = 0.0;
-        [self.view addSubview:self.bottomViewForColorPicker];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[hideColorPickerButton]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(hideColorPickerButton)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[hideColorPickerButton]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(hideColorPickerButton)]];
+        
     }
     self.bottomViewForColorPicker.alpha = 1.0;
     self.colorPickerView.alpha = 1.0;
+}
+
+- (void)addConstraintsToColorPickerView {
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:300]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:300]];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_colorPickerView]-10-[_bottomViewForColorPicker]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_colorPickerView, _bottomViewForColorPicker)]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.bottomViewForColorPicker attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.bottomViewForColorPicker attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
 }
 
 -(IBAction)hideColorPickerView:(UIButton*)sender {

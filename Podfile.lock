@@ -16,6 +16,8 @@ PODS:
     - BlocksKit/DynamicDelegate
   - Color-Picker-for-iOS (2.0.2)
   - FLAnimatedImage (1.0.8)
+  - JKAutolayoutReadyScrollView (0.0.1):
+    - TPKeyboardAvoiding (~> 1.2)
   - KLCPopup (1.0)
   - ReactiveCocoa (2.5):
     - ReactiveCocoa/UI (= 2.5)
@@ -24,24 +26,37 @@ PODS:
   - ReactiveCocoa/no-arc (2.5)
   - ReactiveCocoa/UI (2.5):
     - ReactiveCocoa/Core
-  - Realm (0.93.2):
-    - Realm/Headers (= 0.93.2)
-  - Realm/Headers (0.93.2)
+  - Realm (0.94.0):
+    - Realm/Headers (= 0.94.0)
+  - Realm/Headers (0.94.0)
+  - TPKeyboardAvoiding (1.2.9)
 
 DEPENDENCIES:
   - BlocksKit (~> 2.2)
   - Color-Picker-for-iOS (~> 2.0)
   - FLAnimatedImage (~> 1.0)
+  - JKAutolayoutReadyScrollView (from `https://github.com/jayesh15111988/JKAutolayoutReadyScrollView.git`)
   - KLCPopup (~> 1.0)
   - ReactiveCocoa (~> 2.4)
   - Realm
+
+EXTERNAL SOURCES:
+  JKAutolayoutReadyScrollView:
+    :git: https://github.com/jayesh15111988/JKAutolayoutReadyScrollView.git
+
+CHECKOUT OPTIONS:
+  JKAutolayoutReadyScrollView:
+    :commit: 990b2d6e03711889bc51ba6ca698e28b2e8b688f
+    :git: https://github.com/jayesh15111988/JKAutolayoutReadyScrollView.git
 
 SPEC CHECKSUMS:
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Color-Picker-for-iOS: 4980589b3e3cfe7198f227dd50be9adb02d8bc0b
   FLAnimatedImage: f9422f796135aff80d8c00b2afc48015bb746e24
+  JKAutolayoutReadyScrollView: 904d57c81dab54bf0bc1c12453e2d61ff7c5279b
   KLCPopup: 76c5a19227977f1e53d85236f9ef42257c168d98
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
-  Realm: 2fdd0ae74f730e190384e0338d8a0d3654df8220
+  Realm: a046149653e0ca220b65b5783da907aa5b74d86c
+  TPKeyboardAvoiding: ff1ee4e5a5a0c119b965552af8f183868ea20207
 
 COCOAPODS: 0.37.2
