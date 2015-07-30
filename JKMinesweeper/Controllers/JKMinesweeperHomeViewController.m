@@ -424,9 +424,6 @@ typedef void (^resetTilesFinishedBlock)();
     NSInteger gridHeightAndWidth =
     (self.tileWidth * self.totalNumberOfRequiredTiles) +
     (self.gutterSpacing * (self.totalNumberOfRequiredTiles - 1));
-    self.gridHolderView.frame =
-    CGRectMake(self.view.center.y - gridHeightAndWidth/2,20, gridHeightAndWidth,
-               gridHeightAndWidth);
     [self setPositionOfChangeBackgroundColorButton];
     return gridHeightAndWidth;
 }
@@ -546,12 +543,18 @@ typedef void (^resetTilesFinishedBlock)();
     
     self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.gridHolderSuperView];
     [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderView];
+    
+    
+//    self.gridHolderView.frame =
+//    CGRectMake(self.view.center.y - gridHeightAndWidth/2,20, gridHeightAndWidth,
+//               gridHeightAndWidth);
+    
     [self.gridHolderSuperView addSubview:self.changeGridBakcgroundColorButton];
     [self.gridHolderSuperView setBackgroundColor:[UIColor colorWithRed:0.94 green:0.67 blue:0.3 alpha:1.0]];
-    self.gridHolderView.translatesAutoresizingMaskIntoConstraints = NO;
+    
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.gridHolderView.frame.size.width]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_gridHolderView(totalGridViewHeight)]" options:kNilOptions metrics:@{@"totalGridViewHeight": @(self.gridHolderView.frame.size.height)} views:NSDictionaryOfVariableBindings(_gridHolderView)]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:gridHeightAndWidth]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_gridHolderView(totalGridViewHeight)]" options:kNilOptions metrics:@{@"totalGridViewHeight": @(gridHeightAndWidth)} views:NSDictionaryOfVariableBindings(_gridHolderView)]];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_gridHolderView]-10-[_changeGridBakcgroundColorButton(30)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_gridHolderView, _changeGridBakcgroundColorButton)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_changeGridBakcgroundColorButton(30)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings( _changeGridBakcgroundColorButton)]];
