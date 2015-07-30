@@ -31,6 +31,7 @@
 #import "JKMinesweeperScoresViewController.h"
 #import "JKMinesweeperSettingsViewController.h"
 #import "JKTimerProviderUtility.h"
+#import <ReactiveCocoa.h>
 
 typedef void (^resetTilesFinishedBlock)();
 
@@ -100,27 +101,17 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.audioOperationsManager = [[JKAudioOperations alloc] init];
+    self.levelNumberSelected = 1;
     [self setupUIFromUserDefaultParameters];
-    self.currentScoreValue = 0;
+    self.audioOperationsManager = [[JKAudioOperations alloc] init];
     self.gridHolderView = [[UIView alloc] init];
     self.gridHolderView.translatesAutoresizingMaskIntoConstraints = NO;
     self.minesLocationHolder = [NSMutableDictionary new];
     self.minesButtonsHolder = [NSMutableArray new];
     self.regularButtonsHolder = [NSMutableArray new];
     self.numberOfSurroundingMinesHolder = [NSMutableDictionary new];
-    self.totalNumberOfTilesRevealed = 0;
-    [self.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld", (long)self.levelNumberSelected] forState:UIControlStateNormal];
-
-    [self.verifyLossWinButton addTarget:self
-                                 action:@selector(verifyLossWinButtonPressed:)
-                       forControlEvents:UIControlEventTouchUpInside];
-
-    [self.levelNumberButton addTarget:self
-                               action:@selector(levelNumberButtonPressed:)
-                     forControlEvents:UIControlEventTouchUpInside];
-    [self setupRACSignalsAndNotifications];
     
+    [self setupRACSignalsAndNotifications];
     [self playGameStartSound];
     [self createNewGridWithParameters];
 }
@@ -133,14 +124,21 @@ typedef void (^resetTilesFinishedBlock)();
     
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSounds) name:SOUND_SETTINGS_CHANGED object:nil];
     
-    [RACObserve(self, levelNumberSelected) subscribeNext:^(NSNumber *newLevelnumber) {
-        [[NSUserDefaults standardUserDefaults] setObject:newLevelnumber forKey:@"currentLevel"];
-        [self.levelNumberButton
-         setTitle:[NSString
-                   stringWithFormat:@"Level %@", newLevelnumber]
-         forState:UIControlStateNormal];
+    [RACObserve(self, levelNumberSelected) subscribeNext:^(NSNumber* levelNumber) {
+        [[NSUserDefaults standardUserDefaults] setObject:levelNumber forKey:@"currentLevel"];
+        [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
+        [self.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld",(long)([levelNumber integerValue])] forState:UIControlStateNormal];
     }];
     
+    self.verifyLossWinButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        [self verifyLossWinButtonPressedWithUserWonCurrentGame:NO];
+        return [RACSignal empty];
+    }];
+    
+    self.levelNumberButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        [self levelNumberButtonPressed];
+        return [RACSignal empty];
+    }];
     
     [RACObserve(self, totalNumberOfTilesRevealed) subscribeNext:^(NSNumber *numberOfTilesUnleashed) {
         if([numberOfTilesUnleashed integerValue] > 0) {
@@ -270,7 +268,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 -(void)resetGameBeforeLoadingPreviousGame:(SaveGameModel*)selectedGameModel {
     
-    //Unreveal all tiles if they are revealed in the previous game
+    // Unreveal all tiles if they are revealed in the previous game.
     if(self.revealMenuButton.tag == MINES_REVEALED_STATE) {
         [self resetRevealMenuButton];
     }
@@ -279,7 +277,6 @@ typedef void (^resetTilesFinishedBlock)();
     self.currentScoreValue = selectedGameModel.score;
     self.currentScore.text = [NSString stringWithFormat:@"%ld",(long)self.currentScoreValue];
     DLog(@"current score is %ld", (long)selectedGameModel.score);
-    [self.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld",(long)(selectedGameModel.levelNumber)] forState:UIControlStateNormal];
     self.levelNumberSelected = selectedGameModel.levelNumber;
     self.gridSizeInputText.text = selectedGameModel.numberOfTilesInRow;
          
@@ -349,6 +346,8 @@ typedef void (^resetTilesFinishedBlock)();
     self.tileWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"tileWidth"] integerValue];
     self.gutterSpacing = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"] integerValue];
     self.toPlaySound = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
+    self.currentScoreValue = 0;
+    self.totalNumberOfTilesRevealed = 0;
     [self updateUIWithNewTimeValue];
 }
 
@@ -383,11 +382,11 @@ typedef void (^resetTilesFinishedBlock)();
     [self.audioOperationsManager stopBackgroundMusic];
 }
 
-- (IBAction)verifyLossWinButtonPressed:(UIButton *)sender {
+- (void)verifyLossWinButtonPressedWithUserWonCurrentGame:(BOOL)userWonCurrentGame {
 
     //We are prechecking if user has won this game after checking status for each tile revealed. Sender is nil if user has already won this game. If button has manual entry, then user is probably still in the game
     
-    BOOL didUserWinCurrentGame = (sender == nil);
+    BOOL didUserWinCurrentGame = userWonCurrentGame;
     
     NSString *currentGameStatusMessage = @"N/A";
     
@@ -542,7 +541,7 @@ typedef void (^resetTilesFinishedBlock)();
 //                                  self.gridHolderView.frame.size.height + 40)];
     
     self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.gridHolderSuperView];
-    [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderView];
+    [self.gridHolderSuperView addSubview:self.gridHolderView];
     
     
 //    self.gridHolderView.frame =
@@ -684,7 +683,7 @@ typedef void (^resetTilesFinishedBlock)();
             [NSString stringWithFormat:@"%ld", (long)self.currentScoreValue];
         //After each revelation check if user has won the game or not
         if([self didWinUserCurrentGameLiveCheck]) {
-            [self verifyLossWinButtonPressed:nil];
+            [self verifyLossWinButtonPressedWithUserWonCurrentGame:YES];
         }
     }
 }
@@ -704,18 +703,12 @@ typedef void (^resetTilesFinishedBlock)();
 - (void)alertView:(UIAlertView *)alertView
     clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(alertView.tag == 13) {
-        
         if(self.gameState == OverAndWin || self.gameState == OverAndLoss) {
             [self showSaveScoreDialogueBox];
         }
-        
-        if (buttonIndex == 0) {
-            [self resetGridWithNewTilesAndCompletionBlock:^{
-                [self createNewGridWithParameters];
-            }];
-        }
     }
     else if(alertView.tag == 14){
+        
         
         if(buttonIndex == 1) {
             NSString* inputUserName = [[alertView textFieldAtIndex:0] text];
@@ -724,6 +717,9 @@ typedef void (^resetTilesFinishedBlock)();
             }
             [ScoreSaver saveScoreInDatabaseWithUserName:inputUserName andScoreValue:self.currentScore.text andSelectedGameLevel:self.levelNumberSelected];
         }
+        [self resetGridWithNewTilesAndCompletionBlock:^{
+            [self createNewGridWithParameters];
+        }];
     }
     else if (alertView.tag == 15) {
         if(buttonIndex == 1) {
@@ -968,7 +964,7 @@ typedef void (^resetTilesFinishedBlock)();
     }
 }
 
-- (IBAction)levelNumberButtonPressed:(id)sender {
+- (void)levelNumberButtonPressed {
     [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
         //older than iOS 8 code here
@@ -985,18 +981,6 @@ typedef void (^resetTilesFinishedBlock)();
     }
 }
 
-- (void)actionSheet:(UIActionSheet *)popup
-    clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex < 4) {
-        [self setViewForSelectedLevelWithNumber:buttonIndex + 1];
-    }
-}
-
--(void)setViewForSelectedLevelWithNumber:(NSInteger)levelNumber {
-    [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
-    self.levelNumberSelected = levelNumber;
-}
-
 - (void)showiOS8ActionSheet {
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Select Target Level"
@@ -1004,40 +988,40 @@ typedef void (^resetTilesFinishedBlock)();
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *easyLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Easy", @"Easy action")
-                                                          style:UIAlertActionStyleDefault
-                                                        handler:^(UIAlertAction *action)
-                                  {
-                                      [self setViewForSelectedLevelWithNumber:1];
-                                  }];
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    self.levelNumberSelected = 1;
+                                }];
     
     UIAlertAction *mediumLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Medium", @"Medium action")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction *action)
                                   {
-                                      [self setViewForSelectedLevelWithNumber:2];
+                                      self.levelNumberSelected = 2;
                                   }];
     
     UIAlertAction *difficultLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Difficult", @"Difficult action")
-                                                           style:UIAlertActionStyleDefault
-                                                         handler:^(UIAlertAction *action)
-                                   {
-                                       [self setViewForSelectedLevelWithNumber:3];
-                                       
-                                   }];
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction *action)
+                                     {
+                                         self.levelNumberSelected = 3;
+                                         
+                                     }];
     UIAlertAction *expertLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Expert", @"Expert action")
-                                                           style:UIAlertActionStyleDefault
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *action)
+                                  {
+                                      self.levelNumberSelected = 4;
+                                      
+                                  }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
+                                                           style:UIAlertActionStyleDestructive
                                                          handler:^(UIAlertAction *action)
                                    {
-                                       [self setViewForSelectedLevelWithNumber:4];
+                                
                                        
                                    }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
-                                                            style:UIAlertActionStyleDestructive
-                                                          handler:^(UIAlertAction *action)
-                                    {
-                                        DLog(@"Cancel Button Pressed");
-                                        
-                                    }];
     
     [alertController addAction:easyLevel];
     [alertController addAction:mediumLevel];
@@ -1046,6 +1030,13 @@ typedef void (^resetTilesFinishedBlock)();
     [alertController addAction:cancelAction];
     
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)actionSheet:(UIActionSheet *)popup
+    clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex < 4) {
+        self.levelNumberSelected = buttonIndex + 1;
+    }
 }
 
 -(void)changeGridBackgroundColorButtonPressed {
