@@ -14,31 +14,34 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
-  - Color-Picker-for-iOS (2.0)
-  - FLAnimatedImage (1.0.7)
-  - ReactiveCocoa (2.4.2):
-    - ReactiveCocoa/UI (= 2.4.2)
-  - ReactiveCocoa/Core (2.4.2):
+  - Color-Picker-for-iOS (2.0.2)
+  - FLAnimatedImage (1.0.8)
+  - KLCPopup (1.0)
+  - ReactiveCocoa (2.5):
+    - ReactiveCocoa/UI (= 2.5)
+  - ReactiveCocoa/Core (2.5):
     - ReactiveCocoa/no-arc
-  - ReactiveCocoa/no-arc (2.4.2)
-  - ReactiveCocoa/UI (2.4.2):
+  - ReactiveCocoa/no-arc (2.5)
+  - ReactiveCocoa/UI (2.5):
     - ReactiveCocoa/Core
-  - Realm (0.89.1):
-    - Realm/Headers (= 0.89.1)
-  - Realm/Headers (0.89.1)
+  - Realm (0.93.2):
+    - Realm/Headers (= 0.93.2)
+  - Realm/Headers (0.93.2)
 
 DEPENDENCIES:
   - BlocksKit (~> 2.2)
   - Color-Picker-for-iOS (~> 2.0)
   - FLAnimatedImage (~> 1.0)
+  - KLCPopup (~> 1.0)
   - ReactiveCocoa (~> 2.4)
   - Realm
 
 SPEC CHECKSUMS:
-  BlocksKit: 4439e7f30a9f90743462ca63545a15c1f4304cef
-  Color-Picker-for-iOS: 2eec454aa6b24a8b7c2537da0f61c6ead936949e
-  FLAnimatedImage: d9e8422a9e1d8ee9a657b7433b4a9b073ef3efb3
-  ReactiveCocoa: 8418a82b67af2f1b7587baf29c329040a23c2063
-  Realm: 20b0bd13983d64fd22afeb47489729fd71b6b5c6
+  BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
+  Color-Picker-for-iOS: 4980589b3e3cfe7198f227dd50be9adb02d8bc0b
+  FLAnimatedImage: f9422f796135aff80d8c00b2afc48015bb746e24
+  KLCPopup: 76c5a19227977f1e53d85236f9ef42257c168d98
+  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
+  Realm: 2fdd0ae74f730e190384e0338d8a0d3654df8220
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.37.2

@@ -14,6 +14,7 @@
 #import <RLMResults.h>
 #import <UIAlertView+BlocksKit.h>
 #import <NSArray+BlocksKit.h>
+#import <KLCPopup.h>
 
 #import "SaveGameModel.h"
 #import "JKAudioOperations.h"
@@ -87,6 +88,7 @@ typedef void (^resetTilesFinishedBlock)();
 @property (weak, nonatomic) IBOutlet UIButton *timerIndicatorButton;
 
 @property (strong, nonatomic) JKTimerProviderUtility* timerProviderUtility;
+@property (strong, nonatomic) KLCPopup* popupView;
 
 @end
 
@@ -234,8 +236,7 @@ typedef void (^resetTilesFinishedBlock)();
         }
         
         
-
-        [self presentPopupViewController:self.savedGamesViewController animationType:MJPopupViewAnimationSlideRightRight];
+        [self showInPopupWithView:self.savedGamesViewController.view];
         return [RACSignal empty];
     }];
     
@@ -251,6 +252,12 @@ typedef void (^resetTilesFinishedBlock)();
         }
         return [RACSignal empty];
     }];
+}
+
+- (void)showInPopupWithView:(UIView*)inputPopupView {
+    self.popupView = [KLCPopup popupWithContentView:inputPopupView showType:KLCPopupShowTypeSlideInFromTop dismissType:KLCPopupDismissTypeSlideOutToTop maskType:KLCPopupMaskTypeDimmed dismissOnBackgroundTouch:YES dismissOnContentTouch:NO];
+    inputPopupView.transform = CGAffineTransformMakeRotation(-M_PI/2);
+    [self.popupView show];
 }
 
 -(void)resetGameBeforeLoadingPreviousGame:(SaveGameModel*)selectedGameModel {
@@ -300,7 +307,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 -(void)dismissPresentedViewController {
     [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
-    [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideRightRight];
+    [self.popupView dismiss:YES];
 }
 
 -(void)updateUIWithNewTimeValue {
@@ -411,12 +418,12 @@ typedef void (^resetTilesFinishedBlock)();
     (self.gutterSpacing * (self.totalNumberOfRequiredTiles - 1));
     CGFloat startingXPositionForGridView =
     self.view.center.x - (gridHeightAndWidth / 2);
-    
-    
+    DLog(@"%@", NSStringFromCGRect(self.view.frame));
     self.gridHolderView.frame =
-    CGRectMake(startingXPositionForGridView - 20, 20, gridHeightAndWidth,
+    CGRectMake(self.view.center.y - gridHeightAndWidth/2,20, gridHeightAndWidth,
                gridHeightAndWidth);
-    
+    //self.gridHolderView.center = CGPointMake(self.view.center.y, self.view.center.x);
+
     [self setPositionOfChangeBackgroundColorButton];
     return gridHeightAndWidth;
 }
@@ -747,6 +754,7 @@ typedef void (^resetTilesFinishedBlock)();
         else {
             gameToStore.identifier = [JKRandomStringGenerator generateRandomStringWithLength:6];
         }
+        
         gameToStore.timestampOfSave = [[NSDate date] timeIntervalSince1970];
         gameToStore.savedGameData = gameDataToArchive;
         gameToStore.levelNumber = self.levelNumberSelected;
@@ -1082,7 +1090,7 @@ typedef void (^resetTilesFinishedBlock)();
     if(!self.pastScoresViewController) {
         self.pastScoresViewController = [[JKMinesweeperScoresViewController alloc] initWithNibName:@"JKMinesweeperScoresViewController" bundle:nil];
     }
-    [self presentPopupViewController:self.pastScoresViewController animationType:MJPopupViewAnimationSlideRightRight];
+    [self showInPopupWithView:self.pastScoresViewController.view];
 }
 
 - (IBAction)goToSettingsButtonPressed:(UIButton*)sender {
@@ -1090,7 +1098,7 @@ typedef void (^resetTilesFinishedBlock)();
     if(!self.settingsViewController) {
         self.settingsViewController = [[JKMinesweeperSettingsViewController alloc] initWithNibName:@"JKMinesweeperSettingsViewController" bundle:nil];
     }
-    [self presentPopupViewController:self.settingsViewController animationType:MJPopupViewAnimationSlideRightRight];
+    [self showInPopupWithView:self.settingsViewController.view];
 }
 
 
