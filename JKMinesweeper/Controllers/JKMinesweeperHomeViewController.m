@@ -11,11 +11,12 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import "UIViewController+MJPopupViewController.h"
 #import <Realm.h>
+#import <UIAlertView+BlocksKit.h>
+#import <ReactiveCocoa.h>
 #import <RLMResults.h>
 #import <UIAlertView+BlocksKit.h>
 #import <NSArray+BlocksKit.h>
 #import <KLCPopup.h>
-
 #import "SaveGameModel.h"
 #import <JKAutolayoutReadyScrollView/ScrollViewAutolayoutCreator.h>
 #import "JKAudioOperations.h"
@@ -31,11 +32,11 @@
 #import "JKMinesweeperScoresViewController.h"
 #import "JKMinesweeperSettingsViewController.h"
 #import "JKTimerProviderUtility.h"
-#import <ReactiveCocoa.h>
+#import "ColorPickerProvider.h"
 
 typedef void (^resetTilesFinishedBlock)();
 
-@interface JKMinesweeperHomeViewController () <UIAlertViewDelegate, UIActionSheetDelegate>
+@interface JKMinesweeperHomeViewController ()
 
 @property(weak, nonatomic) IBOutlet UITextField *gridSizeInputText;
 @property(strong, nonatomic) UIView *gridHolderView;
@@ -49,12 +50,10 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) NSString* currentGameIdentifier;
 @property (strong, nonatomic) FLAnimatedImage *animatedExplosionImage;
 
-@property (strong, nonatomic) HRColorPickerView* colorPickerView;
+@property (strong, nonatomic) UIView* colorPickerHolderView;
 @property (assign, nonatomic) CurrentGameState gameState;
 @property (assign, nonatomic) SoundCategory soundCategory;
 @property (assign, nonatomic) GameState gameStateNewLoaded;
-
-@property (strong, nonatomic) UIView* bottomViewForColorPicker;
 @property (strong, nonatomic) UIButton* changeGridBakcgroundColorButton;
 
 @property(strong, nonatomic) NSMutableArray *minesButtonsHolder;
@@ -102,10 +101,10 @@ typedef void (^resetTilesFinishedBlock)();
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.levelNumberSelected = 1;
-    [self setupUIFromUserDefaultParameters];
     self.audioOperationsManager = [[JKAudioOperations alloc] init];
     self.gridHolderView = [[UIView alloc] init];
     self.gridHolderView.translatesAutoresizingMaskIntoConstraints = NO;
+    
     self.minesLocationHolder = [NSMutableDictionary new];
     self.minesButtonsHolder = [NSMutableArray new];
     self.regularButtonsHolder = [NSMutableArray new];
@@ -118,11 +117,18 @@ typedef void (^resetTilesFinishedBlock)();
 
 -(void)setupRACSignalsAndNotifications {
     
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissPresentedViewController) name:HIDE_POPOVER_VIEW_NOTIFICATION object:nil];
+     [[[NSNotificationCenter defaultCenter] rac_addObserverForName:HIDE_POPOVER_VIEW_NOTIFICATION object:nil] subscribeNext:^(id x) {
+         [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
+         [self.popupView dismiss:YES];
+     }];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNewTimeValue) name:TIMER_VALUE_CHANGED object:nil];
+    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:TIMER_VALUE_CHANGED object:nil] subscribeNext:^(id x) {
+        [self updateUIWithNewTimeValue];
+    }];
     
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSounds) name:SOUND_SETTINGS_CHANGED object:nil];
+        [[[NSNotificationCenter defaultCenter] rac_addObserverForName:SOUND_SETTINGS_CHANGED object:nil] subscribeNext:^(id x) {
+            [self updateSounds];
+        }];
     
     [RACObserve(self, levelNumberSelected) subscribeNext:^(NSNumber* levelNumber) {
         [[NSUserDefaults standardUserDefaults] setObject:levelNumber forKey:@"currentLevel"];
@@ -161,14 +167,35 @@ typedef void (^resetTilesFinishedBlock)();
         UIAlertView *saveGameScoreDialogue =
         [[UIAlertView alloc] initWithTitle:@"Save Game"
                                    message:@"Please type your name this game"
-                                  delegate:self
+                                  delegate:nil
                          cancelButtonTitle:@"Cancel"
-                         otherButtonTitles:@"Ok", nil];
-        saveGameScoreDialogue.tag = 15;
+                         otherButtonTitles:@"OK", nil];
         saveGameScoreDialogue.alertViewStyle = UIAlertViewStylePlainTextInput;
         [[saveGameScoreDialogue textFieldAtIndex:0] setText:[formatter stringFromDate:[NSDate date]]];
-        
         [saveGameScoreDialogue show];
+        
+        [[saveGameScoreDialogue rac_buttonClickedSignal] subscribeNext:^(NSNumber* alertIndexSelected) {
+            NSInteger buttonIndex = [alertIndexSelected integerValue];
+            if(buttonIndex == 1) {
+                
+                NSString* saveGameName = [[saveGameScoreDialogue textFieldAtIndex:0] text];
+                //If it is a new game, save it with creation of new object
+                if(self.gameStateNewLoaded == NewGame) {
+                    [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
+                }
+                else{
+                    [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:@"Do you want to overwrite the existing game?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                        if(buttonIndex == 0){
+                            [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
+                        }
+                        else {
+                            [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:NO];
+                        }
+                    }];
+                }
+            }
+        }];
+        
         return [RACSignal empty];
     }];
 
@@ -244,7 +271,6 @@ typedef void (^resetTilesFinishedBlock)();
     }];
     
     self.timerIndicatorButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
-        DLog(@"Timer Button Pressed");
         
         if(self.timerProviderUtility.currentTimerState == TimerIsPlaying) {
             [self.audioOperationsManager stopBackgroundMusic];
@@ -310,11 +336,6 @@ typedef void (^resetTilesFinishedBlock)();
     }
 }
 
--(void)dismissPresentedViewController {
-    [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
-    [self.popupView dismiss:YES];
-}
-
 -(void)updateUIWithNewTimeValue {
     self.timerIndicatorButton.hidden = ![[[NSUserDefaults standardUserDefaults] objectForKey:@"timer"] boolValue];
     if(!self.timerIndicatorButton.hidden) {
@@ -358,8 +379,7 @@ typedef void (^resetTilesFinishedBlock)();
     
     [self setupUIFromUserDefaultParameters];
     [self resetRevealMenuButton];
-    self.totalNumberOfRequiredTiles =
-        [self.gridSizeInputText.text integerValue];
+    self.totalNumberOfRequiredTiles = [self.gridSizeInputText.text integerValue];
 
     if (self.totalNumberOfRequiredTiles < 3) {
         self.totalNumberOfRequiredTiles = 3;
@@ -434,8 +454,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.revealMenuButton.enabled = YES;
 
 
-    [self populateMinesHolderWithMinesLocationsWithMaximumGridWidth:
-              self.totalNumberOfRequiredTiles];
+    [self populateMinesHolderWithMinesLocationsWithMaximumGridWidth:self.totalNumberOfRequiredTiles];
     
     NSInteger gridHeightAndWidth = [self setupGridHolderView];
     
@@ -521,33 +540,11 @@ typedef void (^resetTilesFinishedBlock)();
             time = dispatch_time(time, MULTIPLE_ANIMATION_DURATION * NSEC_PER_SEC);
         }
     }
-
-//    CGFloat contentSizeWidth = self.superParentScrollView.frame.size.width;
-//    if (self.gridHolderView.frame.size.width >
-//        self.superParentScrollView.frame.size.width) {
-//
-//        contentSizeWidth = self.gridHolderView.frame.size.width + 20;
-//
-//
-//        self.superParentScrollView.contentInset =
-//            UIEdgeInsetsMake(0, ((self.gridHolderView.frame.size.width -
-//                                  self.superParentScrollView.frame.size.width) /
-//                                 2) + 20, 40, 0);
-//    }
-//    
-//    [self.superParentScrollView addSubview:self.gridHolderView];
-//    [self.superParentScrollView
-//        setContentSize:CGSizeMake(contentSizeWidth,
-//                                  self.gridHolderView.frame.size.height + 40)];
     
     self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.gridHolderSuperView];
     [self.gridHolderSuperView addSubview:self.gridHolderView];
     
-    
-//    self.gridHolderView.frame =
-//    CGRectMake(self.view.center.y - gridHeightAndWidth/2,20, gridHeightAndWidth,
-//               gridHeightAndWidth);
-    
+
     [self.gridHolderSuperView addSubview:self.changeGridBakcgroundColorButton];
     [self.gridHolderSuperView setBackgroundColor:[UIColor colorWithRed:0.94 green:0.67 blue:0.3 alpha:1.0]];
     
@@ -689,60 +686,11 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (void)showAlertViewWithMessage:(NSString *)message {
-    UIAlertView *gameOverAlertView =
-        [[UIAlertView alloc] initWithTitle:@"Minesweeper"
-                                   message:message
-                                  delegate:self
-                         cancelButtonTitle:@"Start new game"
-                         otherButtonTitles:@"Continue", nil];
-    gameOverAlertView.tag = 13;
-    [gameOverAlertView show];
-}
-
-
-- (void)alertView:(UIAlertView *)alertView
-    clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if(alertView.tag == 13) {
+    [UIAlertView bk_showAlertViewWithTitle:@"Minesweeper" message:@"Start new game" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Continue"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
         if(self.gameState == OverAndWin || self.gameState == OverAndLoss) {
             [self showSaveScoreDialogueBox];
         }
-    }
-    else if(alertView.tag == 14){
-        
-        
-        if(buttonIndex == 1) {
-            NSString* inputUserName = [[alertView textFieldAtIndex:0] text];
-            if(!inputUserName || inputUserName.length == 0) {
-                inputUserName = @"User";
-            }
-            [ScoreSaver saveScoreInDatabaseWithUserName:inputUserName andScoreValue:self.currentScore.text andSelectedGameLevel:self.levelNumberSelected];
-        }
-        [self resetGridWithNewTilesAndCompletionBlock:^{
-            [self createNewGridWithParameters];
-        }];
-    }
-    else if (alertView.tag == 15) {
-        if(buttonIndex == 1) {
-            NSString* saveGameName = [[alertView textFieldAtIndex:0] text];
-            
-            //If it is a new game, save it with creation of new object
-            if(self.gameStateNewLoaded == NewGame) {
-                    [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
-            }
-            else{
-                [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:@"Do you want to overwrite the existing game?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                    if(buttonIndex == 0){
-                        [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
-                    }
-                    else {
-                        [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:NO];
-                    }
-                }];
-            }
-            
-            
-        }
-    }
+    }];
 }
 
 -(void)saveCurrentGameInDataBaseWithName:(NSString*)gameName andToCreateNewObject:(BOOL)toCreateNewGame {
@@ -775,8 +723,7 @@ typedef void (^resetTilesFinishedBlock)();
         [currentRealm addObject:gameToStore];
         [currentRealm commitWriteTransaction];
         DLog(@"Created new game model");
-    }
-    else {
+    } else {
         RLMResults* savedGamesWithCurrentIdentifier = [SaveGameModel objectsWhere:[NSString stringWithFormat:@"identifier = '%@'",self.currentGameIdentifier]];
         if(([savedGamesWithCurrentIdentifier count] > 0) || !toCreateNewGame) {
             SaveGameModel* previouslyStoredModel = [savedGamesWithCurrentIdentifier firstObject];
@@ -790,7 +737,7 @@ typedef void (^resetTilesFinishedBlock)();
     }
 }
     
-    [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:[NSString stringWithFormat:@"Game %@ Successfully stored in the database",gameName] cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
+    [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:[NSString stringWithFormat:@"Game %@ Successfully stored in the database",gameName] cancelButtonTitle:@"OK" otherButtonTitles:nil handler:NULL];
     [self.view endEditing:YES];
 }
 
@@ -799,13 +746,26 @@ typedef void (^resetTilesFinishedBlock)();
     UIAlertView *saveGameScoreDialogue =
     [[UIAlertView alloc] initWithTitle:@"Minesweeper"
                                message:@"Please type name for this score"
-                              delegate:self
+                              delegate:nil
                      cancelButtonTitle:@"Cancel"
-                     otherButtonTitles:@"Ok", nil];
-    saveGameScoreDialogue.tag = 14;
+                     otherButtonTitles:@"OK", nil];
     saveGameScoreDialogue.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[saveGameScoreDialogue textFieldAtIndex:0] setText:@"User"];
     [saveGameScoreDialogue show];
+    
+    [[saveGameScoreDialogue rac_buttonClickedSignal] subscribeNext:^(NSNumber* selectedAlertBoxIndex) {
+        NSInteger buttonIndex = [selectedAlertBoxIndex integerValue];
+        if(buttonIndex == 1) {
+            NSString* inputUserName = [[saveGameScoreDialogue textFieldAtIndex:0] text];
+            if(!inputUserName || inputUserName.length == 0) {
+                inputUserName = @"User";
+            }
+            [ScoreSaver saveScoreInDatabaseWithUserName:inputUserName andScoreValue:self.currentScore.text andSelectedGameLevel:self.levelNumberSelected];
+        }
+        [self resetGridWithNewTilesAndCompletionBlock:^{
+            [self createNewGridWithParameters];
+        }];
+    }];
 }
 
 - (void)populateMinesHolderWithMinesLocationsWithMaximumGridWidth:
@@ -966,77 +926,18 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (void)levelNumberButtonPressed {
     [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
-        //older than iOS 8 code here
-        UIActionSheet *popup = [[UIActionSheet alloc]
-                                initWithTitle:@"Select Target Level"
-                                delegate:self
-                                cancelButtonTitle:@"Cancel"
-                                destructiveButtonTitle:nil
-                                otherButtonTitles:@"Easy", @"Medium", @"Difficult", @"Expert", nil];
-        [popup showInView:[UIApplication sharedApplication].keyWindow];
-    } else {
-        //iOS 8 specific code here
-        [self showiOS8ActionSheet];
-    }
-}
-
-- (void)showiOS8ActionSheet {
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Select Target Level"
-                                                                             message:@""
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *easyLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Easy", @"Easy action")
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *action)
-                                {
-                                    self.levelNumberSelected = 1;
-                                }];
-    
-    UIAlertAction *mediumLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Medium", @"Medium action")
-                                                          style:UIAlertActionStyleDefault
-                                                        handler:^(UIAlertAction *action)
-                                  {
-                                      self.levelNumberSelected = 2;
-                                  }];
-    
-    UIAlertAction *difficultLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Difficult", @"Difficult action")
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction *action)
-                                     {
-                                         self.levelNumberSelected = 3;
-                                         
-                                     }];
-    UIAlertAction *expertLevel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Expert", @"Expert action")
-                                                          style:UIAlertActionStyleDefault
-                                                        handler:^(UIAlertAction *action)
-                                  {
-                                      self.levelNumberSelected = 4;
-                                      
-                                  }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
-                                                           style:UIAlertActionStyleDestructive
-                                                         handler:^(UIAlertAction *action)
-                                   {
-                                
-                                       
-                                   }];
-    
-    [alertController addAction:easyLevel];
-    [alertController addAction:mediumLevel];
-    [alertController addAction:difficultLevel];
-    [alertController addAction:expertLevel];
-    [alertController addAction:cancelAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)actionSheet:(UIActionSheet *)popup
-    clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex < 4) {
-        self.levelNumberSelected = buttonIndex + 1;
-    }
+    UIAlertView* alertView = [[UIAlertView alloc] init];
+    [alertView bk_addButtonWithTitle:@"Easy" handler:NULL];
+    [alertView bk_addButtonWithTitle:@"Medium" handler:NULL];
+    [alertView bk_addButtonWithTitle:@"Difficult" handler:NULL];
+    [alertView bk_addButtonWithTitle:@"Expert" handler:NULL];
+    [alertView bk_setCancelButtonWithTitle:@"Cancel" handler:NULL];
+    [alertView show];
+    [[alertView rac_buttonClickedSignal] subscribeNext:^(NSNumber* buttonClickerIndex) {
+        if ([buttonClickerIndex integerValue] <= 3) {
+            self.levelNumberSelected = [buttonClickerIndex integerValue] + 1;
+        }
+    }];
 }
 
 -(void)changeGridBackgroundColorButtonPressed {
@@ -1051,58 +952,57 @@ typedef void (^resetTilesFinishedBlock)();
 
 -(void)setupColorPickerView {
     
-    if(!self.colorPickerView) {
-        self.colorPickerView = [[HRColorPickerView alloc] init];
-        self.colorPickerView.translatesAutoresizingMaskIntoConstraints = NO;
-        self.colorPickerView.colorInfoView.hidden = YES;
-        self.colorPickerView.alpha = 0.0;
+    if(!self.colorPickerHolderView) {
         
-        self.colorPickerView.color = self.gridHolderSuperView.backgroundColor;
-        [self.colorPickerView addTarget:self
+        self.colorPickerHolderView = [UIView new];
+        self.colorPickerHolderView.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        HRColorPickerView* colorPickerView = [[HRColorPickerView alloc] init];
+        colorPickerView.translatesAutoresizingMaskIntoConstraints = NO;
+        colorPickerView.colorInfoView.hidden = YES;
+        colorPickerView.alpha = 0.0;
+        
+        colorPickerView.color = self.gridHolderSuperView.backgroundColor;
+        [colorPickerView addTarget:self
                                  action:@selector(colorDidChanged:)
                        forControlEvents:UIControlEventValueChanged];
-        [self.gridHolderSuperView addSubview:self.colorPickerView];
         
-        
-        
-        self.bottomViewForColorPicker = [[UIView alloc] init];
-        self.bottomViewForColorPicker.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.bottomViewForColorPicker setBackgroundColor:[UIColor lightTextColor]];
-        [self.gridHolderSuperView addSubview:self.bottomViewForColorPicker];
-        
-        [self addConstraintsToColorPickerView];
+        UIView* bottomViewForColorPicker = [[UIView alloc] init];
+        bottomViewForColorPicker.translatesAutoresizingMaskIntoConstraints = NO;
+        [bottomViewForColorPicker setBackgroundColor:[UIColor lightTextColor]];
         
         UIButton* hideColorPickerButton = [[UIButton alloc] init];//WithFrame:CGRectMake(0, 5, 100, 44)];
         hideColorPickerButton.translatesAutoresizingMaskIntoConstraints = NO;
-        hideColorPickerButton.center = self.bottomViewForColorPicker.center;
+        hideColorPickerButton.center = bottomViewForColorPicker.center;
         hideColorPickerButton.backgroundColor = [UIColor colorWithRed:200/255.0 green:210/255.0 blue:80/255.0 alpha:1.0];
-        [hideColorPickerButton setTitle:@"Ok" forState:UIControlStateNormal];
+        [hideColorPickerButton setTitle:@"OK" forState:UIControlStateNormal];
         [hideColorPickerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [hideColorPickerButton addTarget:self action:@selector(hideColorPickerView:) forControlEvents:UIControlEventTouchUpInside];
-        [self.bottomViewForColorPicker addSubview:hideColorPickerButton];
-        self.bottomViewForColorPicker.alpha = 0.0;
+        [bottomViewForColorPicker addSubview:hideColorPickerButton];
+        bottomViewForColorPicker.alpha = 0.0;
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[hideColorPickerButton]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(hideColorPickerButton)]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[hideColorPickerButton]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(hideColorPickerButton)]];
+        [self.colorPickerHolderView addSubview:colorPickerView];
+        [self.colorPickerHolderView addSubview:bottomViewForColorPicker];
+        [self.gridHolderSuperView addSubview:self.colorPickerHolderView];
+        
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:400]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:400]];
+        
+        // Add Constraints to actual Color Picker where you would choose colors from.
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[colorPickerView]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(colorPickerView)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[colorPickerView(300)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(colorPickerView)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[bottomViewForColorPicker]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(bottomViewForColorPicker)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[colorPickerView]-10-[bottomViewForColorPicker(44)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(colorPickerView, bottomViewForColorPicker)]];
         
     }
-    self.bottomViewForColorPicker.alpha = 1.0;
-    self.colorPickerView.alpha = 1.0;
-}
-
-- (void)addConstraintsToColorPickerView {
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:300]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:300]];
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_colorPickerView]-10-[_bottomViewForColorPicker]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_colorPickerView, _bottomViewForColorPicker)]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.bottomViewForColorPicker attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.bottomViewForColorPicker attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
+    self.colorPickerHolderView.hidden = NO;
 }
 
 -(IBAction)hideColorPickerView:(UIButton*)sender {
-    self.colorPickerView.alpha = 0.0;
-    self.bottomViewForColorPicker.alpha = 0.0;
+    self.colorPickerHolderView.hidden = YES;
 }
 
 - (void)colorDidChanged:(HRColorPickerView *)pickerView {

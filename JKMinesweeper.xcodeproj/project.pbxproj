@@ -50,6 +50,7 @@
 		38A787461A4CF07A0004B2B4 /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A787431A4CF07A0004B2B4 /* normal.png */; };
 		38A787471A4CF07A0004B2B4 /* smiley.gif in Resources */ = {isa = PBXBuildFile; fileRef = 38A787441A4CF07A0004B2B4 /* smiley.gif */; };
 		38E778BD1A4CF4BB009E127A /* changeColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 38E778BC1A4CF4BB009E127A /* changeColor.png */; };
+		38FA60831B6B0DFE00387FA4 /* ColorPickerProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FA60821B6B0DFE00387FA4 /* ColorPickerProvider.m */; };
 		91078BD719D8D63500F9B438 /* JKMineSweeperConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 91078BD619D8D63500F9B438 /* JKMineSweeperConstants.m */; };
 		911DB8E919DBA10E00D16B6F /* JKNeighbouringTilesProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 911DB8E819DBA10E00D16B6F /* JKNeighbouringTilesProvider.m */; };
 		91AA40FE19D8C956009CB397 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AA40FD19D8C956009CB397 /* main.m */; };
@@ -135,6 +136,8 @@
 		38A787431A4CF07A0004B2B4 /* normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = normal.png; sourceTree = "<group>"; };
 		38A787441A4CF07A0004B2B4 /* smiley.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = smiley.gif; sourceTree = "<group>"; };
 		38E778BC1A4CF4BB009E127A /* changeColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeColor.png; sourceTree = "<group>"; };
+		38FA60811B6B0DFE00387FA4 /* ColorPickerProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerProvider.h; sourceTree = "<group>"; };
+		38FA60821B6B0DFE00387FA4 /* ColorPickerProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerProvider.m; sourceTree = "<group>"; };
 		530AE55A35649DF415A25DF6 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		7B0355D560EDE95CEAB1CA87 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		91078BD519D8D63500F9B438 /* JKMineSweeperConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKMineSweeperConstants.h; sourceTree = "<group>"; };
@@ -329,6 +332,8 @@
 				388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */,
 				38059DA11A4F874200F7A02F /* JKRandomStringGenerator.h */,
 				38059DA21A4F874200F7A02F /* JKRandomStringGenerator.m */,
+				38FA60811B6B0DFE00387FA4 /* ColorPickerProvider.h */,
+				38FA60821B6B0DFE00387FA4 /* ColorPickerProvider.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -627,6 +632,7 @@
 				389ACDB41A4DEC1600637375 /* JKScoresCustomTableViewCell.m in Sources */,
 				383399801A5080D3004B9D60 /* SavedGameOperation.m in Sources */,
 				91AA412419D8CA77009CB397 /* JKMinesweeperHomeViewController.m in Sources */,
+				38FA60831B6B0DFE00387FA4 /* ColorPickerProvider.m in Sources */,
 				911DB8E919DBA10E00D16B6F /* JKNeighbouringTilesProvider.m in Sources */,
 				388C744A1A4E6C620094BC96 /* JKTimerProviderUtility.m in Sources */,
 				389ACDAF1A4DE7E800637375 /* ScoreSaver.m in Sources */,
