@@ -14,7 +14,6 @@
 #import <UIAlertView+BlocksKit.h>
 #import <ReactiveCocoa.h>
 #import <RLMResults.h>
-#import <UIAlertView+BlocksKit.h>
 #import <NSArray+BlocksKit.h>
 #import <KLCPopup.h>
 #import "SaveGameModel.h"
@@ -30,6 +29,7 @@
 #import "JKMinesweeperSavedGamesViewController.h"
 #import "ScoreSaver.h"
 #import "JKMinesweeperScoresViewController.h"
+#import "RandomNumberGenerator.h"
 #import "JKMinesweeperSettingsViewController.h"
 #import "JKTimerProviderUtility.h"
 #import "ColorPickerProvider.h"
@@ -49,6 +49,7 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) UIView* currentViewForColorpicker;
 @property (strong, nonatomic) NSString* currentGameIdentifier;
 @property (strong, nonatomic) FLAnimatedImage *animatedExplosionImage;
+@property (weak, nonatomic) IBOutlet UIButton *changeScrollViewBackgroundColorButton;
 
 @property (strong, nonatomic) UIView* colorPickerHolderView;
 @property (assign, nonatomic) CurrentGameState gameState;
@@ -126,14 +127,25 @@ typedef void (^resetTilesFinishedBlock)();
         [self updateUIWithNewTimeValue];
     }];
     
-        [[[NSNotificationCenter defaultCenter] rac_addObserverForName:SOUND_SETTINGS_CHANGED object:nil] subscribeNext:^(id x) {
+    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:SOUND_SETTINGS_CHANGED object:nil] subscribeNext:^(id x) {
             [self updateSounds];
-        }];
+    }];
     
     [RACObserve(self, levelNumberSelected) subscribeNext:^(NSNumber* levelNumber) {
         [[NSUserDefaults standardUserDefaults] setObject:levelNumber forKey:@"currentLevel"];
         [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
         [self.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld",(long)([levelNumber integerValue])] forState:UIControlStateNormal];
+    }];
+    
+    [RACObserve(self, currentViewForColorpicker) subscribeNext:^(id x) {
+        if (x) {
+            [self setupColorPickerView];
+        }
+    }];
+    
+    [[self.changeScrollViewBackgroundColorButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+       self.colorPickerHolderView.hidden = NO;
+       self.currentViewForColorpicker = self.gridHolderSuperView;
     }];
     
     self.verifyLossWinButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
@@ -157,51 +169,39 @@ typedef void (^resetTilesFinishedBlock)();
         [self updateUIWithNewTimeValue];
     }];
     
-    
     self.saveButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
         
         NSDateFormatter* formatter = [NSDateFormatter new];
         [formatter setDateFormat:@"MM/dd/yyyy hh:mm a"];
         
         
-        UIAlertView *saveGameScoreDialogue =
-        [[UIAlertView alloc] initWithTitle:@"Save Game"
-                                   message:@"Please type your name this game"
-                                  delegate:nil
-                         cancelButtonTitle:@"Cancel"
-                         otherButtonTitles:@"OK", nil];
+        UIAlertView *saveGameScoreDialogue = [UIAlertView bk_alertViewWithTitle:@"Save Game" message:@"Please type your name for this game"];
         saveGameScoreDialogue.alertViewStyle = UIAlertViewStylePlainTextInput;
         [[saveGameScoreDialogue textFieldAtIndex:0] setText:[formatter stringFromDate:[NSDate date]]];
-        [saveGameScoreDialogue show];
-        
-        [[saveGameScoreDialogue rac_buttonClickedSignal] subscribeNext:^(NSNumber* alertIndexSelected) {
-            NSInteger buttonIndex = [alertIndexSelected integerValue];
-            if(buttonIndex == 1) {
-                
-                NSString* saveGameName = [[saveGameScoreDialogue textFieldAtIndex:0] text];
-                //If it is a new game, save it with creation of new object
-                if(self.gameStateNewLoaded == NewGame) {
-                    [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
-                }
-                else{
-                    [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:@"Do you want to overwrite the existing game?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                        if(buttonIndex == 0){
-                            [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
-                        }
-                        else {
-                            [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:NO];
-                        }
-                    }];
-                }
+        [saveGameScoreDialogue bk_setCancelButtonWithTitle:@"Cancel" handler:NULL];
+        [saveGameScoreDialogue bk_addButtonWithTitle:@"OK" handler:^{
+            NSString* saveGameName = [[saveGameScoreDialogue textFieldAtIndex:0] text];
+            //If it is a new game, save it with creation of new object
+            if(self.gameStateNewLoaded == NewGame) {
+                [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
+            }
+            else{
+                [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:@"Do you want to overwrite the existing game?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                    if(buttonIndex == 0){
+                        [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
+                    }
+                    else {
+                        [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:NO];
+                    }
+                }];
             }
         }];
-        
+        [saveGameScoreDialogue show];
         return [RACSignal empty];
     }];
 
     
     self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
-        DLog(@"Load Button was pressed!");
         if(!self.savedGamesViewController) {
             self.savedGamesViewController = [[JKMinesweeperSavedGamesViewController alloc] initWithNibName:@"JKMinesweeperSavedGamesViewController" bundle:nil];
               __weak typeof(self) weakSelf = self;
@@ -261,7 +261,7 @@ typedef void (^resetTilesFinishedBlock)();
                     [strongSelf.gridHolderView addSubview:individualButton];
                 }
                 
-                 DLog(@"%ld and %ld %ld", (long)strongSelf.regularButtonsHolder.count, (long)strongSelf.minesButtonsHolder.count,(long)strongSelf.gridHolderView.subviews.count);
+            DLog(@"%ld and %ld %ld", (long)strongSelf.regularButtonsHolder.count, (long)strongSelf.minesButtonsHolder.count,(long)strongSelf.gridHolderView.subviews.count);
             };
         }
         
@@ -308,7 +308,7 @@ typedef void (^resetTilesFinishedBlock)();
          
     self.totalNumberOfRequiredTiles = [self.gridSizeInputText.text integerValue];
     
-    //Setup Grid size to match the one number of tiles here
+    // Setup Grid size to match the one number of tiles here.
     
     [self setupGridHolderView];
     
@@ -614,7 +614,10 @@ typedef void (^resetTilesFinishedBlock)();
         self.changeGridBakcgroundColorButton = [[UIButton alloc] init];
         self.changeGridBakcgroundColorButton.translatesAutoresizingMaskIntoConstraints = NO;
         [self.changeGridBakcgroundColorButton setBackgroundImage:[UIImage imageNamed:@"changeColor"] forState:UIControlStateNormal];
-        [self.changeGridBakcgroundColorButton addTarget:self action:@selector(changeGridBackgroundColorButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [[self.changeGridBakcgroundColorButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+            self.colorPickerHolderView.hidden = NO;
+            self.currentViewForColorpicker = self.gridHolderView;
+        }];
     }
 }
 
@@ -743,29 +746,21 @@ typedef void (^resetTilesFinishedBlock)();
 
 
 -(void)showSaveScoreDialogueBox {
-    UIAlertView *saveGameScoreDialogue =
-    [[UIAlertView alloc] initWithTitle:@"Minesweeper"
-                               message:@"Please type name for this score"
-                              delegate:nil
-                     cancelButtonTitle:@"Cancel"
-                     otherButtonTitles:@"OK", nil];
+    UIAlertView *saveGameScoreDialogue = [UIAlertView bk_alertViewWithTitle:@"Minesweeper" message:@"Please type name for this score"];
     saveGameScoreDialogue.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[saveGameScoreDialogue textFieldAtIndex:0] setText:@"User"];
-    [saveGameScoreDialogue show];
-    
-    [[saveGameScoreDialogue rac_buttonClickedSignal] subscribeNext:^(NSNumber* selectedAlertBoxIndex) {
-        NSInteger buttonIndex = [selectedAlertBoxIndex integerValue];
-        if(buttonIndex == 1) {
-            NSString* inputUserName = [[saveGameScoreDialogue textFieldAtIndex:0] text];
-            if(!inputUserName || inputUserName.length == 0) {
-                inputUserName = @"User";
-            }
-            [ScoreSaver saveScoreInDatabaseWithUserName:inputUserName andScoreValue:self.currentScore.text andSelectedGameLevel:self.levelNumberSelected];
+    [saveGameScoreDialogue bk_setCancelButtonWithTitle:@"Cancel" handler:NULL];
+    [saveGameScoreDialogue bk_addButtonWithTitle:@"OK" handler:^{
+        NSString* inputUserName = [[saveGameScoreDialogue textFieldAtIndex:0] text];
+        if(!inputUserName || inputUserName.length == 0) {
+            inputUserName = @"User";
         }
+        [ScoreSaver saveScoreInDatabaseWithUserName:inputUserName andScoreValue:self.currentScore.text andSelectedGameLevel:self.levelNumberSelected];
         [self resetGridWithNewTilesAndCompletionBlock:^{
             [self createNewGridWithParameters];
         }];
     }];
+    [saveGameScoreDialogue show];
 }
 
 - (void)populateMinesHolderWithMinesLocationsWithMaximumGridWidth:
@@ -784,24 +779,16 @@ typedef void (^resetTilesFinishedBlock)();
 
     while (minesGeneratedSoFar < self.totalNumberOfMinesOnGrid) {
 
-        generateRandomMinesSequence =
-            [self getRandomNumberWithMinValue:0
-                                  andMaxValue:self.maximumTileSequence];
+        generateRandomMinesSequence = [RandomNumberGenerator randomNumberBetweenMin:0 andMax:self.maximumTileSequence];
         if (![self.minesLocationHolder
                 objectForKey:@(generateRandomMinesSequence)]) {
             minesGeneratedSoFar++;
             [self getNeighboringValidCellsForGivenMineWithSequence:
                       generateRandomMinesSequence];
-
             [self.minesLocationHolder setObject:@"1"
                                          forKey:@(generateRandomMinesSequence)];
         }
     }
-}
-
-- (NSInteger)getRandomNumberWithMinValue:(NSInteger)minValue
-                             andMaxValue:(NSInteger)maxValue {
-    return arc4random() % (maxValue - minValue) + minValue;
 }
 
 - (IBAction)resetButtonPressed:(UIButton *)sender {
@@ -933,71 +920,22 @@ typedef void (^resetTilesFinishedBlock)();
     [alertView bk_addButtonWithTitle:@"Expert" handler:NULL];
     [alertView bk_setCancelButtonWithTitle:@"Cancel" handler:NULL];
     [alertView show];
-    [[alertView rac_buttonClickedSignal] subscribeNext:^(NSNumber* buttonClickerIndex) {
-        if ([buttonClickerIndex integerValue] <= 3) {
-            self.levelNumberSelected = [buttonClickerIndex integerValue] + 1;
+    [[alertView rac_buttonClickedSignal] subscribeNext:^(NSNumber* buttonClickedIndex) {
+        if ([buttonClickedIndex integerValue] <= 3) {
+            self.levelNumberSelected = [buttonClickedIndex integerValue] + 1;
         }
     }];
-}
-
--(void)changeGridBackgroundColorButtonPressed {
-    self.currentViewForColorpicker = self.gridHolderView;
-    [self setupColorPickerView];
-}
-
-- (IBAction)changeScrollViewBackgroundColorPressed:(id)sender {
-    self.currentViewForColorpicker = self.gridHolderSuperView;
-    [self setupColorPickerView];
 }
 
 -(void)setupColorPickerView {
     
     if(!self.colorPickerHolderView) {
-        
-        self.colorPickerHolderView = [UIView new];
-        self.colorPickerHolderView.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        HRColorPickerView* colorPickerView = [[HRColorPickerView alloc] init];
-        colorPickerView.translatesAutoresizingMaskIntoConstraints = NO;
-        colorPickerView.color = self.gridHolderSuperView.backgroundColor;
-        colorPickerView.colorInfoView.hidden = YES;
-        [colorPickerView addTarget:self
-                                 action:@selector(colorDidChanged:)
-                       forControlEvents:UIControlEventValueChanged];
-    
-        
-        UIButton* hideColorPickerButton = [[UIButton alloc] init];//WithFrame:CGRectMake(0, 5, 100, 44)];
-        hideColorPickerButton.translatesAutoresizingMaskIntoConstraints = NO;
-        hideColorPickerButton.backgroundColor = [UIColor colorWithRed:200/255.0 green:210/255.0 blue:80/255.0 alpha:1.0];
-        [hideColorPickerButton setTitle:@"OK" forState:UIControlStateNormal];
-        [hideColorPickerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [hideColorPickerButton addTarget:self action:@selector(hideColorPickerView:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [self.colorPickerHolderView addSubview:colorPickerView];
-        [self.colorPickerHolderView addSubview:hideColorPickerButton];
-        [self.gridHolderSuperView addSubview:self.colorPickerHolderView];
-
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:300]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:354]];
-        
-        // Add Constraints to actual Color Picker where you would choose colors from.
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[colorPickerView]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(colorPickerView)]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[colorPickerView(300)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(colorPickerView)]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[hideColorPickerButton]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(hideColorPickerButton)]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[colorPickerView]-10-[hideColorPickerButton(44)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(colorPickerView, hideColorPickerButton)]];
-        
+        @weakify(self)
+       self.colorPickerHolderView = [ColorPickerProvider colorPickerForCurrentViewForParentView:self.gridHolderSuperView andColorChangedBlock:^(UIColor *selectedColor) {
+           @strongify(self)
+           [self.currentViewForColorpicker setBackgroundColor:selectedColor];
+       }];
     }
-    self.colorPickerHolderView.hidden = NO;
-}
-
--(IBAction)hideColorPickerView:(UIButton*)sender {
-    self.colorPickerHolderView.hidden = YES;
-}
-
-- (void)colorDidChanged:(HRColorPickerView *)pickerView {
-    [self.currentViewForColorpicker setBackgroundColor:pickerView.color];
 }
 
 - (IBAction)showPastScores:(UIButton *)sender {

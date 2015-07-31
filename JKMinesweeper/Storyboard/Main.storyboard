@@ -175,9 +175,6 @@
                                         <state key="normal" backgroundImage="changeColor.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <connections>
-                                            <action selector="changeScrollViewBackgroundColorPressed:" destination="0ou-U5-mfB" eventType="touchUpInside" id="HD1-n5-u8n"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -244,6 +241,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="1024" height="768"/>
                     <connections>
+                        <outlet property="changeScrollViewBackgroundColorButton" destination="Hwu-r7-gdt" id="Vxi-oI-Gf0"/>
                         <outlet property="currentScore" destination="9wb-yx-klb" id="mu9-nc-A9h"/>
                         <outlet property="gridHolderSuperView" destination="gvE-U8-15Q" id="wm8-v0-Em2"/>
                         <outlet property="gridSizeInputText" destination="Y7E-V4-PaI" id="ITp-B1-RBq"/>

@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface JKAudioOperations : NSObject
--(BOOL) playForegroundSoundFXnamed: (NSString*) vSFXName loop: (BOOL) vLoop;
--(BOOL) playBackgroundSoundFXnamed: (NSString*) vSFXName loop: (BOOL) vLoop;
--(void)stopBackgroundMusic;
--(void)stopForegroundMusic;
+- (BOOL)playForegroundSoundFXnamed:(NSString*)vSFXName loop:(BOOL) vLoop;
+- (BOOL)playBackgroundSoundFXnamed:(NSString*)vSFXName loop:(BOOL) vLoop;
+- (void)stopBackgroundMusic;
+- (void)stopForegroundMusic;
 @end
