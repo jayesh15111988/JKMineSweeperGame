@@ -959,43 +959,34 @@ typedef void (^resetTilesFinishedBlock)();
         
         HRColorPickerView* colorPickerView = [[HRColorPickerView alloc] init];
         colorPickerView.translatesAutoresizingMaskIntoConstraints = NO;
-        colorPickerView.colorInfoView.hidden = YES;
-        colorPickerView.alpha = 0.0;
-        
         colorPickerView.color = self.gridHolderSuperView.backgroundColor;
+        colorPickerView.colorInfoView.hidden = YES;
         [colorPickerView addTarget:self
                                  action:@selector(colorDidChanged:)
                        forControlEvents:UIControlEventValueChanged];
-        
-        UIView* bottomViewForColorPicker = [[UIView alloc] init];
-        bottomViewForColorPicker.translatesAutoresizingMaskIntoConstraints = NO;
-        [bottomViewForColorPicker setBackgroundColor:[UIColor lightTextColor]];
+    
         
         UIButton* hideColorPickerButton = [[UIButton alloc] init];//WithFrame:CGRectMake(0, 5, 100, 44)];
         hideColorPickerButton.translatesAutoresizingMaskIntoConstraints = NO;
-        hideColorPickerButton.center = bottomViewForColorPicker.center;
         hideColorPickerButton.backgroundColor = [UIColor colorWithRed:200/255.0 green:210/255.0 blue:80/255.0 alpha:1.0];
         [hideColorPickerButton setTitle:@"OK" forState:UIControlStateNormal];
         [hideColorPickerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [hideColorPickerButton addTarget:self action:@selector(hideColorPickerView:) forControlEvents:UIControlEventTouchUpInside];
-        [bottomViewForColorPicker addSubview:hideColorPickerButton];
-        bottomViewForColorPicker.alpha = 0.0;
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[hideColorPickerButton]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(hideColorPickerButton)]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[hideColorPickerButton]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(hideColorPickerButton)]];
-        [self.colorPickerHolderView addSubview:colorPickerView];
-        [self.colorPickerHolderView addSubview:bottomViewForColorPicker];
-        [self.gridHolderSuperView addSubview:self.colorPickerHolderView];
         
+        [self.colorPickerHolderView addSubview:colorPickerView];
+        [self.colorPickerHolderView addSubview:hideColorPickerButton];
+        [self.gridHolderSuperView addSubview:self.colorPickerHolderView];
+
         [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
         [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:400]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:400]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:300]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorPickerHolderView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:354]];
         
         // Add Constraints to actual Color Picker where you would choose colors from.
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[colorPickerView]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(colorPickerView)]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[colorPickerView(300)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(colorPickerView)]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[bottomViewForColorPicker]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(bottomViewForColorPicker)]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[colorPickerView]-10-[bottomViewForColorPicker(44)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(colorPickerView, bottomViewForColorPicker)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[hideColorPickerButton]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(hideColorPickerButton)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[colorPickerView]-10-[hideColorPickerButton(44)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(colorPickerView, hideColorPickerButton)]];
         
     }
     self.colorPickerHolderView.hidden = NO;

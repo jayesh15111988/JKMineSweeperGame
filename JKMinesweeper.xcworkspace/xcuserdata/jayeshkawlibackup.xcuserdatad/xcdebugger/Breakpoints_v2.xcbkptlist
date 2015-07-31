@@ -1018,27 +1018,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460002137.891247"
+            timestampString = "460002692.34902"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "954"
-            endingLineNumber = "954"
-            landmarkName = "-setupColorPickerView"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460002137.891247"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1018"
-            endingLineNumber = "1018"
+            startingLineNumber = "1009"
+            endingLineNumber = "1009"
             landmarkName = "-showPastScores:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1098,7 +1082,7 @@
                   moduleName = "JKMinesweeper"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jayeshkawlibackup/Desktop/git/JKMineSweeperGame/JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-                  timestampString = "460002138.422764"
+                  timestampString = "460002876.564079"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "936"
@@ -1113,7 +1097,7 @@
                   moduleName = "JKMinesweeper"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jayeshkawlibackup/Desktop/git/JKMineSweeperGame/JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-                  timestampString = "460002138.42287"
+                  timestampString = "460002876.564185"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "936"
@@ -1152,6 +1136,48 @@
             startingLineNumber = "556"
             endingLineNumber = "556"
             landmarkName = "-createNewGridOnScreen"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            scope = "0"
+            stopOnStyle = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460002692.34902"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "980"
+            endingLineNumber = "980"
+            landmarkName = "-setupColorPickerView"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460002876.487324"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "996"
+            endingLineNumber = "996"
+            landmarkName = "-hideColorPickerView:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
