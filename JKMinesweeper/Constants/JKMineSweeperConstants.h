@@ -10,7 +10,7 @@
 #define MINES_REVEALED_STATE 15
 
 #define REGULAR_ANIMATION_DURATION 0.3
-#define MULTIPLE_ANIMATION_DURATION 0.04
+#define MULTIPLE_ANIMATION_DURATION 0.4
 #define GIF_IMAGE_ANIMATION_DURATION 2.5
 
 #define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)

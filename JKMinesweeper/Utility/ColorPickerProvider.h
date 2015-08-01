@@ -7,11 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-@class HRColorPickerView;
 
 @interface ColorPickerProvider : NSObject
 
-+ (HRColorPickerView*)colorPickerForCurrentViewForParentView:(UIView*)parentView andColorChangedBlock:(void (^)(UIColor* selectedColor))colorChangedBlock;
++ (UIView*)colorPickerForCurrentViewForParentView:(UIView*)parentView andColorChangedBlock:(void (^)(UIColor* selectedColor))colorChangedBlock;
 + (void)changeColorPickerColorWithNewColor:(UIColor*)updatedColor;
 
 @end

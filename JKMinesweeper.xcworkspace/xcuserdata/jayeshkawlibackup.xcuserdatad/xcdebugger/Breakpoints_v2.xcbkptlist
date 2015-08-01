@@ -538,11 +538,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "787"
-            endingLineNumber = "787"
+            startingLineNumber = "782"
+            endingLineNumber = "782"
             landmarkName = "-populateMinesHolderWithMinesLocationsWithMaximumGridWidth:"
             landmarkType = "5">
          </BreakpointContent>
@@ -554,11 +554,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "787"
-            endingLineNumber = "787"
+            startingLineNumber = "782"
+            endingLineNumber = "782"
             landmarkName = "-populateMinesHolderWithMinesLocationsWithMaximumGridWidth:"
             landmarkType = "5">
          </BreakpointContent>
@@ -570,11 +570,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "743"
-            endingLineNumber = "743"
+            startingLineNumber = "738"
+            endingLineNumber = "738"
             landmarkName = "-saveCurrentGameInDataBaseWithName:andToCreateNewObject:"
             landmarkType = "5">
          </BreakpointContent>
@@ -586,11 +586,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "280"
-            endingLineNumber = "280"
+            startingLineNumber = "284"
+            endingLineNumber = "284"
             landmarkName = "-setupRACSignalsAndNotifications"
             landmarkType = "5">
          </BreakpointContent>
@@ -746,11 +746,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "670"
-            endingLineNumber = "670"
+            startingLineNumber = "665"
+            endingLineNumber = "665"
             landmarkName = "-highlightNeighbouringButtonsForButtonSequence:"
             landmarkType = "5">
          </BreakpointContent>
@@ -762,11 +762,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "672"
-            endingLineNumber = "672"
+            startingLineNumber = "667"
+            endingLineNumber = "667"
             landmarkName = "-highlightNeighbouringButtonsForButtonSequence:"
             landmarkType = "5">
          </BreakpointContent>
@@ -778,27 +778,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "679"
-            endingLineNumber = "679"
-            landmarkName = "-highlightNeighbouringButtonsForButtonSequence:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "674"
             endingLineNumber = "674"
+            landmarkName = "-highlightNeighbouringButtonsForButtonSequence:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460089408.511627"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "669"
+            endingLineNumber = "669"
             landmarkName = "-highlightNeighbouringButtonsForButtonSequence:"
             landmarkType = "5">
          </BreakpointContent>
@@ -826,11 +826,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "253"
-            endingLineNumber = "253"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
             landmarkName = "-setupRACSignalsAndNotifications"
             landmarkType = "5">
          </BreakpointContent>
@@ -842,11 +842,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "684"
-            endingLineNumber = "684"
+            startingLineNumber = "679"
+            endingLineNumber = "679"
             landmarkName = "-highlightNeighbouringButtonsForButtonSequence:"
             landmarkType = "5">
          </BreakpointContent>
@@ -858,11 +858,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "692"
-            endingLineNumber = "692"
+            startingLineNumber = "687"
+            endingLineNumber = "687"
             landmarkName = "-highlightNeighbouringButtonsForButtonSequence:"
             landmarkType = "5">
          </BreakpointContent>
@@ -874,11 +874,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
             landmarkName = "-resetGameBeforeLoadingPreviousGame:"
             landmarkType = "5">
          </BreakpointContent>
@@ -890,11 +890,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "475"
-            endingLineNumber = "475"
+            startingLineNumber = "477"
+            endingLineNumber = "477"
             landmarkName = "-createNewGridOnScreen"
             landmarkType = "5">
          </BreakpointContent>
@@ -906,11 +906,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "418"
-            endingLineNumber = "418"
+            startingLineNumber = "417"
+            endingLineNumber = "417"
             landmarkName = "-verifyLossWinButtonPressedWithUserWonCurrentGame:"
             landmarkType = "5">
          </BreakpointContent>
@@ -922,11 +922,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
+            startingLineNumber = "299"
+            endingLineNumber = "299"
             landmarkName = "-resetGameBeforeLoadingPreviousGame:"
             landmarkType = "5">
          </BreakpointContent>
@@ -938,11 +938,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
+            startingLineNumber = "262"
+            endingLineNumber = "262"
             landmarkName = "-setupRACSignalsAndNotifications"
             landmarkType = "5">
          </BreakpointContent>
@@ -954,11 +954,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
+            startingLineNumber = "290"
+            endingLineNumber = "290"
             landmarkName = "-showInPopupWithView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1018,11 +1018,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085755.092385"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "953"
-            endingLineNumber = "953"
+            startingLineNumber = "947"
+            endingLineNumber = "947"
             landmarkName = "-showPastScores:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1050,11 +1050,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "930"
-            endingLineNumber = "930"
+            startingLineNumber = "925"
+            endingLineNumber = "925"
             landmarkName = "-levelNumberButtonPressed"
             landmarkType = "5">
          </BreakpointContent>
@@ -1066,11 +1066,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "928"
-            endingLineNumber = "928"
+            startingLineNumber = "923"
+            endingLineNumber = "923"
             landmarkName = "-levelNumberButtonPressed"
             landmarkType = "5">
          </BreakpointContent>
@@ -1082,11 +1082,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "553"
-            endingLineNumber = "553"
+            startingLineNumber = "545"
+            endingLineNumber = "545"
             landmarkName = "-createNewGridOnScreen"
             landmarkType = "5">
          </BreakpointContent>
@@ -1098,11 +1098,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "562"
-            endingLineNumber = "562"
+            startingLineNumber = "557"
+            endingLineNumber = "557"
             landmarkName = "-createNewGridOnScreen"
             landmarkType = "5">
          </BreakpointContent>
@@ -1124,11 +1124,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "-setupRACSignalsAndNotifications"
             landmarkType = "5">
          </BreakpointContent>
@@ -1140,11 +1140,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "-setupRACSignalsAndNotifications"
             landmarkType = "5">
          </BreakpointContent>
@@ -1156,11 +1156,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
             landmarkName = "-setupRACSignalsAndNotifications"
             landmarkType = "5">
          </BreakpointContent>
@@ -1182,11 +1182,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "699"
-            endingLineNumber = "699"
+            startingLineNumber = "694"
+            endingLineNumber = "694"
             landmarkName = "-showAlertViewWithMessage:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1198,11 +1198,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "768"
-            endingLineNumber = "768"
+            startingLineNumber = "763"
+            endingLineNumber = "763"
             landmarkName = "-showSaveScoreDialogueBox"
             landmarkType = "5">
             <Locations>
@@ -1214,11 +1214,11 @@
                   moduleName = "JKMinesweeper"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jayeshkawlibackup/Desktop/git/JKMineSweeperGame/JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-                  timestampString = "460085505.41555"
+                  timestampString = "460089616.989933"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "768"
-                  endingLineNumber = "768"
+                  startingLineNumber = "763"
+                  endingLineNumber = "763"
                   offsetFromSymbolStart = "464">
                </Location>
                <Location
@@ -1229,11 +1229,11 @@
                   moduleName = "JKMinesweeper"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jayeshkawlibackup/Desktop/git/JKMineSweeperGame/JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-                  timestampString = "460085505.415659"
+                  timestampString = "460089616.990042"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "768"
-                  endingLineNumber = "768"
+                  startingLineNumber = "763"
+                  endingLineNumber = "763"
                   offsetFromSymbolStart = "494">
                </Location>
             </Locations>
@@ -1246,11 +1246,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "552"
-            endingLineNumber = "552"
+            startingLineNumber = "544"
+            endingLineNumber = "544"
             landmarkName = "-createNewGridOnScreen"
             landmarkType = "5">
          </BreakpointContent>
@@ -1262,11 +1262,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
-            timestampString = "460085440.560549"
+            timestampString = "460089408.511627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "625"
-            endingLineNumber = "625"
+            startingLineNumber = "620"
+            endingLineNumber = "620"
             landmarkName = "-setPositionOfChangeBackgroundColorButton"
             landmarkType = "5">
          </BreakpointContent>
@@ -1285,6 +1285,182 @@
             endingLineNumber = "22"
             landmarkName = "+colorPickerForCurrentViewForParentView:andColorChangedBlock:"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460089408.511627"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
+            landmarkName = "-makeTileVisibleForCurrentIndex:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460089408.511627"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "-makeTileVisibleForCurrentIndex:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460089408.511627"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "645"
+            endingLineNumber = "645"
+            landmarkName = "-highlightNeighbouringButtonsForButtonSequence:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460088597.509749"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
+            landmarkName = "-makeTileVisibleForCurrentIndex:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460089408.511627"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "533"
+            endingLineNumber = "533"
+            landmarkName = "-createNewGridOnScreen"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460089400.453325"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "829"
+            endingLineNumber = "829"
+            landmarkName = "-resetGridWithNewTilesAndCompletionBlock:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460089484.768652"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "826"
+            endingLineNumber = "826"
+            landmarkName = "-resetGridWithNewTilesAndCompletionBlock:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460089485.744148"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "823"
+            endingLineNumber = "823"
+            landmarkName = "-resetGridWithNewTilesAndCompletionBlock:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+            timestampString = "460089496.842128"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "820"
+            endingLineNumber = "820"
+            landmarkName = "-resetGridWithNewTilesAndCompletionBlock:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[JKMinesweeperHomeViewController resetGridWithNewTilesAndCompletionBlock:]"
+                  moduleName = "JKMinesweeper"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jayeshkawlibackup/Desktop/git/JKMineSweeperGame/JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+                  timestampString = "460089616.993746"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "820"
+                  endingLineNumber = "820"
+                  offsetFromSymbolStart = "1011">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__75-[JKMinesweeperHomeViewController resetGridWithNewTilesAndCompletionBlock:]_block_invoke"
+                  moduleName = "JKMinesweeper"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jayeshkawlibackup/Desktop/git/JKMineSweeperGame/JKMinesweeper/Controllers/JKMinesweeperHomeViewController.m"
+                  timestampString = "460089616.993856"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "820"
+                  endingLineNumber = "820"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -45,6 +45,9 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) ScrollViewAutolayoutCreator* scrollViewAutoLayout;
 @property (strong, nonatomic) UIView *gridHolderSuperView;
 
+@property (strong, nonatomic) NSTimer* createNewGridAnimationTimer;
+@property (assign, nonatomic) NSInteger newMinesCurrentObjectIndex;
+
 @property (strong, nonatomic) UIView* currentViewForColorpicker;
 @property (strong, nonatomic) NSString* currentGameIdentifier;
 @property (strong, nonatomic) FLAnimatedImage *animatedExplosionImage;
@@ -109,10 +112,24 @@ typedef void (^resetTilesFinishedBlock)();
     self.minesButtonsHolder = [NSMutableArray new];
     self.regularButtonsHolder = [NSMutableArray new];
     self.numberOfSurroundingMinesHolder = [NSMutableDictionary new];
-    
+    self.newMinesCurrentObjectIndex = 0;
     [self setupRACSignalsAndNotifications];
     [self playGameStartSound];
     [self createNewGridWithParameters];
+}
+
+- (void)makeTileVisibleForCurrentIndex:(NSTimer*)timer {
+    if (self.newMinesCurrentObjectIndex < self.maximumTileSequence) {
+        JKCustomButton* currentViewToMakeVisible = self.gridHolderView.subviews[self.newMinesCurrentObjectIndex];
+        currentViewToMakeVisible.alpha = 1.0;
+        self.newMinesCurrentObjectIndex++;
+    } else {
+        DLog(@"Timer stopped");
+        // Reset all parameters after animation is fully complete.
+        self.newMinesCurrentObjectIndex = 0;
+        [self.createNewGridAnimationTimer invalidate];
+        self.createNewGridAnimationTimer = nil;
+    }
 }
 
 -(void)setupRACSignalsAndNotifications {
@@ -297,7 +314,7 @@ typedef void (^resetTilesFinishedBlock)();
         self.totalNumberOfRequiredTiles = 3;
     }
     //We will use previous identifier and will use to overwrite existing game
-    self.currentGameIdentifier = selectedGameModel.identifier;//[JKRandomStringGenerator generateRandomStringWithLength:6];
+    self.currentGameIdentifier = selectedGameModel.identifier;
     NSArray *allButtonsInGridView = [self.gridHolderView subviews];
     for (UIView *individualButtonOnGrid in allButtonsInGridView) {
         [individualButtonOnGrid removeFromSuperview];
@@ -434,7 +451,6 @@ typedef void (^resetTilesFinishedBlock)();
     self.resetButton.enabled = YES;
     self.revealMenuButton.enabled = YES;
 
-
     [self populateMinesHolderWithMinesLocationsWithMaximumGridWidth:self.totalNumberOfRequiredTiles];
     
     NSInteger gridHeightAndWidth = [self setupGridHolderView];
@@ -442,11 +458,15 @@ typedef void (^resetTilesFinishedBlock)();
     [self.gridHolderView setBackgroundColor:[UIColor lightGrayColor]];
     
     
+    if (self.gridHolderView.subviews.count) {
+        [self.gridHolderView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+    }
+    
     NSInteger buttonSequenceNumber = 0;
     BOOL doesMineExistForTile = NO;
     NSInteger totalNumberOfMinesSurroundingGivenTile = 0;
 
-    dispatch_time_t time = DISPATCH_TIME_NOW;
+    //dispatch_time_t time = DISPATCH_TIME_NOW;
     NSInteger successiveTilesDistanceIncrement = self.tileWidth + self.gutterSpacing;
     
     for (NSInteger yPosition = 0; yPosition < gridHeightAndWidth; yPosition += successiveTilesDistanceIncrement) {
@@ -484,7 +504,6 @@ typedef void (^resetTilesFinishedBlock)();
                 self.gameState = OverAndLoss;
                 [self showAlertViewWithMessage:@"You clicked on mine and "
                             @"game is now over"];
-                
                 [self playGameOverSound];
                 
             };
@@ -507,19 +526,10 @@ typedef void (^resetTilesFinishedBlock)();
             
             UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
             [newRevealMineButton addGestureRecognizer:longPress];
-            
             [self.gridHolderView addSubview:newRevealMineButton];
-            dispatch_after(time, dispatch_get_main_queue(), ^{
-                [UIView
-                    animateWithDuration:REGULAR_ANIMATION_DURATION
-                             animations:^{
-                                 newRevealMineButton.alpha = 1.0;
-                             }
-                             completion:nil];
-            });
-            time = dispatch_time(time, MULTIPLE_ANIMATION_DURATION * NSEC_PER_SEC);
         }
     }
+    
     if (self.gridHolderSuperView) {
         [self.gridHolderSuperView removeFromSuperview];
     }
@@ -535,6 +545,9 @@ typedef void (^resetTilesFinishedBlock)();
     [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderView];
     [self.scrollViewAutoLayout.contentView addSubview:self.changeGridBakcgroundColorButton];
     [self.scrollViewAutoLayout.contentView setBackgroundColor:[UIColor colorWithRed:0.94 green:0.67 blue:0.3 alpha:1.0]];
+    
+    self.createNewGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(2.0/self.maximumTileSequence) target:self selector:@selector(makeTileVisibleForCurrentIndex:) userInfo:nil repeats:YES];
+    [self.createNewGridAnimationTimer fire];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:gridHeightAndWidth]];
