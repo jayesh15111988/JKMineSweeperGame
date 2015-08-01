@@ -159,13 +159,20 @@ typedef void (^resetTilesFinishedBlock)();
         imageView.animatedImage = self.animatedExplosionImage;
         imageView.frame = CGRectMake(0.0, 0.0,self.tileWidth, self.tileWidth);
         [currentMine addSubview:imageView];
-        [UIView animateWithDuration:0.75 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        
+        double delayInSeconds = 2.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             imageView.image = [UIImage imageNamed:@"skull"];
-            [currentMine setBackgroundColor:[UIColor redColor]];
-        } completion:^(BOOL finished) {
-            currentMine.buttonStateModel
-            .currentTileState = TileSelected;
-        }];
+            imageView.alpha = 0.0;
+            [UIView animateWithDuration:0.75 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                imageView.alpha = 1.0;
+                [currentMine setBackgroundColor:[UIColor redColor]];
+            } completion:^(BOOL finished) {
+                currentMine.buttonStateModel
+                .currentTileState = TileSelected;
+            }];
+        });
         self.totalNumberMinesToExplode++;
     } else {
         [self.blastMinesAnimationTimer invalidate];
@@ -179,7 +186,7 @@ typedef void (^resetTilesFinishedBlock)();
         self.animatedExplosionImage = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:[NSURL URLWithString:ANIMATED_IMAGE_URL]]];
     }
     self.totalNumberMinesToExplode = 0;
-    self.destroyCurrentGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_TOTAL_ANIMATION_DURATION/self.maximumTileSequence) target:self selector:@selector(blastMineswithanimation:) userInfo:nil repeats:YES];
+    self.destroyCurrentGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_TOTAL_ANIMATION_DURATION/self.minesButtonsHolder.count) target:self selector:@selector(blastMineswithanimation:) userInfo:nil repeats:YES];
     [self.destroyCurrentGridAnimationTimer fire];
 }
 
@@ -829,7 +836,9 @@ typedef void (^resetTilesFinishedBlock)();
     UIAlertView *saveGameScoreDialogue = [UIAlertView bk_alertViewWithTitle:@"Minesweeper" message:@"Please type name for this score"];
     saveGameScoreDialogue.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[saveGameScoreDialogue textFieldAtIndex:0] setText:@"User"];
-    [saveGameScoreDialogue bk_setCancelButtonWithTitle:@"Cancel" handler:NULL];
+    [saveGameScoreDialogue bk_setCancelButtonWithTitle:@"Cancel" handler:^{
+        [self resetGridWithNewTiles];
+    }];
     [saveGameScoreDialogue bk_addButtonWithTitle:@"OK" handler:^{
         NSString* inputUserName = [[saveGameScoreDialogue textFieldAtIndex:0] text];
         if (!inputUserName || inputUserName.length == 0) {
