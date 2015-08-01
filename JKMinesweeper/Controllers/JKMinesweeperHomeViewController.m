@@ -14,7 +14,6 @@
 #import <NSArray+BlocksKit.h>
 #import <KLCPopup.h>
 #import "SaveGameModel.h"
-#import "UIViewController+MJPopupViewController.h"
 #import <JKAutolayoutReadyScrollView/ScrollViewAutolayoutCreator.h>
 #import "JKAudioOperations.h"
 #import "JKRandomStringGenerator.h"
@@ -47,6 +46,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 @property (strong, nonatomic) NSTimer* createNewGridAnimationTimer;
 @property (assign, nonatomic) NSInteger newMinesCurrentObjectIndex;
+@property (strong, nonatomic) NSTimer* destroyCurrentGridAnimationTimer;
 
 @property (strong, nonatomic) UIView* currentViewForColorpicker;
 @property (strong, nonatomic) NSString* currentGameIdentifier;
@@ -129,7 +129,37 @@ typedef void (^resetTilesFinishedBlock)();
         self.newMinesCurrentObjectIndex = 0;
         [self.createNewGridAnimationTimer invalidate];
         self.createNewGridAnimationTimer = nil;
+        DLog(@"Gridholder subviews count %ld", (long)self.gridHolderView.subviews.count);
     }
+}
+
+- (void)destroyCurrentGrid:(NSTimer*)timer {
+    
+    DLog(@"Gridholder subviews count %ld", (long)self.gridHolderView.subviews.count);
+    if (self.newMinesCurrentObjectIndex < self.maximumTileSequence) {
+        JKCustomButton* currentViewToMakeVisible = [self.gridHolderView.subviews lastObject];
+        [currentViewToMakeVisible removeFromSuperview];
+        self.newMinesCurrentObjectIndex++;
+    } else {
+        self.newMinesCurrentObjectIndex = 0;
+        [self.destroyCurrentGridAnimationTimer invalidate];
+        self.destroyCurrentGridAnimationTimer = nil;
+        [self createNewGridWithParameters];
+    }
+}
+
+- (void)resetGridWithNewTiles {
+    self.resetButton.enabled = NO;
+    self.revealMenuButton.enabled = NO;
+    [self.minesLocationHolder removeAllObjects];
+    [self.regularButtonsHolder removeAllObjects];
+    [self.minesButtonsHolder removeAllObjects];
+    [self.numberOfSurroundingMinesHolder removeAllObjects];
+    self.totalNumberOfTilesRevealed = 0;
+    self.currentScoreValue = 0;
+    self.currentScore.text = @"0";
+    self.destroyCurrentGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_TOTAL_ANIMATION_DURATION/self.maximumTileSequence) target:self selector:@selector(destroyCurrentGrid:) userInfo:nil repeats:YES];
+    [self.destroyCurrentGridAnimationTimer fire];
 }
 
 -(void)setupRACSignalsAndNotifications {
@@ -200,8 +230,7 @@ typedef void (^resetTilesFinishedBlock)();
             //If it is a new game, save it with creation of new object
             if (self.gameStateNewLoaded == NewGame) {
                 [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
-            }
-            else{
+            } else{
                 [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:@"Do you want to overwrite the existing game?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                     if (buttonIndex == 0){
                         [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
@@ -224,8 +253,6 @@ typedef void (^resetTilesFinishedBlock)();
             self.savedGamesViewController.openSelectedGameModel = ^(SaveGameModel* selectedGameModel) {
                 @strongify(self)
                 [self resetGameBeforeLoadingPreviousGame:selectedGameModel];
-                [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideRightRight];
-                
                 //Now load all tiles on the front page
                 NSArray *allCustomButtonCollection=[NSKeyedUnarchiver unarchiveObjectWithData:selectedGameModel.savedGameData];
                 
@@ -287,9 +314,9 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (void)showInPopupWithView:(UIView*)inputPopupView {
-    self.popupView = [KLCPopup popupWithContentView:inputPopupView showType:KLCPopupShowTypeSlideInFromTop dismissType:KLCPopupDismissTypeSlideOutToTop maskType:KLCPopupMaskTypeDimmed dismissOnBackgroundTouch:YES dismissOnContentTouch:NO];
+    self.popupView = [KLCPopup popupWithContentView:inputPopupView showType:KLCPopupShowTypeSlideInFromBottom dismissType:KLCPopupDismissTypeSlideOutToBottom maskType:KLCPopupMaskTypeDimmed dismissOnBackgroundTouch:YES dismissOnContentTouch:NO];
     if (IS_OS_8_OR_LATER) {
-        inputPopupView.transform = CGAffineTransformMakeRotation(-M_PI/2);
+        inputPopupView.transform = CGAffineTransformMakeRotation(M_PI/2);
     }
     [self.popupView show];
 }
@@ -447,7 +474,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (void)createNewGridOnScreen {
 
-    [self resetGridWithNewTilesAndCompletionBlock:nil];
+    //[self resetGridWithNewTiles];
     self.resetButton.enabled = YES;
     self.revealMenuButton.enabled = YES;
 
@@ -458,9 +485,9 @@ typedef void (^resetTilesFinishedBlock)();
     [self.gridHolderView setBackgroundColor:[UIColor lightGrayColor]];
     
     
-    if (self.gridHolderView.subviews.count) {
-        [self.gridHolderView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
-    }
+    //if (self.gridHolderView.subviews.count) {
+    //    [self.gridHolderView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+    //}
     
     NSInteger buttonSequenceNumber = 0;
     BOOL doesMineExistForTile = NO;
@@ -546,7 +573,7 @@ typedef void (^resetTilesFinishedBlock)();
     [self.scrollViewAutoLayout.contentView addSubview:self.changeGridBakcgroundColorButton];
     [self.scrollViewAutoLayout.contentView setBackgroundColor:[UIColor colorWithRed:0.94 green:0.67 blue:0.3 alpha:1.0]];
     
-    self.createNewGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(2.0/self.maximumTileSequence) target:self selector:@selector(makeTileVisibleForCurrentIndex:) userInfo:nil repeats:YES];
+    self.createNewGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_TOTAL_ANIMATION_DURATION/self.maximumTileSequence) target:self selector:@selector(makeTileVisibleForCurrentIndex:) userInfo:nil repeats:YES];
     [self.createNewGridAnimationTimer fire];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
@@ -562,7 +589,7 @@ typedef void (^resetTilesFinishedBlock)();
     [self.audioOperationsManager stopBackgroundMusic];
     [self.audioOperationsManager playForegroundSoundFXnamed:@"explosion.wav"  loop:NO];
     
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC);
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, DEFAULT_TOTAL_ANIMATION_DURATION * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self.audioOperationsManager playForegroundSoundFXnamed:@"nuclearexplosion.wav" loop:NO];
     });
@@ -757,9 +784,7 @@ typedef void (^resetTilesFinishedBlock)();
             inputUserName = @"User";
         }
         [ScoreSaver saveScoreInDatabaseWithUserName:inputUserName andScoreValue:self.currentScore.text andSelectedGameLevel:self.levelNumberSelected];
-        [self resetGridWithNewTilesAndCompletionBlock:^{
-            [self createNewGridWithParameters];
-        }];
+        [self resetGridWithNewTiles];
     }];
     [saveGameScoreDialogue show];
 }
@@ -793,44 +818,7 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (IBAction)resetButtonPressed:(UIButton *)sender {
-    [self resetGridWithNewTilesAndCompletionBlock:^{
-        [self createNewGridWithParameters];
-    }];
-}
-
-- (void)resetGridWithNewTilesAndCompletionBlock:
-            (void (^)())resetTilesFinishedBlock {
-
-    self.resetButton.enabled = NO;
-    self.revealMenuButton.enabled = NO;
-
-    [self.minesLocationHolder removeAllObjects];
-    [self.regularButtonsHolder removeAllObjects];
-    [self.minesButtonsHolder removeAllObjects];
-    [self.numberOfSurroundingMinesHolder removeAllObjects];
-    self.totalNumberOfTilesRevealed = 0;
-    self.currentScoreValue = 0;
-    self.currentScore.text = @"0";
-    
-    dispatch_time_t time = DISPATCH_TIME_NOW;
-
-    NSArray *allButtonsInGridView = [self.gridHolderView subviews];
-    for (UIView *individualButtonOnGrid in allButtonsInGridView) {
-
-        dispatch_after(time, dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
-                animations:^{
-                    individualButtonOnGrid.alpha = 0.0;
-                }
-                completion:^(BOOL finished) {
-                    [individualButtonOnGrid removeFromSuperview];
-                }];
-        });
-        time = dispatch_time(time, MULTIPLE_ANIMATION_DURATION * NSEC_PER_SEC);
-    }
-    if (resetTilesFinishedBlock) {
-        resetTilesFinishedBlock();
-    }
+    [self resetGridWithNewTiles];
 }
 
 - (IBAction)revealMinesButtonPressed:(UIButton *)sender {
