@@ -7,7 +7,6 @@
 //
 
 #import "GridTileCornerRadiusCalculator.h"
-#import "JKMineSweeperConstants.h"
 
 @implementation GridTileCornerRadiusCalculator
 

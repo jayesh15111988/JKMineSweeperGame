@@ -73,8 +73,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 @property(assign, nonatomic) NSInteger totalNumberOfRequiredTiles;
 @property(strong, nonatomic) NSMutableDictionary *numberOfSurroundingMinesHolder;
-- (IBAction)resetButtonPressed:(id)sender;
-- (IBAction)revealMinesButtonPressed:(id)sender;
+
 @property(weak, nonatomic) IBOutlet UIButton *revealMenuButton;
 @property(weak, nonatomic) IBOutlet UIButton *resetButton;
 
@@ -106,6 +105,9 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) JKTimerProviderUtility* timerProviderUtility;
 @property (strong, nonatomic) KLCPopup* popupView;
 
+- (IBAction)resetButtonPressed:(id)sender;
+- (IBAction)revealMinesButtonPressed:(id)sender;
+
 @end
 
 @implementation JKMinesweeperHomeViewController
@@ -116,6 +118,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.audioOperationsManager = [[JKAudioOperations alloc] init];
     self.gridHolderView = [[UIView alloc] init];
     self.gridHolderView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.gridHolderView.clipsToBounds = YES;
     
     self.minesLocationHolder = [NSMutableDictionary new];
     self.minesButtonsHolder = [NSMutableArray new];
@@ -133,6 +136,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.tileWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"tileWidth"] integerValue];
     self.gutterSpacing = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"] integerValue];
     self.toPlaySound = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
+    self.gridHolderView.layer.cornerRadius = [GridTileCornerRadiusCalculator buttonBorderRadiusFromType:[[[NSUserDefaults standardUserDefaults] objectForKey:@"gridButtonType"] unsignedIntegerValue] andTileWidth:self.tileWidth];
     
     if (![self loadColorForKey:@"gridBackgroundColor"]) {
         [self saveColor:[UIColor whiteColor] forKey:@"gridBackgroundColor"];
@@ -145,9 +149,6 @@ typedef void (^resetTilesFinishedBlock)();
     self.gridBackgroundColor = [self loadColorForKey:@"gridBackgroundColor"];
     [self.view setBackgroundColor:self.gridBackgroundColor];
     self.tileForegroundColor = [self loadColorForKey:@"tileForegroundColor"];
-
-    GridButtonType gridButtonType = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gridButtonType"] unsignedIntegerValue];
-    self.gridHolderView.layer.cornerRadius = [GridTileCornerRadiusCalculator buttonBorderRadiusFromType:gridButtonType andTileWidth:self.tileWidth];
     
     self.gridHolderView.layer.borderColor = self.tileForegroundColor.CGColor;
     self.gridHolderView.layer.borderWidth = 0.5f;
@@ -232,6 +233,23 @@ typedef void (^resetTilesFinishedBlock)();
     self.totalNumberOfTilesRevealed = 0;
     self.currentScoreValue = 0;
     self.currentScore.text = @"0";
+    
+    // Make animation to change grid border in case style has been changed in the meantime.
+    CGFloat previousGridCornerRadius = self.gridHolderView.layer.cornerRadius;
+    GridButtonType gridButtonType = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gridButtonType"] unsignedIntegerValue];
+    CGFloat currentGridCornerRadius = [GridTileCornerRadiusCalculator buttonBorderRadiusFromType:gridButtonType andTileWidth:self.tileWidth];
+    
+    // Make animation only if previous and current grid corner radius are different from each other.
+    if (previousGridCornerRadius != currentGridCornerRadius) {
+        CABasicAnimation *cornerRadiusAnimation = [CABasicAnimation animationWithKeyPath:@"cornerRadius"];
+        cornerRadiusAnimation.fromValue = @(previousGridCornerRadius);
+        cornerRadiusAnimation.toValue   = @(currentGridCornerRadius);
+        cornerRadiusAnimation.duration = REGULAR_ANIMATION_DURATION;
+        self.gridHolderView.layer.cornerRadius = currentGridCornerRadius;
+        cornerRadiusAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        [self.gridHolderView.layer addAnimation:cornerRadiusAnimation forKey:@"cornerRadiusAnimation"];
+    }
+    
     self.destroyCurrentGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_TOTAL_ANIMATION_DURATION/self.maximumTileSequence) target:self selector:@selector(destroyCurrentGrid:) userInfo:nil repeats:YES];
     [self.destroyCurrentGridAnimationTimer fire];
     self.gameState = Busy;
@@ -473,6 +491,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (void)createNewGridWithParameters {
 
+    [self.view endEditing:YES];
     self.gameState = NotStarted;
     self.gameStateNewLoaded = NewGame;
     
@@ -705,7 +724,7 @@ typedef void (^resetTilesFinishedBlock)();
         }
         else {
             [longPressedButton setTitle:@"" forState:UIControlStateNormal];
-            [longPressedButton setBackgroundColor:[UIColor orangeColor]];
+            [longPressedButton setBackgroundColor:self.tileForegroundColor];
         }
         [self playQuestionMarkSound];
     }
@@ -915,7 +934,7 @@ typedef void (^resetTilesFinishedBlock)();
                                forState:UIControlStateNormal];
             for (
                  JKCustomButton *individualTileWithMine in self.minesButtonsHolder) {
-                [individualTileWithMine addDecorationWithImage:nil orColor:[UIColor orangeColor]];
+                [individualTileWithMine addDecorationWithImage:nil orColor:self.tileForegroundColor];
             }
         }
     }
@@ -946,18 +965,18 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (void)levelNumberButtonPressed {
     [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
-    UIAlertView* alertView = [[UIAlertView alloc] init];
+    UIAlertView* alertView = [[UIAlertView alloc] bk_initWithTitle:@"Please Select Difficulty Level" message:@""];
     [alertView bk_addButtonWithTitle:@"Easy" handler:NULL];
     [alertView bk_addButtonWithTitle:@"Medium" handler:NULL];
     [alertView bk_addButtonWithTitle:@"Difficult" handler:NULL];
     [alertView bk_addButtonWithTitle:@"Expert" handler:NULL];
     [alertView bk_setCancelButtonWithTitle:@"Cancel" handler:NULL];
     [alertView show];
-    [[alertView rac_buttonClickedSignal] subscribeNext:^(NSNumber* buttonClickedIndex) {
-        if ([buttonClickedIndex integerValue] <= 3) {
-            self.levelNumberSelected = [buttonClickedIndex integerValue] + 1;
+    alertView.bk_didDismissBlock = ^(UIAlertView* alertView, NSInteger buttonClickedIndex) {
+        if (buttonClickedIndex <= 3) {
+            self.levelNumberSelected = buttonClickedIndex + 1;
         }
-    }];
+    };
 }
 
 -(void)setupColorPickerView {
