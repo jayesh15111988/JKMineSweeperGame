@@ -62,7 +62,7 @@
     JKScoresCustomTableViewCell* currentCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     SaveGameModel* currentGameObject = self.savedGamesCollection[indexPath.row];
     
-    if(currentCell == nil) {
+    if (currentCell == nil) {
         [tableView registerNib:[UINib nibWithNibName:@"JKScoresCustomTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
         currentCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     }
@@ -75,7 +75,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     SaveGameModel* selectedSavedGame = self.savedGamesCollection[indexPath.row];
-    if(self.openSelectedGameModel) {
+    if (self.openSelectedGameModel) {
         self.openSelectedGameModel(selectedSavedGame);
     }
 }
@@ -86,14 +86,14 @@
 
 - (IBAction)clearAllScoresButtonPressed:(UIButton*)sender {
     [UIAlertView bk_showAlertViewWithTitle:@"Saved Games" message:@"Are you sure you want to clear all the previous games?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Ok"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if(buttonIndex == 1) {
-            if([SavedGameOperation removeAllEntriesFromSavedGames]) {
+        if (buttonIndex == 1) {
+            if ([SavedGameOperation removeAllEntriesFromSavedGames]) {
                 [self loadSavedGames];
                 [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Successfully cleared all games from database" cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
             }
             else {
                 [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Failed to clear stored games from database" cancelButtonTitle:@"Ok" otherButtonTitles:@[@"Retry" ] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                    if(buttonIndex == 1) {
+                    if (buttonIndex == 1) {
                         [self clearAllScoresButtonPressed:nil];
                     }
                 }];

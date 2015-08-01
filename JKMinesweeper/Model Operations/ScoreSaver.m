@@ -35,9 +35,9 @@
 +(BOOL)removeAllEntriesFromScore {
     RLMResults* allScores = [Score allObjects];
     
-    if([allScores count] > 0) {
+    if ([allScores count] > 0) {
         RLMRealm* currentRealm = [RLMRealm defaultRealm];
-        for(Score* individualScore in allScores) {
+        for (Score* individualScore in allScores) {
             [currentRealm beginWriteTransaction];
             [currentRealm deleteObject:individualScore];
             [currentRealm commitWriteTransaction];

@@ -18,7 +18,7 @@
 @implementation JKAudioOperations
 
 -(JKAudioOperations*)init {
-    if(self = [super init]) {
+    if (self = [super init]) {
         return self;
     }
     return nil;
@@ -32,21 +32,21 @@
 
 -(BOOL) playForegroundSoundFXnamed: (NSString*) vSFXName loop: (BOOL) vLoop {
     
-    if(![self isSoundOn]) {
+    if (![self isSoundOn]) {
         return NO;
     }
     
     NSError *error;
     NSURL* currentFileURL = [self getFullURLForFileWithName:vSFXName];
     
-    if(!currentFileURL) {
+    if (!currentFileURL) {
         return NO;
     }
     
     self.foreGroundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:currentFileURL error:&error];
     
     
-    if(vLoop) {
+    if (vLoop) {
         self.foreGroundPlayer.numberOfLoops = -1;
     }
     else {
@@ -66,21 +66,21 @@
 
 -(BOOL) playBackgroundSoundFXnamed: (NSString*) vSFXName loop: (BOOL) vLoop {
     
-    if(![self isSoundOn]) {
+    if (![self isSoundOn]) {
         return NO;
     }
     
     NSError *error;
     NSURL* currentFileURL = [self getFullURLForFileWithName:vSFXName];
     
-    if(!currentFileURL) {
+    if (!currentFileURL) {
         return NO;
     }
     
     self.backGroundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:currentFileURL error:&error];
     
     
-    if(vLoop) {
+    if (vLoop) {
         self.backGroundPlayer.numberOfLoops = -1;
     }
     else {

@@ -6,10 +6,7 @@
 //  Copyright (c) 2014 Jayesh Kawli. All rights reserved.
 //
 
-#import <HRColorPickerView.h>
 #import <FLAnimatedImage.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
-#import "UIViewController+MJPopupViewController.h"
 #import <Realm.h>
 #import <UIAlertView+BlocksKit.h>
 #import <ReactiveCocoa.h>
@@ -17,10 +14,10 @@
 #import <NSArray+BlocksKit.h>
 #import <KLCPopup.h>
 #import "SaveGameModel.h"
+#import "UIViewController+MJPopupViewController.h"
 #import <JKAutolayoutReadyScrollView/ScrollViewAutolayoutCreator.h>
 #import "JKAudioOperations.h"
 #import "JKRandomStringGenerator.h"
-#import "JKMinesweeperHomeViewController.h"
 #import "JKNeighbouringTilesProvider.h"
 #import "JKMineSweeperConstants.h"
 #import "JKCustomButton.h"
@@ -33,6 +30,8 @@
 #import "JKMinesweeperSettingsViewController.h"
 #import "JKTimerProviderUtility.h"
 #import "ColorPickerProvider.h"
+
+#import "JKMinesweeperHomeViewController.h"
 
 typedef void (^resetTilesFinishedBlock)();
 
@@ -145,7 +144,7 @@ typedef void (^resetTilesFinishedBlock)();
     
     [[self.changeScrollViewBackgroundColorButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
        self.colorPickerHolderView.hidden = NO;
-       self.currentViewForColorpicker = self.gridHolderSuperView;
+       self.currentViewForColorpicker = self.scrollViewAutoLayout.contentView;
     }];
     
     self.verifyLossWinButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
@@ -159,7 +158,7 @@ typedef void (^resetTilesFinishedBlock)();
     }];
     
     [RACObserve(self, totalNumberOfTilesRevealed) subscribeNext:^(NSNumber *numberOfTilesUnleashed) {
-        if([numberOfTilesUnleashed integerValue] > 0) {
+        if ([numberOfTilesUnleashed integerValue] > 0) {
             self.gameState = InProgress;
         }
     }];
@@ -182,15 +181,14 @@ typedef void (^resetTilesFinishedBlock)();
         [saveGameScoreDialogue bk_addButtonWithTitle:@"OK" handler:^{
             NSString* saveGameName = [[saveGameScoreDialogue textFieldAtIndex:0] text];
             //If it is a new game, save it with creation of new object
-            if(self.gameStateNewLoaded == NewGame) {
+            if (self.gameStateNewLoaded == NewGame) {
                 [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
             }
             else{
                 [UIAlertView bk_showAlertViewWithTitle:@"Save Game" message:@"Do you want to overwrite the existing game?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Yes"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                    if(buttonIndex == 0){
+                    if (buttonIndex == 0){
                         [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
-                    }
-                    else {
+                    } else {
                         [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:NO];
                     }
                 }];
@@ -203,7 +201,7 @@ typedef void (^resetTilesFinishedBlock)();
     @weakify(self)
     self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
         @strongify(self)
-        if(!self.savedGamesViewController) {
+        if (!self.savedGamesViewController) {
             self.savedGamesViewController = [[JKMinesweeperSavedGamesViewController alloc] initWithNibName:@"JKMinesweeperSavedGamesViewController" bundle:nil];
             @weakify(self)
             self.savedGamesViewController.openSelectedGameModel = ^(SaveGameModel* selectedGameModel) {
@@ -223,17 +221,16 @@ typedef void (^resetTilesFinishedBlock)();
                 
                 self.totalNumberOfTilesRevealed = [collectionWithSelectedTiles count];
                 
-                for(JKCustomButton* individualButton in allCustomButtonCollection) {
+                for (JKCustomButton* individualButton in allCustomButtonCollection) {
                     DLog(@"In button mine %ld Sequence number %ld current tile state %ld ", (long)individualButton.buttonStateModel.isThisButtonMine, (long)individualButton.buttonSequenceNumber, (long)individualButton.buttonStateModel.currentTileState);
                     individualButton.frame = CGRectMake(individualButton.positionOnScreen.x, individualButton.positionOnScreen.y, self.tileWidth, self.tileWidth);
                     
                     [individualButton configurePreviousButton:individualButton.positionOnScreen andWidth:self.tileWidth andButtonState:individualButton.buttonStateModel];
                     
 
-                    if(individualButton.buttonStateModel.isThisButtonMine) {
+                    if (individualButton.buttonStateModel.isThisButtonMine) {
                         [self.minesButtonsHolder addObject:individualButton];
-                    }
-                    else {
+                    } else {
                         [self.regularButtonsHolder addObject:individualButton];
                     }
                     
@@ -244,38 +241,28 @@ typedef void (^resetTilesFinishedBlock)();
                     individualButton.gameOverInstant = ^() {
                         [self showAllMines];
                         self.gameState = OverAndLoss;
-                        [self showAlertViewWithMessage:@"You clicked on mine and "
-                         @"game is now over"];
+                        [self showAlertViewWithMessage:@"You clicked on mine and now game is over"];
                         [self playGameOverSound];
-                        
                     };
                     
-                    individualButton.randomTileSelectedInstant =
-                    ^(NSInteger buttonSequenceNumber) {
-                        
-                        if(![self isGameOver]) {
+                    individualButton.randomTileSelectedInstant = ^(NSInteger buttonSequenceNumber) {
+                        if (![self isGameOver]) {
                             [self highlightNeighbouringButtonsForButtonSequence: buttonSequenceNumber];
                         }
                     };
                     [self.gridHolderView addSubview:individualButton];
                 }
-                
-            DLog(@"%ld and %ld %ld", (long)self.regularButtonsHolder.count, (long)self.minesButtonsHolder.count,(long)self.gridHolderView.subviews.count);
             };
         }
-        
-        
         [self showInPopupWithView:self.savedGamesViewController.view];
         return [RACSignal empty];
     }];
     
     self.timerIndicatorButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
-        
-        if(self.timerProviderUtility.currentTimerState == TimerIsPlaying) {
+        if (self.timerProviderUtility.currentTimerState == TimerIsPlaying) {
             [self.audioOperationsManager stopBackgroundMusic];
             [self.timerProviderUtility pauseTimer];
-        }
-        else {
+        } else {
             [self.timerProviderUtility startTimer];
         }
         return [RACSignal empty];
@@ -284,7 +271,6 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (void)showInPopupWithView:(UIView*)inputPopupView {
     self.popupView = [KLCPopup popupWithContentView:inputPopupView showType:KLCPopupShowTypeSlideInFromTop dismissType:KLCPopupDismissTypeSlideOutToTop maskType:KLCPopupMaskTypeDimmed dismissOnBackgroundTouch:YES dismissOnContentTouch:NO];
-    
     if (IS_OS_8_OR_LATER) {
         inputPopupView.transform = CGAffineTransformMakeRotation(-M_PI/2);
     }
@@ -294,23 +280,19 @@ typedef void (^resetTilesFinishedBlock)();
 -(void)resetGameBeforeLoadingPreviousGame:(SaveGameModel*)selectedGameModel {
     
     // Unreveal all tiles if they are revealed in the previous game.
-    if(self.revealMenuButton.tag == MINES_REVEALED_STATE) {
+    if (self.revealMenuButton.tag == MINES_REVEALED_STATE) {
         [self resetRevealMenuButton];
     }
     
     self.gameStateNewLoaded = SavedGame;
     self.currentScoreValue = selectedGameModel.score;
     self.currentScore.text = [NSString stringWithFormat:@"%ld",(long)self.currentScoreValue];
-    DLog(@"current score is %ld", (long)selectedGameModel.score);
     self.levelNumberSelected = selectedGameModel.levelNumber;
     self.gridSizeInputText.text = selectedGameModel.numberOfTilesInRow;
-         
     self.totalNumberOfRequiredTiles = [self.gridSizeInputText.text integerValue];
-    
+
     // Setup Grid size to match the one number of tiles here.
-    
     [self setupGridHolderView];
-    
     if (self.totalNumberOfRequiredTiles < 3) {
         self.totalNumberOfRequiredTiles = 3;
     }
@@ -327,7 +309,7 @@ typedef void (^resetTilesFinishedBlock)();
 -(void)updateSounds {
     BOOL isSoundEnabled = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
     
-    if(isSoundEnabled) {
+    if (isSoundEnabled) {
         [self playBackgroundSound];
     }
     else {
@@ -337,10 +319,10 @@ typedef void (^resetTilesFinishedBlock)();
 
 -(void)updateUIWithNewTimeValue {
     self.timerIndicatorButton.hidden = ![[[NSUserDefaults standardUserDefaults] objectForKey:@"timer"] boolValue];
-    if(!self.timerIndicatorButton.hidden) {
-        if(self.gameState == InProgress) {
-            if(self.timerProviderUtility.currentTimerState != TimerIsPaused) {
-                if(!self.timerProviderUtility) {
+    if (!self.timerIndicatorButton.hidden) {
+        if (self.gameState == InProgress) {
+            if (self.timerProviderUtility.currentTimerState != TimerIsPaused) {
+                if (!self.timerProviderUtility) {
                     self.timerProviderUtility = [[JKTimerProviderUtility alloc] init];
                     @weakify(self)
                     self.timerProviderUtility.UpdateTimerLabelBlock = ^(NSString* updatedTimerLabelValue) {
@@ -409,7 +391,7 @@ typedef void (^resetTilesFinishedBlock)();
     
     NSString *currentGameStatusMessage = @"N/A";
     
-    if(self.gameState != NotStarted) {
+    if (self.gameState != NotStarted) {
         if (didUserWinCurrentGame) {
             [self.audioOperationsManager playForegroundSoundFXnamed:@"gamewin.wav" loop:NO];
             [self.audioOperationsManager stopBackgroundMusic];
@@ -417,7 +399,7 @@ typedef void (^resetTilesFinishedBlock)();
             currentGameStatusMessage = @"You won this game. Click the button "
             @"below to start a new game";
         } else {
-            if(self.gameState != OverAndLoss) {
+            if (self.gameState != OverAndLoss) {
                 currentGameStatusMessage = @"Sorry, you still need to unleash few "
                 @"tiles before we could declare you as " @"Winner";
             }
@@ -510,7 +492,7 @@ typedef void (^resetTilesFinishedBlock)();
             newRevealMineButton.randomTileSelectedInstant =
                 ^(NSInteger buttonSequenceNumber) {
                     @strongify(self)
-                    if(![self isGameOver]) {
+                    if (![self isGameOver]) {
                         [self highlightNeighbouringButtonsForButtonSequence: buttonSequenceNumber];
                     }
             };
@@ -544,7 +526,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.gridHolderSuperView = [UIView new];
     self.gridHolderSuperView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.gridHolderSuperView];
-    
+    self.gridHolderView.backgroundColor = [UIColor redColor];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_gridHolderSuperView]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_gridHolderSuperView)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_topHeaderOptionsView][_gridHolderSuperView]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_topHeaderOptionsView, _gridHolderSuperView)]];
@@ -553,7 +535,6 @@ typedef void (^resetTilesFinishedBlock)();
     [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderView];
     [self.scrollViewAutoLayout.contentView addSubview:self.changeGridBakcgroundColorButton];
     [self.scrollViewAutoLayout.contentView setBackgroundColor:[UIColor colorWithRed:0.94 green:0.67 blue:0.3 alpha:1.0]];
-    self.gridHolderSuperView.backgroundColor = self.scrollViewAutoLayout.contentView.backgroundColor;
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:gridHeightAndWidth]];
@@ -592,18 +573,18 @@ typedef void (^resetTilesFinishedBlock)();
         JKCustomButton* longPressedButton = (JKCustomButton*)gesture.view;
         
         //Tile is already revealed, do not bother to decorate it with question mark
-        if(longPressedButton.buttonStateModel.currentTileState == TileIsSelected) {
+        if (longPressedButton.buttonStateModel.currentTileState == TileIsSelected) {
             return;
         }
         
-        if(longPressedButton.buttonStateModel.currentTileState == TileIsQuestionMarked) {
+        if (longPressedButton.buttonStateModel.currentTileState == TileIsQuestionMarked) {
             longPressedButton.buttonStateModel.currentTileState = TileIsNotSelected;
         }
         else {
             longPressedButton.buttonStateModel.currentTileState = TileIsQuestionMarked;
         }
         
-        if(longPressedButton.buttonStateModel.currentTileState == TileIsQuestionMarked) {
+        if (longPressedButton.buttonStateModel.currentTileState == TileIsQuestionMarked) {
             [longPressedButton setTitle:@"?" forState:UIControlStateNormal];
             [longPressedButton setBackgroundColor:[UIColor whiteColor]];
         }
@@ -617,7 +598,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 -(void)setPositionOfChangeBackgroundColorButton {
    
-    if(!self.changeGridBakcgroundColorButton) {
+    if (!self.changeGridBakcgroundColorButton) {
         self.changeGridBakcgroundColorButton = [[UIButton alloc] init];
         self.changeGridBakcgroundColorButton.translatesAutoresizingMaskIntoConstraints = NO;
         [self.changeGridBakcgroundColorButton setBackgroundImage:[UIImage imageNamed:@"changeColor"] forState:UIControlStateNormal];
@@ -689,7 +670,7 @@ typedef void (^resetTilesFinishedBlock)();
         self.currentScore.text =
             [NSString stringWithFormat:@"%ld", (long)self.currentScoreValue];
         //After each revelation check if user has won the game or not
-        if([self didWinUserCurrentGameLiveCheck]) {
+        if ([self didWinUserCurrentGameLiveCheck]) {
             [self verifyLossWinButtonPressedWithUserWonCurrentGame:YES];
         }
     }
@@ -697,7 +678,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (void)showAlertViewWithMessage:(NSString *)message {
     [UIAlertView bk_showAlertViewWithTitle:@"Minesweeper" message:@"Start new game" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Continue"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if(self.gameState == OverAndWin || self.gameState == OverAndLoss) {
+        if (self.gameState == OverAndWin || self.gameState == OverAndLoss) {
             [self showSaveScoreDialogueBox];
         }
     }];
@@ -713,10 +694,10 @@ typedef void (^resetTilesFinishedBlock)();
     
     NSData* gameDataToArchive = [NSKeyedArchiver archivedDataWithRootObject:collectionOfAllButtons];
     
-    if(toCreateNewGame) {
+    if (toCreateNewGame) {
         SaveGameModel* gameToStore = [SaveGameModel new];
         gameToStore.savedGameName = gameName;
-        if(self.gameStateNewLoaded == NewGame) {
+        if (self.gameStateNewLoaded == NewGame) {
             gameToStore.identifier = self.currentGameIdentifier;
         }
         else {
@@ -735,7 +716,7 @@ typedef void (^resetTilesFinishedBlock)();
         DLog(@"Created new game model");
     } else {
         RLMResults* savedGamesWithCurrentIdentifier = [SaveGameModel objectsWhere:[NSString stringWithFormat:@"identifier = '%@'",self.currentGameIdentifier]];
-        if(([savedGamesWithCurrentIdentifier count] > 0) || !toCreateNewGame) {
+        if (([savedGamesWithCurrentIdentifier count] > 0) || !toCreateNewGame) {
             SaveGameModel* previouslyStoredModel = [savedGamesWithCurrentIdentifier firstObject];
             [currentRealm beginWriteTransaction];
             previouslyStoredModel.savedGameName = gameName;
@@ -759,7 +740,7 @@ typedef void (^resetTilesFinishedBlock)();
     [saveGameScoreDialogue bk_setCancelButtonWithTitle:@"Cancel" handler:NULL];
     [saveGameScoreDialogue bk_addButtonWithTitle:@"OK" handler:^{
         NSString* inputUserName = [[saveGameScoreDialogue textFieldAtIndex:0] text];
-        if(!inputUserName || inputUserName.length == 0) {
+        if (!inputUserName || inputUserName.length == 0) {
             inputUserName = @"User";
         }
         [ScoreSaver saveScoreInDatabaseWithUserName:inputUserName andScoreValue:self.currentScore.text andSelectedGameLevel:self.levelNumberSelected];
@@ -841,7 +822,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (IBAction)revealMinesButtonPressed:(UIButton *)sender {
     
-    if(self.minesButtonsHolder.count > 0) {
+    if (self.minesButtonsHolder.count > 0) {
         [self.audioOperationsManager playForegroundSoundFXnamed:@"revealed.wav" loop:NO];
         if (sender.tag == MINES_NOT_REVEALED_STATE) {
             sender.tag = MINES_REVEALED_STATE;
@@ -894,7 +875,7 @@ typedef void (^resetTilesFinishedBlock)();
         dispatch_after(time, dispatch_get_main_queue(), ^{
             [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
                 animations:^{
-                    if(!self.animatedExplosionImage) {
+                    if (!self.animatedExplosionImage) {
                      self.animatedExplosionImage = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:[NSURL URLWithString:ANIMATED_IMAGE_URL]]];
                     }
                     
@@ -935,19 +916,19 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 -(void)setupColorPickerView {
-    
-    if(!self.colorPickerHolderView) {
+    if (!self.colorPickerHolderView) {
         @weakify(self)
        self.colorPickerHolderView = [ColorPickerProvider colorPickerForCurrentViewForParentView:self.gridHolderSuperView andColorChangedBlock:^(UIColor *selectedColor) {
            @strongify(self)
            [self.currentViewForColorpicker setBackgroundColor:selectedColor];
        }];
     }
+    [ColorPickerProvider changeColorPickerColorWithNewColor:self.currentViewForColorpicker.backgroundColor];
 }
 
 - (IBAction)showPastScores:(UIButton *)sender {
     [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
-    if(!self.pastScoresViewController) {
+    if (!self.pastScoresViewController) {
         self.pastScoresViewController = [[JKMinesweeperScoresViewController alloc] initWithNibName:@"JKMinesweeperScoresViewController" bundle:nil];
     }
     [self showInPopupWithView:self.pastScoresViewController.view];
@@ -955,11 +936,10 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (IBAction)goToSettingsButtonPressed:(UIButton*)sender {
     [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
-    if(!self.settingsViewController) {
+    if (!self.settingsViewController) {
         self.settingsViewController = [[JKMinesweeperSettingsViewController alloc] initWithNibName:@"JKMinesweeperSettingsViewController" bundle:nil];
     }
     [self showInPopupWithView:self.settingsViewController.view];
 }
-
 
 @end

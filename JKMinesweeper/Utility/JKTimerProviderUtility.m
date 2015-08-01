@@ -34,16 +34,16 @@
 
 -(void)increaseTimerCount {
         self.currentNumberOfSeconds++;
-        if(self.timer.isValid) {
+        if (self.timer.isValid) {
             self.UpdateTimerLabelBlock([self getMinutesAndSecondsStringFromSeconds]);
         }
 }
 
 -(NSString*)getMinutesAndSecondsStringFromSeconds {
     
-    if(self.isSoundEffectOn) {
+    if (self.isSoundEffectOn) {
         //Play this cukoo alarm once every minute to give sense of current time
-        if(self.currentNumberOfSeconds % 60 == 0) {
+        if (self.currentNumberOfSeconds % 60 == 0) {
             [self.audioOperationManager playForegroundSoundFXnamed:@"clockcirclecomplete.wav" loop:NO];
         }
     }
@@ -55,7 +55,7 @@
 
 
 -(void)startTimer {
-    if(self.currentTimerState == TimerNotStarted) {
+    if (self.currentTimerState == TimerNotStarted) {
         self.isSoundEffectOn = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(increaseTimerCount) userInfo:nil repeats:YES];
         [self.timer fire];
@@ -75,7 +75,7 @@
 }
 
 -(void)resetTimer {
-    if(self.timer.isValid) {
+    if (self.timer.isValid) {
         [self.timer invalidate];
     }
     self.currentNumberOfSeconds = 0;

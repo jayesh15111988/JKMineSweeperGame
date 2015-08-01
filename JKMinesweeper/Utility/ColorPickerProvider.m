@@ -10,12 +10,14 @@
 #import <HRColorPickerView.h>
 #import <ReactiveCocoa.h>
 
+static HRColorPickerView* colorPickerView;
+
 @implementation ColorPickerProvider
 
 + (UIView*)colorPickerForCurrentViewForParentView:(UIView*)parentView andColorChangedBlock:(void (^)(UIColor* selectedColor))colorChangedBlock {
     UIView* colorPickerHolderView = [UIView new];
     colorPickerHolderView.translatesAutoresizingMaskIntoConstraints = NO;
-    HRColorPickerView* colorPickerView = [[HRColorPickerView alloc] init];
+    colorPickerView = [[HRColorPickerView alloc] init];
     colorPickerView.translatesAutoresizingMaskIntoConstraints = NO;
     colorPickerView.color = parentView.backgroundColor;
     colorPickerView.colorInfoView.hidden = YES;
@@ -24,7 +26,7 @@
         colorChangedBlock(colorPicker.color);
     }];
     
-    UIButton* hideColorPickerButton = [[UIButton alloc] init];//WithFrame:CGRectMake(0, 5, 100, 44)];
+    UIButton* hideColorPickerButton = [[UIButton alloc] init];
     hideColorPickerButton.translatesAutoresizingMaskIntoConstraints = NO;
     hideColorPickerButton.backgroundColor = [UIColor colorWithRed:200/255.0 green:210/255.0 blue:80/255.0 alpha:1.0];
     [hideColorPickerButton setTitle:@"OK" forState:UIControlStateNormal];
@@ -48,6 +50,10 @@
     [parentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[hideColorPickerButton]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(hideColorPickerButton)]];
     [parentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[colorPickerView]-10-[hideColorPickerButton(44)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(colorPickerView, hideColorPickerButton)]];
     return colorPickerHolderView;
+}
+
++ (void)changeColorPickerColorWithNewColor:(UIColor*)updatedColor {
+    colorPickerView.color = updatedColor;
 }
 
 @end

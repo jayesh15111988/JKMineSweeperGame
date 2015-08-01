@@ -15,9 +15,9 @@
 @implementation SavedGameOperation
 +(BOOL)removeAllEntriesFromSavedGames {
     RLMResults* allSavedGames = [SaveGameModel allObjects];
-    if([allSavedGames count] > 0) {
+    if ([allSavedGames count] > 0) {
         RLMRealm* currentRealm = [RLMRealm defaultRealm];
-        for(SaveGameModel* individualGame in allSavedGames) {
+        for (SaveGameModel* individualGame in allSavedGames) {
             [currentRealm beginWriteTransaction];
             [currentRealm deleteObject:individualGame];
             [currentRealm commitWriteTransaction];

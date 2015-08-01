@@ -56,7 +56,7 @@
 }
 
 - (IBAction)soundSwitchChanged:(UISwitch *)sender {
-    if(sender == self.soundEffectSwitch) {
+    if (sender == self.soundEffectSwitch) {
         [[NSUserDefaults standardUserDefaults] setObject:@(sender.isOn) forKey:@"sound"];
         [[NSNotificationCenter defaultCenter] postNotificationName:SOUND_SETTINGS_CHANGED object:nil];
     }

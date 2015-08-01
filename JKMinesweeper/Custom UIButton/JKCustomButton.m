@@ -87,7 +87,7 @@
     self.backgroundColor = [UIColor orangeColor];
     [self setTitleColor:titleColor forState:UIControlStateNormal];
     
-    if(previousButtonState.currentTileState == TileIsSelected) {
+    if (previousButtonState.currentTileState == TileIsSelected) {
         [self setBackgroundColor:[UIColor redColor]];
         [self setTitle:[NSString stringWithFormat:@"%ld",(long)numberOfSurroundingMines] forState:UIControlStateNormal];
     }

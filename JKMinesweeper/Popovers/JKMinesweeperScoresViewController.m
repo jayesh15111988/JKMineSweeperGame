@@ -55,7 +55,7 @@
     JKScoresCustomTableViewCell* currentCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     Score* currentScoreObject = self.scoreObjectsCollection[indexPath.row];
     
-    if(currentCell == nil) {
+    if (currentCell == nil) {
         [tableView registerNib:[UINib nibWithNibName:@"JKScoresCustomTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
         currentCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     }
@@ -68,14 +68,14 @@
 
 - (IBAction)clearAllScoresButtonPressed:(UIButton*)sender {
     [UIAlertView bk_showAlertViewWithTitle:@"Scores History" message:@"Are you sure you want to clear all the previous scores?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Ok"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if(buttonIndex == 1) {
-            if([ScoreSaver removeAllEntriesFromScore]) {
+        if (buttonIndex == 1) {
+            if ([ScoreSaver removeAllEntriesFromScore]) {
                 [self loadAllScores];
                 [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Successfully cleared all scores from database" cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
             }
             else {
                 [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Failed to clear scores from database" cancelButtonTitle:@"Ok" otherButtonTitles:@[@"Retry" ] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                    if(buttonIndex == 1) {
+                    if (buttonIndex == 1) {
                         [self clearAllScoresButtonPressed:nil];
                     }
                 }];

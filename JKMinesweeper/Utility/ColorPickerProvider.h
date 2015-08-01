@@ -12,5 +12,6 @@
 @interface ColorPickerProvider : NSObject
 
 + (HRColorPickerView*)colorPickerForCurrentViewForParentView:(UIView*)parentView andColorChangedBlock:(void (^)(UIColor* selectedColor))colorChangedBlock;
++ (void)changeColorPickerColorWithNewColor:(UIColor*)updatedColor;
 
 @end

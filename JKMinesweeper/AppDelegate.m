@@ -22,7 +22,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"currentLevel"]) {
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"currentLevel"]) {
         [self setInitialDefaults];
     }
     [self performDatabaseMigration];
