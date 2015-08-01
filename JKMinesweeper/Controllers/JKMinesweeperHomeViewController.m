@@ -200,17 +200,16 @@ typedef void (^resetTilesFinishedBlock)();
         return [RACSignal empty];
     }];
 
-    
+    @weakify(self)
     self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
+        @strongify(self)
         if(!self.savedGamesViewController) {
             self.savedGamesViewController = [[JKMinesweeperSavedGamesViewController alloc] initWithNibName:@"JKMinesweeperSavedGamesViewController" bundle:nil];
-              __weak typeof(self) weakSelf = self;
+            @weakify(self)
             self.savedGamesViewController.openSelectedGameModel = ^(SaveGameModel* selectedGameModel) {
-                
-                __strong typeof(self) strongSelf = weakSelf;
-                
-                [strongSelf resetGameBeforeLoadingPreviousGame:selectedGameModel];
-                [strongSelf dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideRightRight];
+                @strongify(self)
+                [self resetGameBeforeLoadingPreviousGame:selectedGameModel];
+                [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideRightRight];
                 
                 //Now load all tiles on the front page
                 NSArray *allCustomButtonCollection=[NSKeyedUnarchiver unarchiveObjectWithData:selectedGameModel.savedGameData];
@@ -220,48 +219,48 @@ typedef void (^resetTilesFinishedBlock)();
                     return (currentButtonState == TileIsSelected || currentButtonState == TileIsQuestionMarked);
                 }];
                 
-                DLog(@"%ld and %ld", (long)strongSelf.regularButtonsHolder.count, (long)strongSelf.minesButtonsHolder.count);
+                DLog(@"%ld and %ld", (long)self.regularButtonsHolder.count, (long)self.minesButtonsHolder.count);
                 
-                strongSelf.totalNumberOfTilesRevealed = [collectionWithSelectedTiles count];
+                self.totalNumberOfTilesRevealed = [collectionWithSelectedTiles count];
                 
                 for(JKCustomButton* individualButton in allCustomButtonCollection) {
                     DLog(@"In button mine %ld Sequence number %ld current tile state %ld ", (long)individualButton.buttonStateModel.isThisButtonMine, (long)individualButton.buttonSequenceNumber, (long)individualButton.buttonStateModel.currentTileState);
-                    individualButton.frame = CGRectMake(individualButton.positionOnScreen.x, individualButton.positionOnScreen.y, strongSelf.tileWidth, strongSelf.tileWidth);
+                    individualButton.frame = CGRectMake(individualButton.positionOnScreen.x, individualButton.positionOnScreen.y, self.tileWidth, self.tileWidth);
                     
-                    [individualButton configurePreviousButton:individualButton.positionOnScreen andWidth:strongSelf.tileWidth andButtonState:individualButton.buttonStateModel];
+                    [individualButton configurePreviousButton:individualButton.positionOnScreen andWidth:self.tileWidth andButtonState:individualButton.buttonStateModel];
                     
 
                     if(individualButton.buttonStateModel.isThisButtonMine) {
-                        [strongSelf.minesButtonsHolder addObject:individualButton];
+                        [self.minesButtonsHolder addObject:individualButton];
                     }
                     else {
-                        [strongSelf.regularButtonsHolder addObject:individualButton];
+                        [self.regularButtonsHolder addObject:individualButton];
                     }
                     
                     //For each button retrieved from database, we will add long press gesture to it
-                    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:strongSelf action:@selector(longPress:)];
+                    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
                     [individualButton addGestureRecognizer:longPress];
                     
                     individualButton.gameOverInstant = ^() {
-                        [strongSelf showAllMines];
-                        strongSelf.gameState = OverAndLoss;
-                        [strongSelf showAlertViewWithMessage:@"You clicked on mine and "
+                        [self showAllMines];
+                        self.gameState = OverAndLoss;
+                        [self showAlertViewWithMessage:@"You clicked on mine and "
                          @"game is now over"];
-                        [strongSelf playGameOverSound];
+                        [self playGameOverSound];
                         
                     };
                     
                     individualButton.randomTileSelectedInstant =
                     ^(NSInteger buttonSequenceNumber) {
                         
-                        if(![strongSelf isGameOver]) {
-                            [strongSelf highlightNeighbouringButtonsForButtonSequence: buttonSequenceNumber];
+                        if(![self isGameOver]) {
+                            [self highlightNeighbouringButtonsForButtonSequence: buttonSequenceNumber];
                         }
                     };
-                    [strongSelf.gridHolderView addSubview:individualButton];
+                    [self.gridHolderView addSubview:individualButton];
                 }
                 
-            DLog(@"%ld and %ld %ld", (long)strongSelf.regularButtonsHolder.count, (long)strongSelf.minesButtonsHolder.count,(long)strongSelf.gridHolderView.subviews.count);
+            DLog(@"%ld and %ld %ld", (long)self.regularButtonsHolder.count, (long)self.minesButtonsHolder.count,(long)self.gridHolderView.subviews.count);
             };
         }
         
@@ -343,10 +342,10 @@ typedef void (^resetTilesFinishedBlock)();
             if(self.timerProviderUtility.currentTimerState != TimerIsPaused) {
                 if(!self.timerProviderUtility) {
                     self.timerProviderUtility = [[JKTimerProviderUtility alloc] init];
-                    __weak typeof(self) weakSelf = self;
+                    @weakify(self)
                     self.timerProviderUtility.UpdateTimerLabelBlock = ^(NSString* updatedTimerLabelValue) {
-                    __strong typeof(self) strongSelf = weakSelf;
-                    [strongSelf.timerIndicatorButton setTitle:updatedTimerLabelValue forState:UIControlStateNormal];
+                    @strongify(self)
+                    [self.timerIndicatorButton setTitle:updatedTimerLabelValue forState:UIControlStateNormal];
                     };
                 }
                 [self.timerProviderUtility startTimer];
@@ -495,25 +494,24 @@ typedef void (^resetTilesFinishedBlock)();
                     getNeighbouringTilesForGivenTileWithSequence: buttonSequenceNumber
                                        andTotalTilesInSingleLine: self.totalNumberOfRequiredTiles];
 
-            __weak typeof(self) weakSelf = self;
+            @weakify(self)
 
             newRevealMineButton.gameOverInstant = ^() {
-                __strong __typeof(weakSelf) strongSelf = weakSelf;
-                [strongSelf showAllMines];
-                strongSelf.gameState = OverAndLoss;
-                [strongSelf showAlertViewWithMessage:@"You clicked on mine and "
+                @strongify(self)
+                [self showAllMines];
+                self.gameState = OverAndLoss;
+                [self showAlertViewWithMessage:@"You clicked on mine and "
                             @"game is now over"];
                 
-                [strongSelf playGameOverSound];
+                [self playGameOverSound];
                 
             };
 
             newRevealMineButton.randomTileSelectedInstant =
                 ^(NSInteger buttonSequenceNumber) {
-                   
+                    @strongify(self)
                     if(![self isGameOver]) {
-                        __strong __typeof(weakSelf) strongSelf = weakSelf;
-                        [strongSelf highlightNeighbouringButtonsForButtonSequence: buttonSequenceNumber];
+                        [self highlightNeighbouringButtonsForButtonSequence: buttonSequenceNumber];
                     }
             };
 
@@ -551,17 +549,15 @@ typedef void (^resetTilesFinishedBlock)();
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_gridHolderSuperView]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_gridHolderSuperView)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_topHeaderOptionsView][_gridHolderSuperView]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_topHeaderOptionsView, _gridHolderSuperView)]];
     
-    
     self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.gridHolderSuperView];
-    [self.gridHolderSuperView addSubview:self.gridHolderView];
-    
-
-    [self.gridHolderSuperView addSubview:self.changeGridBakcgroundColorButton];
-    [self.gridHolderSuperView setBackgroundColor:[UIColor colorWithRed:0.94 green:0.67 blue:0.3 alpha:1.0]];
+    [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderView];
+    [self.scrollViewAutoLayout.contentView addSubview:self.changeGridBakcgroundColorButton];
+    [self.scrollViewAutoLayout.contentView setBackgroundColor:[UIColor colorWithRed:0.94 green:0.67 blue:0.3 alpha:1.0]];
+    self.gridHolderSuperView.backgroundColor = self.scrollViewAutoLayout.contentView.backgroundColor;
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:gridHeightAndWidth]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_gridHolderView(totalGridViewHeight)]" options:kNilOptions metrics:@{@"totalGridViewHeight": @(gridHeightAndWidth)} views:NSDictionaryOfVariableBindings(_gridHolderView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_gridHolderView(totalGridViewHeight)]-20-|" options:kNilOptions metrics:@{@"totalGridViewHeight": @(gridHeightAndWidth)} views:NSDictionaryOfVariableBindings(_gridHolderView)]];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_gridHolderView]-10-[_changeGridBakcgroundColorButton(30)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_gridHolderView, _changeGridBakcgroundColorButton)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_changeGridBakcgroundColorButton(30)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings( _changeGridBakcgroundColorButton)]];
