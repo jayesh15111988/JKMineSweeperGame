@@ -52,6 +52,7 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) NSString* currentGameIdentifier;
 @property (strong, nonatomic) FLAnimatedImage *animatedExplosionImage;
 @property (weak, nonatomic) IBOutlet UIButton *changeScrollViewBackgroundColorButton;
+@property (weak, nonatomic) IBOutlet UIImageView *gameProgressIndicatorImage;
 
 @property (strong, nonatomic) UIView* colorPickerHolderView;
 @property (assign, nonatomic) CurrentGameState gameState;
@@ -129,13 +130,12 @@ typedef void (^resetTilesFinishedBlock)();
         self.newMinesCurrentObjectIndex = 0;
         [self.createNewGridAnimationTimer invalidate];
         self.createNewGridAnimationTimer = nil;
+        self.gameState = NotStarted;
         DLog(@"Gridholder subviews count %ld", (long)self.gridHolderView.subviews.count);
     }
 }
 
 - (void)destroyCurrentGrid:(NSTimer*)timer {
-    
-    DLog(@"Gridholder subviews count %ld", (long)self.gridHolderView.subviews.count);
     if (self.newMinesCurrentObjectIndex < self.maximumTileSequence) {
         JKCustomButton* currentViewToMakeVisible = [self.gridHolderView.subviews lastObject];
         [currentViewToMakeVisible removeFromSuperview];
@@ -143,6 +143,7 @@ typedef void (^resetTilesFinishedBlock)();
     } else {
         self.newMinesCurrentObjectIndex = 0;
         [self.destroyCurrentGridAnimationTimer invalidate];
+        self.gameState = NotStarted;
         self.destroyCurrentGridAnimationTimer = nil;
         [self createNewGridWithParameters];
     }
@@ -160,6 +161,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.currentScore.text = @"0";
     self.destroyCurrentGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_TOTAL_ANIMATION_DURATION/self.maximumTileSequence) target:self selector:@selector(destroyCurrentGrid:) userInfo:nil repeats:YES];
     [self.destroyCurrentGridAnimationTimer fire];
+    self.gameState = Busy;
 }
 
 -(void)setupRACSignalsAndNotifications {
@@ -211,7 +213,22 @@ typedef void (^resetTilesFinishedBlock)();
     }];
     
     [RACObserve(self, gameState) subscribeNext:^(NSNumber *currentGameState) {
-        self.saveButton.hidden = (self.gameState != InProgress);
+        GameState updatedGameState = [currentGameState integerValue];
+        BOOL gameInProgress = (updatedGameState == InProgress);
+        self.saveButton.hidden = !gameInProgress;
+        
+        NSString* gameProgressIndicatorImageName = @"bullet_grey";
+        switch (updatedGameState) {
+            case InProgress:
+                gameProgressIndicatorImageName = @"bullet_green";
+                break;
+            case Busy:
+                gameProgressIndicatorImageName = @"bullet_red";
+                break;
+            default:
+                break;
+        }
+        self.gameProgressIndicatorImage.image = [UIImage imageNamed:gameProgressIndicatorImageName];
         [self updateUIWithNewTimeValue];
     }];
     
@@ -258,7 +275,7 @@ typedef void (^resetTilesFinishedBlock)();
                 
                 NSArray* collectionWithSelectedTiles = [allCustomButtonCollection bk_select:^BOOL(JKCustomButton* currentButtonObject) {
                     TileStateRepresentationValue currentButtonState = currentButtonObject.buttonStateModel.currentTileState;
-                    return (currentButtonState == TileIsSelected || currentButtonState == TileIsQuestionMarked);
+                    return (currentButtonState == TileSelected || currentButtonState == TileQuestionMarked);
                 }];
                 
                 DLog(@"%ld and %ld", (long)self.regularButtonsHolder.count, (long)self.minesButtonsHolder.count);
@@ -575,6 +592,7 @@ typedef void (^resetTilesFinishedBlock)();
     
     self.createNewGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_TOTAL_ANIMATION_DURATION/self.maximumTileSequence) target:self selector:@selector(makeTileVisibleForCurrentIndex:) userInfo:nil repeats:YES];
     [self.createNewGridAnimationTimer fire];
+    self.gameState = Busy;
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.gridHolderSuperView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:gridHeightAndWidth]];
@@ -613,18 +631,18 @@ typedef void (^resetTilesFinishedBlock)();
         JKCustomButton* longPressedButton = (JKCustomButton*)gesture.view;
         
         //Tile is already revealed, do not bother to decorate it with question mark
-        if (longPressedButton.buttonStateModel.currentTileState == TileIsSelected) {
+        if (longPressedButton.buttonStateModel.currentTileState == TileSelected) {
             return;
         }
         
-        if (longPressedButton.buttonStateModel.currentTileState == TileIsQuestionMarked) {
-            longPressedButton.buttonStateModel.currentTileState = TileIsNotSelected;
+        if (longPressedButton.buttonStateModel.currentTileState == TileQuestionMarked) {
+            longPressedButton.buttonStateModel.currentTileState = TileNotSelected;
         }
         else {
-            longPressedButton.buttonStateModel.currentTileState = TileIsQuestionMarked;
+            longPressedButton.buttonStateModel.currentTileState = TileQuestionMarked;
         }
         
-        if (longPressedButton.buttonStateModel.currentTileState == TileIsQuestionMarked) {
+        if (longPressedButton.buttonStateModel.currentTileState == TileQuestionMarked) {
             [longPressedButton setTitle:@"?" forState:UIControlStateNormal];
             [longPressedButton setBackgroundColor:[UIColor whiteColor]];
         }
@@ -676,7 +694,7 @@ typedef void (^resetTilesFinishedBlock)();
         self.totalNumberOfTilesRevealed++;
         buttonWithCurrentIdentifier.isVisited = YES;
         buttonWithCurrentIdentifier.buttonStateModel.currentTileState =
-            TileIsSelected;
+            TileSelected;
         DLog(@"%ld tiles revealed", (long)self.totalNumberOfTilesRevealed);
         if ((buttonWithCurrentIdentifier.buttonStateModel
                  .numberOfNeighboringMines == 0)) {
@@ -893,7 +911,7 @@ typedef void (^resetTilesFinishedBlock)();
                 }
                 completion:^(BOOL finished) {
                     individualMinesButton.buttonStateModel
-                        .currentTileState = TileIsSelected;
+                        .currentTileState = TileSelected;
                 }];
         });
         time = dispatch_time(time, REGULAR_ANIMATION_DURATION * NSEC_PER_SEC);

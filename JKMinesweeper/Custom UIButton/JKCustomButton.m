@@ -24,7 +24,7 @@
         self.positionOnScreen = buttonPositionOnScreen;
         self.buttonStateModel = [JKButtonStateModel new];
         self.buttonSequenceNumber = buttonSequenceNumber;
-        self.buttonStateModel.currentTileState = TileIsNotSelected;
+        self.buttonStateModel.currentTileState = TileNotSelected;
         self.buttonStateModel.isThisButtonMine = isMine;
         self.buttonStateModel.numberOfNeighboringMines = numberOfSurroundingMines;
         self.alpha = 0.0;
@@ -87,11 +87,11 @@
     self.backgroundColor = [UIColor orangeColor];
     [self setTitleColor:titleColor forState:UIControlStateNormal];
     
-    if (previousButtonState.currentTileState == TileIsSelected) {
+    if (previousButtonState.currentTileState == TileSelected) {
         [self setBackgroundColor:[UIColor redColor]];
         [self setTitle:[NSString stringWithFormat:@"%ld",(long)numberOfSurroundingMines] forState:UIControlStateNormal];
     }
-    else if (previousButtonState.currentTileState == TileIsQuestionMarked) {
+    else if (previousButtonState.currentTileState == TileQuestionMarked) {
         [self setTitle:@"?" forState:UIControlStateNormal];
         [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self setBackgroundColor:[UIColor whiteColor]];
@@ -110,8 +110,8 @@
 
     // Go in the block only if tile is not previously selected by the user
     DLog(@"%ld",(long)self.buttonStateModel.currentTileState);
-    if (self.buttonStateModel.currentTileState == TileIsNotSelected) {
-        self.buttonStateModel.currentTileState = TileIsSelected;
+    if (self.buttonStateModel.currentTileState == TileNotSelected || self.buttonStateModel.currentTileState == TileQuestionMarked) {
+        self.buttonStateModel.currentTileState = TileSelected;
 
         if (self.buttonStateModel.isThisButtonMine) {
             // Game Over for player

@@ -29,7 +29,8 @@ enum {
     NotStarted,
     InProgress,
     OverAndWin,
-    OverAndLoss
+    OverAndLoss,
+    Busy
 };
 
 

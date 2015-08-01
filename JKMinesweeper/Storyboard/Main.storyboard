@@ -176,12 +176,20 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nwX-Io-fqJ">
+                                        <rect key="frame" x="30" y="7" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="rtW-X5-Pbp"/>
+                                            <constraint firstAttribute="height" constant="30" id="wD1-xJ-Gks"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="nwX-Io-fqJ" firstAttribute="leading" secondItem="2qk-pa-kYS" secondAttribute="leading" constant="30" id="07F-Ik-SHb"/>
+                                    <constraint firstItem="Tud-sB-CfL" firstAttribute="leading" secondItem="nwX-Io-fqJ" secondAttribute="trailing" constant="30" id="38e-BK-LkK"/>
                                     <constraint firstAttribute="centerY" secondItem="Jcs-qU-sB8" secondAttribute="centerY" id="3TJ-rd-FmQ"/>
                                     <constraint firstItem="Jcs-qU-sB8" firstAttribute="leading" secondItem="pma-1w-LJT" secondAttribute="trailing" constant="54" id="4IR-W1-e7i"/>
-                                    <constraint firstItem="Tud-sB-CfL" firstAttribute="leading" secondItem="2qk-pa-kYS" secondAttribute="leading" constant="90" id="4vS-mt-DqL"/>
                                     <constraint firstAttribute="centerY" secondItem="Pvu-Ac-RuH" secondAttribute="centerY" id="56e-aU-Ny5"/>
                                     <constraint firstItem="Y7E-V4-PaI" firstAttribute="leading" secondItem="pma-1w-LJT" secondAttribute="trailing" constant="15" id="7KY-1E-cBJ"/>
                                     <constraint firstItem="a6U-v5-Hrx" firstAttribute="height" secondItem="Jcs-qU-sB8" secondAttribute="height" id="AN7-CE-0ei"/>
@@ -208,6 +216,7 @@
                                     <constraint firstItem="a6U-v5-Hrx" firstAttribute="height" secondItem="C0L-YA-Nfa" secondAttribute="height" id="gTh-iO-XiR"/>
                                     <constraint firstAttribute="trailing" secondItem="Hwu-r7-gdt" secondAttribute="trailing" constant="8" id="hTe-av-777"/>
                                     <constraint firstItem="Imu-eC-dEC" firstAttribute="leading" secondItem="bI9-N5-vvr" secondAttribute="trailing" constant="15" id="ioI-o4-Qxu"/>
+                                    <constraint firstAttribute="centerY" secondItem="nwX-Io-fqJ" secondAttribute="centerY" id="lnl-8I-0bT"/>
                                     <constraint firstAttribute="centerY" secondItem="Tud-sB-CfL" secondAttribute="centerY" id="mBh-hj-atY"/>
                                     <constraint firstAttribute="centerY" secondItem="Imu-eC-dEC" secondAttribute="centerY" id="o8y-jo-Euy"/>
                                     <constraint firstItem="a6U-v5-Hrx" firstAttribute="height" secondItem="Tud-sB-CfL" secondAttribute="height" id="qAG-Df-ZsZ"/>
@@ -235,6 +244,7 @@
                     <connections>
                         <outlet property="changeScrollViewBackgroundColorButton" destination="Hwu-r7-gdt" id="Vxi-oI-Gf0"/>
                         <outlet property="currentScore" destination="9wb-yx-klb" id="mu9-nc-A9h"/>
+                        <outlet property="gameProgressIndicatorImage" destination="nwX-Io-fqJ" id="lLF-R5-Gt7"/>
                         <outlet property="gridSizeInputText" destination="Y7E-V4-PaI" id="ITp-B1-RBq"/>
                         <outlet property="levelNumberButton" destination="Jcs-qU-sB8" id="DPr-UK-y2c"/>
                         <outlet property="loadButton" destination="PgT-vY-oPe" id="uUW-SR-ZoA"/>

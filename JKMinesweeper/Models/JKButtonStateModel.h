@@ -7,9 +7,9 @@
 //
 
 enum {
-    TileIsNotSelected,
-    TileIsSelected,
-    TileIsQuestionMarked
+    TileNotSelected,
+    TileSelected,
+    TileQuestionMarked
 };
 typedef NSInteger TileStateRepresentationValue;
 

@@ -49,6 +49,9 @@
 		38A787451A4CF07A0004B2B4 /* mine.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A787421A4CF07A0004B2B4 /* mine.png */; };
 		38A787461A4CF07A0004B2B4 /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A787431A4CF07A0004B2B4 /* normal.png */; };
 		38A787471A4CF07A0004B2B4 /* smiley.gif in Resources */ = {isa = PBXBuildFile; fileRef = 38A787441A4CF07A0004B2B4 /* smiley.gif */; };
+		38C64BEA1B6C72C600829511 /* bullet_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BE81B6C72C600829511 /* bullet_grey.png */; };
+		38C64BEB1B6C72C600829511 /* bullet_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BE91B6C72C600829511 /* bullet_red.png */; };
+		38C64BED1B6C742600829511 /* bullet_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BEC1B6C742600829511 /* bullet_green.png */; };
 		38E778BD1A4CF4BB009E127A /* changeColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 38E778BC1A4CF4BB009E127A /* changeColor.png */; };
 		38FA60831B6B0DFE00387FA4 /* ColorPickerProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FA60821B6B0DFE00387FA4 /* ColorPickerProvider.m */; };
 		38FA60861B6B1FB700387FA4 /* RandomNumberGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FA60851B6B1FB700387FA4 /* RandomNumberGenerator.m */; };
@@ -136,6 +139,9 @@
 		38A787421A4CF07A0004B2B4 /* mine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mine.png; sourceTree = "<group>"; };
 		38A787431A4CF07A0004B2B4 /* normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = normal.png; sourceTree = "<group>"; };
 		38A787441A4CF07A0004B2B4 /* smiley.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = smiley.gif; sourceTree = "<group>"; };
+		38C64BE81B6C72C600829511 /* bullet_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet_grey.png; sourceTree = "<group>"; };
+		38C64BE91B6C72C600829511 /* bullet_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet_red.png; sourceTree = "<group>"; };
+		38C64BEC1B6C742600829511 /* bullet_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet_green.png; sourceTree = "<group>"; };
 		38E778BC1A4CF4BB009E127A /* changeColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeColor.png; sourceTree = "<group>"; };
 		38FA60811B6B0DFE00387FA4 /* ColorPickerProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerProvider.h; sourceTree = "<group>"; };
 		38FA60821B6B0DFE00387FA4 /* ColorPickerProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerProvider.m; sourceTree = "<group>"; };
@@ -283,7 +289,10 @@
 		38A7873D1A4CED560004B2B4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				38C64BE81B6C72C600829511 /* bullet_grey.png */,
+				38C64BE91B6C72C600829511 /* bullet_red.png */,
 				38A787421A4CF07A0004B2B4 /* mine.png */,
+				38C64BEC1B6C742600829511 /* bullet_green.png */,
 				38A787431A4CF07A0004B2B4 /* normal.png */,
 				389ACDBE1A4E274D00637375 /* backButtonSmall.png */,
 				389ACDB91A4DF09C00637375 /* clearAll.png */,
@@ -553,11 +562,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				38A787451A4CF07A0004B2B4 /* mine.png in Resources */,
+				38C64BEB1B6C72C600829511 /* bullet_red.png in Resources */,
 				388C745C1A4F37EC0094BC96 /* question.wav in Resources */,
 				389ACDBA1A4DF09C00637375 /* clearAll.png in Resources */,
 				388C74551A4F36650094BC96 /* background.wav in Resources */,
 				3836A11E1A4D14EF009E24B5 /* skull.png in Resources */,
 				388C746B1A4F47850094BC96 /* clocktick.wav in Resources */,
+				38C64BED1B6C742600829511 /* bullet_green.png in Resources */,
 				388C74591A4F36650094BC96 /* start.wav in Resources */,
 				388C74661A4F43390094BC96 /* openmenu.wav in Resources */,
 				38A787461A4CF07A0004B2B4 /* normal.png in Resources */,
@@ -572,6 +583,7 @@
 				388C74671A4F43390094BC96 /* gamewin.wav in Resources */,
 				389ACDB51A4DEC1600637375 /* JKScoresCustomTableViewCell.xib in Resources */,
 				388C74651A4F43390094BC96 /* tilereveal.wav in Resources */,
+				38C64BEA1B6C72C600829511 /* bullet_grey.png in Resources */,
 				3833997D1A4FB5DA004B9D60 /* JKMinesweeperSavedGamesViewController.xib in Resources */,
 				91AA410C19D8C956009CB397 /* LaunchScreen.xib in Resources */,
 				388C74581A4F36650094BC96 /* nuclearexplosion.wav in Resources */,
