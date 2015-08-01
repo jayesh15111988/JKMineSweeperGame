@@ -30,6 +30,7 @@
 #import "JKTimerProviderUtility.h"
 #import "ColorPickerProvider.h"
 #import "JKMinesweeperAppearance.h"
+#import "GridTileCornerRadiusCalculator.h"
 
 #import "JKMinesweeperHomeViewController.h"
 
@@ -126,6 +127,35 @@ typedef void (^resetTilesFinishedBlock)();
     [self playGameStartSound];
     [self createNewGridWithParameters];
 }
+
+- (void)setupUIFromUserDefaultParameters {
+    self.levelNumberSelected = [[[NSUserDefaults standardUserDefaults] objectForKey:@"currentLevel"] integerValue];
+    self.tileWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"tileWidth"] integerValue];
+    self.gutterSpacing = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"] integerValue];
+    self.toPlaySound = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
+    
+    if (![self loadColorForKey:@"gridBackgroundColor"]) {
+        [self saveColor:[UIColor whiteColor] forKey:@"gridBackgroundColor"];
+    }
+    
+    if (![self loadColorForKey:@"tileForegroundColor"]) {
+        [self saveColor:[UIColor greenColor] forKey:@"tileForegroundColor"];
+    }
+    
+    self.gridBackgroundColor = [self loadColorForKey:@"gridBackgroundColor"];
+    [self.view setBackgroundColor:self.gridBackgroundColor];
+    self.tileForegroundColor = [self loadColorForKey:@"tileForegroundColor"];
+
+    GridButtonType gridButtonType = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gridButtonType"] unsignedIntegerValue];
+    self.gridHolderView.layer.cornerRadius = [GridTileCornerRadiusCalculator buttonBorderRadiusFromType:gridButtonType andTileWidth:self.tileWidth];
+    
+    self.gridHolderView.layer.borderColor = self.tileForegroundColor.CGColor;
+    self.gridHolderView.layer.borderWidth = 0.5f;
+    self.currentScoreValue = 0;
+    self.totalNumberOfTilesRevealed = 0;
+    [self updateUIWithNewTimeValue];
+}
+
 
 - (void)makeTileVisibleForCurrentIndex:(NSTimer*)timer {
     if (self.newMinesCurrentObjectIndex < self.maximumTileSequence) {
@@ -439,28 +469,6 @@ typedef void (^resetTilesFinishedBlock)();
 
 -(BOOL)isGameOver {
     return (self.gameState == OverAndWin || self.gameState == OverAndLoss);
-}
-
--(void)setupUIFromUserDefaultParameters {
-    self.levelNumberSelected = [[[NSUserDefaults standardUserDefaults] objectForKey:@"currentLevel"] integerValue];
-    self.tileWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"tileWidth"] integerValue];
-    self.gutterSpacing = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"] integerValue];
-    self.toPlaySound = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
-    
-    if (![self loadColorForKey:@"gridBackgroundColor"]) {
-        [self saveColor:[UIColor whiteColor] forKey:@"gridBackgroundColor"];
-    }
-    
-    if (![self loadColorForKey:@"tileForegroundColor"]) {
-        [self saveColor:[UIColor greenColor] forKey:@"tileForegroundColor"];
-    }
-    
-    self.gridBackgroundColor = [self loadColorForKey:@"gridBackgroundColor"];
-    [self.view setBackgroundColor:self.gridBackgroundColor];
-    self.tileForegroundColor = [self loadColorForKey:@"tileForegroundColor"];
-    self.currentScoreValue = 0;
-    self.totalNumberOfTilesRevealed = 0;
-    [self updateUIWithNewTimeValue];
 }
 
 - (void)createNewGridWithParameters {

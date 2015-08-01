@@ -12,9 +12,9 @@
 
 @interface JKCustomButton : UIButton
 
--(JKCustomButton*)initWithPosition:(CGPoint)buttonPositionOnScreen andWidth:(NSInteger)tileWidth andIsMine:(BOOL)isMine andButtonSequenceNumber:(NSInteger)buttonSequenceNumber andNumberOfSurroundingMines:(NSInteger)numberOfSurroundingMines;
+- (JKCustomButton*)initWithPosition:(CGPoint)buttonPositionOnScreen andWidth:(NSInteger)tileWidth andIsMine:(BOOL)isMine andButtonSequenceNumber:(NSInteger)buttonSequenceNumber andNumberOfSurroundingMines:(NSInteger)numberOfSurroundingMines;
 
--(void)configurePreviousButton:(CGPoint)buttonPositionOnScreen andWidth:(NSInteger)tileWidth andButtonState:(JKButtonStateModel*)previousButtonState;
+- (void)configurePreviousButton:(CGPoint)buttonPositionOnScreen andWidth:(NSInteger)tileWidth andButtonState:(JKButtonStateModel*)previousButtonState;
 
 @property (nonatomic,assign) CGPoint positionOnScreen;
 @property (nonatomic,strong) JKButtonStateModel* buttonStateModel;

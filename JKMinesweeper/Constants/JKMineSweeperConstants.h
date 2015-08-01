@@ -51,10 +51,17 @@ enum {
     ColorStateGridBackgroundColor
 };
 
+enum {
+    GridButtonTypeSquare,
+    GridButtonTypeRoundedBorder,
+    GridButtonTypeCircle
+};
+
 typedef NSUInteger CurrentGameState;
 typedef NSUInteger SoundCategory;
 typedef NSUInteger GameState;
 typedef NSUInteger ColorState;
+typedef NSUInteger GridButtonType;
 
 
 @interface JKMineSweeperConstants : NSObject

@@ -52,6 +52,10 @@
 		38C64BEA1B6C72C600829511 /* bullet_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BE81B6C72C600829511 /* bullet_grey.png */; };
 		38C64BEB1B6C72C600829511 /* bullet_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BE91B6C72C600829511 /* bullet_red.png */; };
 		38C64BED1B6C742600829511 /* bullet_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BEC1B6C742600829511 /* bullet_green.png */; };
+		38C64BF11B6D6A4D00829511 /* custom_button_rounded_border.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BEE1B6D6A4D00829511 /* custom_button_rounded_border.png */; };
+		38C64BF21B6D6A4D00829511 /* custom_button_square.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BEF1B6D6A4D00829511 /* custom_button_square.png */; };
+		38C64BF31B6D6A4D00829511 /* custom_button_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BF01B6D6A4D00829511 /* custom_button_circle.png */; };
+		38C64BF61B6D733400829511 /* GridTileCornerRadiusCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C64BF51B6D733400829511 /* GridTileCornerRadiusCalculator.m */; };
 		38E778BD1A4CF4BB009E127A /* changeColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 38E778BC1A4CF4BB009E127A /* changeColor.png */; };
 		38FA60831B6B0DFE00387FA4 /* ColorPickerProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FA60821B6B0DFE00387FA4 /* ColorPickerProvider.m */; };
 		38FA60861B6B1FB700387FA4 /* RandomNumberGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FA60851B6B1FB700387FA4 /* RandomNumberGenerator.m */; };
@@ -142,6 +146,11 @@
 		38C64BE81B6C72C600829511 /* bullet_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet_grey.png; sourceTree = "<group>"; };
 		38C64BE91B6C72C600829511 /* bullet_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet_red.png; sourceTree = "<group>"; };
 		38C64BEC1B6C742600829511 /* bullet_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet_green.png; sourceTree = "<group>"; };
+		38C64BEE1B6D6A4D00829511 /* custom_button_rounded_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = custom_button_rounded_border.png; sourceTree = "<group>"; };
+		38C64BEF1B6D6A4D00829511 /* custom_button_square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = custom_button_square.png; sourceTree = "<group>"; };
+		38C64BF01B6D6A4D00829511 /* custom_button_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = custom_button_circle.png; sourceTree = "<group>"; };
+		38C64BF41B6D733400829511 /* GridTileCornerRadiusCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridTileCornerRadiusCalculator.h; sourceTree = "<group>"; };
+		38C64BF51B6D733400829511 /* GridTileCornerRadiusCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridTileCornerRadiusCalculator.m; sourceTree = "<group>"; };
 		38E778BC1A4CF4BB009E127A /* changeColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeColor.png; sourceTree = "<group>"; };
 		38FA60811B6B0DFE00387FA4 /* ColorPickerProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerProvider.h; sourceTree = "<group>"; };
 		38FA60821B6B0DFE00387FA4 /* ColorPickerProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerProvider.m; sourceTree = "<group>"; };
@@ -289,6 +298,9 @@
 		38A7873D1A4CED560004B2B4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				38C64BEE1B6D6A4D00829511 /* custom_button_rounded_border.png */,
+				38C64BEF1B6D6A4D00829511 /* custom_button_square.png */,
+				38C64BF01B6D6A4D00829511 /* custom_button_circle.png */,
 				38C64BE81B6C72C600829511 /* bullet_grey.png */,
 				38C64BE91B6C72C600829511 /* bullet_red.png */,
 				38A787421A4CF07A0004B2B4 /* mine.png */,
@@ -348,6 +360,8 @@
 				38FA60821B6B0DFE00387FA4 /* ColorPickerProvider.m */,
 				38FA60841B6B1FB700387FA4 /* RandomNumberGenerator.h */,
 				38FA60851B6B1FB700387FA4 /* RandomNumberGenerator.m */,
+				38C64BF41B6D733400829511 /* GridTileCornerRadiusCalculator.h */,
+				38C64BF51B6D733400829511 /* GridTileCornerRadiusCalculator.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -565,6 +579,7 @@
 				38C64BEB1B6C72C600829511 /* bullet_red.png in Resources */,
 				388C745C1A4F37EC0094BC96 /* question.wav in Resources */,
 				389ACDBA1A4DF09C00637375 /* clearAll.png in Resources */,
+				38C64BF31B6D6A4D00829511 /* custom_button_circle.png in Resources */,
 				388C74551A4F36650094BC96 /* background.wav in Resources */,
 				3836A11E1A4D14EF009E24B5 /* skull.png in Resources */,
 				388C746B1A4F47850094BC96 /* clocktick.wav in Resources */,
@@ -572,11 +587,13 @@
 				388C74591A4F36650094BC96 /* start.wav in Resources */,
 				388C74661A4F43390094BC96 /* openmenu.wav in Resources */,
 				38A787461A4CF07A0004B2B4 /* normal.png in Resources */,
+				38C64BF11B6D6A4D00829511 /* custom_button_rounded_border.png in Resources */,
 				389ACDBF1A4E274D00637375 /* backButtonSmall.png in Resources */,
 				91AA412719D8CAD8009CB397 /* Main.storyboard in Resources */,
 				389ACDA91A4DE17100637375 /* JKMinesweeperScoresViewController.xib in Resources */,
 				389ACDAB1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib in Resources */,
 				388C74571A4F36650094BC96 /* explosion.wav in Resources */,
+				38C64BF21B6D6A4D00829511 /* custom_button_square.png in Resources */,
 				388C746D1A4F6B5E0094BC96 /* clockcirclecomplete.wav in Resources */,
 				38A787471A4CF07A0004B2B4 /* smiley.gif in Resources */,
 				38E778BD1A4CF4BB009E127A /* changeColor.png in Resources */,
@@ -657,6 +674,7 @@
 				389ACD921A4DDC0600637375 /* Score.m in Sources */,
 				91AA410119D8C956009CB397 /* AppDelegate.m in Sources */,
 				38059DA01A4F864900F7A02F /* LoadSaveGame.m in Sources */,
+				38C64BF61B6D733400829511 /* GridTileCornerRadiusCalculator.m in Sources */,
 				38059DA31A4F874200F7A02F /* JKRandomStringGenerator.m in Sources */,
 				91078BD719D8D63500F9B438 /* JKMineSweeperConstants.m in Sources */,
 				38FA60861B6B1FB700387FA4 /* RandomNumberGenerator.m in Sources */,

@@ -9,6 +9,7 @@
 #import "JKCustomButton.h"
 #import "JKButtonStateModel.h"
 #import "JKMineSweeperConstants.h"
+#import "GridTileCornerRadiusCalculator.h"
 #import <FLAnimatedImageView.h>
 
 @interface JKCustomButton ()
@@ -40,6 +41,11 @@
         self.frame =
             CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y,
                        tileWidth, tileWidth);
+        
+        GridButtonType buttonType = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gridButtonType"] unsignedIntegerValue];
+        
+        self.layer.cornerRadius = [GridTileCornerRadiusCalculator buttonBorderRadiusFromType:buttonType andTileWidth:tileWidth];
+
         _overlayImageView = [[FLAnimatedImageView alloc] initWithFrame:CGRectMake(0, 0, tileWidth, tileWidth)];
         _overlayImageView.alpha = 0.0;
         [self addSubview:_overlayImageView];

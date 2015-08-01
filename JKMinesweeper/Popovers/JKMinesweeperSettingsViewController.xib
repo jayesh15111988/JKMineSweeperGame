@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JKMinesweeperSettingsViewController">
             <connections>
+                <outlet property="buttonStyleSelectedSegmentedControl" destination="bCd-ot-zUw" id="8Y3-Yb-QPN"/>
                 <outlet property="gutterSpaceLabel" destination="bzp-v0-23Z" id="BL8-0m-7JP"/>
                 <outlet property="gutterSpacingStepper" destination="LJ1-EU-8xw" id="I21-lQ-Hd2"/>
                 <outlet property="soundEffectSwitch" destination="JdD-av-6NX" id="ibf-be-9d1"/>
@@ -99,6 +100,26 @@
                                         <action selector="soundSwitchChanged:" destination="-1" eventType="valueChanged" id="Yvu-I4-Fjs"/>
                                     </connections>
                                 </switch>
+                            </subviews>
+                            <color key="backgroundColor" red="1" green="0.93710191730000003" blue="0.82475943519999995" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IWL-4j-Nsr">
+                            <rect key="frame" x="0.0" y="202" width="540" height="44"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tile Style" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRT-fb-wbL">
+                                    <rect key="frame" x="10" y="7" width="250" height="30"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="bCd-ot-zUw">
+                                    <rect key="frame" x="290" y="9" width="242" height="29"/>
+                                    <segments>
+                                        <segment title="Square" width="60"/>
+                                        <segment title="Rounded Border" width="120"/>
+                                        <segment title="Circle" width="60"/>
+                                    </segments>
+                                </segmentedControl>
                             </subviews>
                             <color key="backgroundColor" red="1" green="0.93710191730000003" blue="0.82475943519999995" alpha="1" colorSpace="calibratedRGB"/>
                         </view>

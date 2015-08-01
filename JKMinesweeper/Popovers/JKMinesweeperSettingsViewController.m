@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIStepper *gutterSpacingStepper;
 @property (weak, nonatomic) IBOutlet UILabel *tileWidthLabel;
 @property (weak, nonatomic) IBOutlet UILabel *gutterSpaceLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *buttonStyleSelectedSegmentedControl;
 
 @end
 
@@ -26,6 +27,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[self.buttonStyleSelectedSegmentedControl rac_newSelectedSegmentIndexChannelWithNilValue:nil] subscribeNext:^(NSNumber* gridButtonType) {
+        [[NSUserDefaults standardUserDefaults] setObject:gridButtonType forKey:@"gridButtonType"];
+    }];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -34,6 +38,8 @@
     self.gutterSpaceLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"];
     self.soundEffectSwitch.on = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
     self.timerSwitch.on = [[[NSUserDefaults standardUserDefaults] objectForKey:@"timer"] boolValue];
+    GridButtonType selectedGridButtonType = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gridButtonType"] unsignedIntegerValue];
+    [self.buttonStyleSelectedSegmentedControl setSelectedSegmentIndex:selectedGridButtonType];
     
     self.tileWidthStepper.value = [self.tileWidthLabel.text integerValue];
     self.gutterSpacingStepper.value = [self.gutterSpaceLabel.text integerValue];
