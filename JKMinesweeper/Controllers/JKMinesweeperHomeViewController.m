@@ -47,6 +47,8 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) NSTimer* createNewGridAnimationTimer;
 @property (assign, nonatomic) NSInteger newMinesCurrentObjectIndex;
 @property (strong, nonatomic) NSTimer* destroyCurrentGridAnimationTimer;
+@property (strong, nonatomic) NSTimer* blastMinesAnimationTimer;
+@property (assign, nonatomic) NSInteger totalNumberMinesToExplode;
 
 @property (strong, nonatomic) UIView* currentViewForColorpicker;
 @property (strong, nonatomic) NSString* currentGameIdentifier;
@@ -114,6 +116,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.regularButtonsHolder = [NSMutableArray new];
     self.numberOfSurroundingMinesHolder = [NSMutableDictionary new];
     self.newMinesCurrentObjectIndex = 0;
+    self.totalNumberMinesToExplode = 0;
     [self setupRACSignalsAndNotifications];
     [self playGameStartSound];
     [self createNewGridWithParameters];
@@ -147,6 +150,37 @@ typedef void (^resetTilesFinishedBlock)();
         self.destroyCurrentGridAnimationTimer = nil;
         [self createNewGridWithParameters];
     }
+}
+
+- (void)blastMineswithanimation:(NSTimer*)timer {
+    if (self.totalNumberMinesToExplode < self.minesButtonsHolder.count) {
+        JKCustomButton* currentMine = self.minesButtonsHolder[self.totalNumberMinesToExplode];
+        FLAnimatedImageView *imageView = [[FLAnimatedImageView alloc] init];
+        imageView.animatedImage = self.animatedExplosionImage;
+        imageView.frame = CGRectMake(0.0, 0.0,self.tileWidth, self.tileWidth);
+        [currentMine addSubview:imageView];
+        [UIView animateWithDuration:0.75 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            imageView.image = [UIImage imageNamed:@"skull"];
+            [currentMine setBackgroundColor:[UIColor redColor]];
+        } completion:^(BOOL finished) {
+            currentMine.buttonStateModel
+            .currentTileState = TileSelected;
+        }];
+        self.totalNumberMinesToExplode++;
+    } else {
+        [self.blastMinesAnimationTimer invalidate];
+        self.blastMinesAnimationTimer = nil;
+    }
+}
+
+- (void)showAllMines {
+    
+    if (!self.animatedExplosionImage) {
+        self.animatedExplosionImage = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:[NSURL URLWithString:ANIMATED_IMAGE_URL]]];
+    }
+    self.totalNumberMinesToExplode = 0;
+    self.destroyCurrentGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_TOTAL_ANIMATION_DURATION/self.maximumTileSequence) target:self selector:@selector(blastMineswithanimation:) userInfo:nil repeats:YES];
+    [self.destroyCurrentGridAnimationTimer fire];
 }
 
 - (void)resetGridWithNewTiles {
@@ -735,7 +769,7 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (void)showAlertViewWithMessage:(NSString *)message {
-    [UIAlertView bk_showAlertViewWithTitle:@"Minesweeper" message:@"Start new game" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Continue"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+    [UIAlertView bk_showAlertViewWithTitle:@"Minesweeper" message:message cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Continue"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (self.gameState == OverAndWin || self.gameState == OverAndLoss) {
             [self showSaveScoreDialogueBox];
         }
@@ -882,39 +916,6 @@ typedef void (^resetTilesFinishedBlock)();
         } else {
             self.numberOfSurroundingMinesHolder[individualNumber] = @(1);
         }
-    }
-}
-
-- (void)showAllMines {
-    
-    dispatch_time_t time = DISPATCH_TIME_NOW;
-    
-    for (JKCustomButton *individualMinesButton in self.minesButtonsHolder) {
-
-        dispatch_after(time, dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
-                animations:^{
-                    if (!self.animatedExplosionImage) {
-                     self.animatedExplosionImage = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:[NSURL URLWithString:ANIMATED_IMAGE_URL]]];
-                    }
-                    
-                    FLAnimatedImageView *imageView = [[FLAnimatedImageView alloc] init];
-                    imageView.animatedImage = self.animatedExplosionImage;
-                    imageView.frame = CGRectMake(0.0, 0.0,self.tileWidth, self.tileWidth);
-                    [individualMinesButton addSubview:imageView];
-                    
-                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, GIF_IMAGE_ANIMATION_DURATION * NSEC_PER_SEC);
-                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                        imageView.image = [UIImage imageNamed:@"skull"];
-                        [individualMinesButton setBackgroundColor:[UIColor redColor]];
-                    });
-                }
-                completion:^(BOOL finished) {
-                    individualMinesButton.buttonStateModel
-                        .currentTileState = TileSelected;
-                }];
-        });
-        time = dispatch_time(time, REGULAR_ANIMATION_DURATION * NSEC_PER_SEC);
     }
 }
 
