@@ -44,7 +44,7 @@ typedef void (^resetTilesFinishedBlock)();
 @property(assign, nonatomic) NSInteger totalNumberOfMinesOnGrid;
 @property (weak, nonatomic) IBOutlet UIView *topHeaderOptionsView;
 @property (strong, nonatomic) ScrollViewAutolayoutCreator* scrollViewAutoLayout;
-@property (weak, nonatomic) IBOutlet UIView *gridHolderSuperView;
+@property (strong, nonatomic) UIView *gridHolderSuperView;
 
 @property (strong, nonatomic) UIView* currentViewForColorpicker;
 @property (strong, nonatomic) NSString* currentGameIdentifier;
@@ -540,6 +540,17 @@ typedef void (^resetTilesFinishedBlock)();
             time = dispatch_time(time, MULTIPLE_ANIMATION_DURATION * NSEC_PER_SEC);
         }
     }
+    if (self.gridHolderSuperView) {
+        [self.gridHolderSuperView removeFromSuperview];
+    }
+    self.gridHolderSuperView = [UIView new];
+    self.gridHolderSuperView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.gridHolderSuperView];
+    
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_gridHolderSuperView]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_gridHolderSuperView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_topHeaderOptionsView][_gridHolderSuperView]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_topHeaderOptionsView, _gridHolderSuperView)]];
+    
     
     self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.gridHolderSuperView];
     [self.gridHolderSuperView addSubview:self.gridHolderView];

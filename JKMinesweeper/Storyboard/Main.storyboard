@@ -220,20 +220,12 @@
                                     <constraint firstItem="a6U-v5-Hrx" firstAttribute="height" secondItem="PgT-vY-oPe" secondAttribute="height" id="xws-qa-t8o"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gvE-U8-15Q">
-                                <rect key="frame" x="0.0" y="110" width="1024" height="658"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.84430793150000005" green="1" blue="0.9261234974" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="gvE-U8-15Q" firstAttribute="top" secondItem="2qk-pa-kYS" secondAttribute="bottom" constant="-1" id="0dz-8a-JwR"/>
                             <constraint firstAttribute="trailing" secondItem="2qk-pa-kYS" secondAttribute="trailing" id="8XW-nX-WOJ"/>
                             <constraint firstItem="2qk-pa-kYS" firstAttribute="leading" secondItem="GD2-4W-b5q" secondAttribute="leading" id="EdR-Qs-Tzg"/>
-                            <constraint firstAttribute="trailing" secondItem="gvE-U8-15Q" secondAttribute="trailing" id="KoI-gH-r40"/>
                             <constraint firstItem="2qk-pa-kYS" firstAttribute="top" secondItem="gTf-cF-LHH" secondAttribute="bottom" constant="3" id="Tod-EY-TsK"/>
-                            <constraint firstItem="gvE-U8-15Q" firstAttribute="leading" secondItem="GD2-4W-b5q" secondAttribute="leading" id="xQP-6F-MoR"/>
-                            <constraint firstItem="sWo-0g-kmd" firstAttribute="top" secondItem="gvE-U8-15Q" secondAttribute="bottom" id="xzl-td-04r"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="MineSweeper" id="k40-TQ-M66"/>
@@ -243,7 +235,6 @@
                     <connections>
                         <outlet property="changeScrollViewBackgroundColorButton" destination="Hwu-r7-gdt" id="Vxi-oI-Gf0"/>
                         <outlet property="currentScore" destination="9wb-yx-klb" id="mu9-nc-A9h"/>
-                        <outlet property="gridHolderSuperView" destination="gvE-U8-15Q" id="wm8-v0-Em2"/>
                         <outlet property="gridSizeInputText" destination="Y7E-V4-PaI" id="ITp-B1-RBq"/>
                         <outlet property="levelNumberButton" destination="Jcs-qU-sB8" id="DPr-UK-y2c"/>
                         <outlet property="loadButton" destination="PgT-vY-oPe" id="uUW-SR-ZoA"/>
