@@ -7,7 +7,7 @@
 //
 
 @class JKButtonStateModel;
-
+@class FLAnimatedImage;
 
 
 @interface JKCustomButton : UIButton
@@ -26,5 +26,8 @@ typedef void (^gameOverBlock)();
 
 typedef void (^randomTileSelected)();
 @property(strong, nonatomic) randomTileSelected randomTileSelectedInstant;
+
+- (void)updateOverlayImageRegularImage:(UIImage*)regularImage;
+- (void)updateOverlayImageAnimatedImage:(FLAnimatedImage*)animatedImage;
 
 @end

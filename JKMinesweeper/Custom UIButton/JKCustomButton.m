@@ -9,6 +9,13 @@
 #import "JKCustomButton.h"
 #import "JKButtonStateModel.h"
 #import "JKMineSweeperConstants.h"
+#import <FLAnimatedImageView.h>
+
+@interface JKCustomButton ()
+
+@property (strong, nonatomic) FLAnimatedImageView* overlayImageView;
+
+@end
 
 @implementation JKCustomButton
 
@@ -33,7 +40,9 @@
         self.frame =
             CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y,
                        tileWidth, tileWidth);
-
+        _overlayImageView = [[FLAnimatedImageView alloc] initWithFrame:CGRectMake(0, 0, tileWidth, tileWidth)];
+        _overlayImageView.alpha = 0.0;
+        [self addSubview:_overlayImageView];
         // Change color of title based on number of surrounding mines for given
         // tile
         // While - Light blue - lightgreen
@@ -58,6 +67,16 @@
     }
 
     return self;
+}
+
+- (void)updateOverlayImageRegularImage:(UIImage*)regularImage {
+    _overlayImageView.alpha = 1.0;
+    _overlayImageView.image = regularImage;
+}
+
+- (void)updateOverlayImageAnimatedImage:(FLAnimatedImage*)animatedImage {
+    _overlayImageView.alpha = 1.0;
+    _overlayImageView.animatedImage = animatedImage;
 }
 
 -(void)configurePreviousButton:(CGPoint)buttonPositionOnScreen andWidth:(NSInteger)tileWidth andButtonState:(JKButtonStateModel*)previousButtonState {

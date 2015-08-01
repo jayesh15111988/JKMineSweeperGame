@@ -11,7 +11,7 @@ enum {
     TileSelected,
     TileQuestionMarked
 };
-typedef NSInteger TileStateRepresentationValue;
+typedef NSUInteger TileStateRepresentationValue;
 
 @interface JKButtonStateModel : NSObject
 @property (nonatomic,assign) BOOL isThisButtonMine;

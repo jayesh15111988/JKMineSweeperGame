@@ -155,24 +155,12 @@ typedef void (^resetTilesFinishedBlock)();
 - (void)blastMineswithanimation:(NSTimer*)timer {
     if (self.totalNumberMinesToExplode < self.minesButtonsHolder.count) {
         JKCustomButton* currentMine = self.minesButtonsHolder[self.totalNumberMinesToExplode];
-        FLAnimatedImageView *imageView = [[FLAnimatedImageView alloc] init];
-        imageView.animatedImage = self.animatedExplosionImage;
-        imageView.frame = CGRectMake(0.0, 0.0,self.tileWidth, self.tileWidth);
-        [currentMine addSubview:imageView];
-        
-        double delayInSeconds = 2.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            imageView.image = [UIImage imageNamed:@"skull"];
-            imageView.alpha = 0.0;
-            [UIView animateWithDuration:0.75 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                imageView.alpha = 1.0;
-                [currentMine setBackgroundColor:[UIColor redColor]];
-            } completion:^(BOOL finished) {
-                currentMine.buttonStateModel
-                .currentTileState = TileSelected;
-            }];
-        });
+        [currentMine updateOverlayImageRegularImage:[UIImage imageNamed:@"skull"]];
+        [UIView animateWithDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            [currentMine setBackgroundColor:[UIColor redColor]];
+        } completion:^(BOOL finished) {
+            currentMine.buttonStateModel.currentTileState = TileSelected;
+        }];
         self.totalNumberMinesToExplode++;
     } else {
         [self.blastMinesAnimationTimer invalidate];
@@ -185,9 +173,18 @@ typedef void (^resetTilesFinishedBlock)();
     if (!self.animatedExplosionImage) {
         self.animatedExplosionImage = [FLAnimatedImage animatedImageWithGIFData:[NSData dataWithContentsOfURL:[NSURL URLWithString:ANIMATED_IMAGE_URL]]];
     }
+    
+    for (JKCustomButton* currentMine in self.minesButtonsHolder) {
+        [currentMine updateOverlayImageAnimatedImage:self.animatedExplosionImage];
+    }
+    
     self.totalNumberMinesToExplode = 0;
-    self.destroyCurrentGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_TOTAL_ANIMATION_DURATION/self.minesButtonsHolder.count) target:self selector:@selector(blastMineswithanimation:) userInfo:nil repeats:YES];
-    [self.destroyCurrentGridAnimationTimer fire];
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, GIF_IMAGE_ANIMATION_DURATION * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        DLog(@"Inside delay block");
+        self.blastMinesAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_BLAST_ANIMATION_DURATION/self.minesButtonsHolder.count) target:self selector:@selector(blastMineswithanimation:) userInfo:nil repeats:YES];
+        [self.blastMinesAnimationTimer fire];
+    });
 }
 
 - (void)resetGridWithNewTiles {

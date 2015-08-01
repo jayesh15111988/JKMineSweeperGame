@@ -13,8 +13,9 @@
 #define MULTIPLE_ANIMATION_DURATION 0.4
 #define GIF_IMAGE_ANIMATION_DURATION 2.0
 #define DEFAULT_TOTAL_ANIMATION_DURATION 2.0
+#define DEFAULT_BLAST_ANIMATION_DURATION 2.0
 
-#define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+#define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
 #define ANIMATED_IMAGE_URL @"http://bigpinekey.com/wp-content/uploads/an_exploding_bomb.gif"
 
@@ -45,9 +46,9 @@ enum {
     SavedGame
 };
 
-typedef NSInteger CurrentGameState;
-typedef NSInteger SoundCategory;
-typedef NSInteger GameState;
+typedef NSUInteger CurrentGameState;
+typedef NSUInteger SoundCategory;
+typedef NSUInteger GameState;
 
 
 @interface JKMineSweeperConstants : NSObject

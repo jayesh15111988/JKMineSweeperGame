@@ -11,7 +11,7 @@ enum {
     TimerIsPlaying,
     TimerIsPaused
 };
-typedef NSInteger TimerState;
+typedef NSUInteger TimerState;
 
 @interface JKTimerProviderUtility : NSObject
 @property (assign, nonatomic) TimerState currentTimerState;
