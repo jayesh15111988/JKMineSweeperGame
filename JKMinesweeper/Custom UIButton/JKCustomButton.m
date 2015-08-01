@@ -58,7 +58,6 @@
             titleColor = [UIColor yellowColor];
         }
 
-        self.backgroundColor = [UIColor orangeColor];
         [self setTitleColor:titleColor forState:UIControlStateNormal];
 
         [self addTarget:self

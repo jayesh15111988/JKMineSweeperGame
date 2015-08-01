@@ -29,6 +29,7 @@
 #import "JKMinesweeperSettingsViewController.h"
 #import "JKTimerProviderUtility.h"
 #import "ColorPickerProvider.h"
+#import "JKMinesweeperAppearance.h"
 
 #import "JKMinesweeperHomeViewController.h"
 
@@ -44,13 +45,17 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) ScrollViewAutolayoutCreator* scrollViewAutoLayout;
 @property (strong, nonatomic) UIView *gridHolderSuperView;
 
+@property (strong, nonatomic) UIColor* tileForegroundColor;
+@property (strong, nonatomic) UIColor* gridBackgroundColor;
+
+
 @property (strong, nonatomic) NSTimer* createNewGridAnimationTimer;
 @property (assign, nonatomic) NSInteger newMinesCurrentObjectIndex;
 @property (strong, nonatomic) NSTimer* destroyCurrentGridAnimationTimer;
 @property (strong, nonatomic) NSTimer* blastMinesAnimationTimer;
 @property (assign, nonatomic) NSInteger totalNumberMinesToExplode;
+@property (assign, nonatomic) ColorState currentColorState;
 
-@property (strong, nonatomic) UIView* currentViewForColorpicker;
 @property (strong, nonatomic) NSString* currentGameIdentifier;
 @property (strong, nonatomic) FLAnimatedImage *animatedExplosionImage;
 @property (weak, nonatomic) IBOutlet UIButton *changeScrollViewBackgroundColorButton;
@@ -60,7 +65,7 @@ typedef void (^resetTilesFinishedBlock)();
 @property (assign, nonatomic) CurrentGameState gameState;
 @property (assign, nonatomic) SoundCategory soundCategory;
 @property (assign, nonatomic) GameState gameStateNewLoaded;
-@property (strong, nonatomic) UIButton* changeGridBakcgroundColorButton;
+@property (strong, nonatomic) UIButton* changeTileForegroundColorButton;
 
 @property(strong, nonatomic) NSMutableArray *minesButtonsHolder;
 @property(strong, nonatomic) NSMutableArray *regularButtonsHolder;
@@ -223,15 +228,9 @@ typedef void (^resetTilesFinishedBlock)();
         [self.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld",(long)([levelNumber integerValue])] forState:UIControlStateNormal];
     }];
     
-    [RACObserve(self, currentViewForColorpicker) subscribeNext:^(id x) {
-        if (x) {
-            [self setupColorPickerView];
-        }
-    }];
-    
     [[self.changeScrollViewBackgroundColorButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
-       self.colorPickerHolderView.hidden = NO;
-       self.currentViewForColorpicker = self.scrollViewAutoLayout.contentView;
+        self.currentColorState = ColorStateGridBackgroundColor;
+        [self setupColorPickerView];
     }];
     
     self.verifyLossWinButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
@@ -447,6 +446,18 @@ typedef void (^resetTilesFinishedBlock)();
     self.tileWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"tileWidth"] integerValue];
     self.gutterSpacing = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"] integerValue];
     self.toPlaySound = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];
+    
+    if (![self loadColorForKey:@"gridBackgroundColor"]) {
+        [self saveColor:[UIColor whiteColor] forKey:@"gridBackgroundColor"];
+    }
+    
+    if (![self loadColorForKey:@"tileForegroundColor"]) {
+        [self saveColor:[UIColor greenColor] forKey:@"tileForegroundColor"];
+    }
+    
+    self.gridBackgroundColor = [self loadColorForKey:@"gridBackgroundColor"];
+    [self.view setBackgroundColor:self.gridBackgroundColor];
+    self.tileForegroundColor = [self loadColorForKey:@"tileForegroundColor"];
     self.currentScoreValue = 0;
     self.totalNumberOfTilesRevealed = 0;
     [self updateUIWithNewTimeValue];
@@ -572,7 +583,7 @@ typedef void (^resetTilesFinishedBlock)();
                     andButtonSequenceNumber:buttonSequenceNumber
                 andNumberOfSurroundingMines:
                     totalNumberOfMinesSurroundingGivenTile];
-
+            newRevealMineButton.backgroundColor = self.tileForegroundColor;
             newRevealMineButton.buttonStateModel.sequenceOfNeighbouringTiles =
                 [JKNeighbouringTilesProvider
                     getNeighbouringTilesForGivenTileWithSequence: buttonSequenceNumber
@@ -618,15 +629,15 @@ typedef void (^resetTilesFinishedBlock)();
     self.gridHolderSuperView = [UIView new];
     self.gridHolderSuperView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.gridHolderSuperView];
-    self.gridHolderView.backgroundColor = [UIColor redColor];
+    self.gridHolderView.backgroundColor = [JKMinesweeperAppearance orangeColor];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_gridHolderSuperView]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_gridHolderSuperView)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_topHeaderOptionsView][_gridHolderSuperView]|" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_topHeaderOptionsView, _gridHolderSuperView)]];
     
     self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.gridHolderSuperView];
     [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderView];
-    [self.scrollViewAutoLayout.contentView addSubview:self.changeGridBakcgroundColorButton];
-    [self.scrollViewAutoLayout.contentView setBackgroundColor:[UIColor colorWithRed:0.94 green:0.67 blue:0.3 alpha:1.0]];
+    [self.scrollViewAutoLayout.contentView addSubview:self.changeTileForegroundColorButton];
+    [self.scrollViewAutoLayout.contentView setBackgroundColor:self.gridBackgroundColor];
     
     self.createNewGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_TOTAL_ANIMATION_DURATION/self.maximumTileSequence) target:self selector:@selector(makeTileVisibleForCurrentIndex:) userInfo:nil repeats:YES];
     [self.createNewGridAnimationTimer fire];
@@ -636,8 +647,8 @@ typedef void (^resetTilesFinishedBlock)();
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:gridHeightAndWidth]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_gridHolderView(totalGridViewHeight)]-20-|" options:kNilOptions metrics:@{@"totalGridViewHeight": @(gridHeightAndWidth)} views:NSDictionaryOfVariableBindings(_gridHolderView)]];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_gridHolderView]-10-[_changeGridBakcgroundColorButton(30)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_gridHolderView, _changeGridBakcgroundColorButton)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_changeGridBakcgroundColorButton(30)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings( _changeGridBakcgroundColorButton)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_gridHolderView]-10-[_changeTileForegroundColorButton(30)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(_gridHolderView, _changeTileForegroundColorButton)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_changeTileForegroundColorButton(30)]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings( _changeTileForegroundColorButton)]];
     
 }
 
@@ -694,13 +705,13 @@ typedef void (^resetTilesFinishedBlock)();
 
 -(void)setPositionOfChangeBackgroundColorButton {
    
-    if (!self.changeGridBakcgroundColorButton) {
-        self.changeGridBakcgroundColorButton = [[UIButton alloc] init];
-        self.changeGridBakcgroundColorButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.changeGridBakcgroundColorButton setBackgroundImage:[UIImage imageNamed:@"changeColor"] forState:UIControlStateNormal];
-        [[self.changeGridBakcgroundColorButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
-            self.colorPickerHolderView.hidden = NO;
-            self.currentViewForColorpicker = self.gridHolderView;
+    if (!self.changeTileForegroundColorButton) {
+        self.changeTileForegroundColorButton = [[UIButton alloc] init];
+        self.changeTileForegroundColorButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.changeTileForegroundColorButton setBackgroundImage:[UIImage imageNamed:@"changeColor"] forState:UIControlStateNormal];
+        [[self.changeTileForegroundColorButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+            self.currentColorState = ColorStateTileForegroundColor;
+            [self setupColorPickerView];
         }];
     }
 }
@@ -946,10 +957,39 @@ typedef void (^resetTilesFinishedBlock)();
         @weakify(self)
        self.colorPickerHolderView = [ColorPickerProvider colorPickerForCurrentViewForParentView:self.gridHolderSuperView andColorChangedBlock:^(UIColor *selectedColor) {
            @strongify(self)
-           [self.currentViewForColorpicker setBackgroundColor:selectedColor];
+           NSString* userColorPreferencesKey = @"";
+           if (self.currentColorState == ColorStateGridBackgroundColor) {
+               [self.scrollViewAutoLayout.contentView setBackgroundColor:selectedColor];
+               [self.view setBackgroundColor:selectedColor];
+               userColorPreferencesKey = @"gridBackgroundColor";
+           } else {
+              userColorPreferencesKey = @"tileForegroundColor";
+               self.tileForegroundColor = selectedColor;
+           }
+           [self saveColor:selectedColor forKey:userColorPreferencesKey];
        }];
     }
-    [ColorPickerProvider changeColorPickerColorWithNewColor:self.currentViewForColorpicker.backgroundColor];
+    
+    NSString* userColorPreferencesKey = @"";
+    if (self.currentColorState == ColorStateGridBackgroundColor) {
+        userColorPreferencesKey = @"gridBackgroundColor";
+    } else {
+        userColorPreferencesKey = @"tileForegroundColor";
+    }
+    [ColorPickerProvider changeColorPickerColorWithNewColor:[self loadColorForKey:userColorPreferencesKey]];
+    [UIView animateWithDuration:REGULAR_ANIMATION_DURATION animations:^{
+       self.colorPickerHolderView.alpha = 1.0;
+    }];
+}
+
+- (void)saveColor:(UIColor*)color forKey:(NSString*)colorKey {
+    NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:color];
+    [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:colorKey];
+}
+
+- (UIColor*)loadColorForKey:(NSString*)colorKey {
+    NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:colorKey];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
 }
 
 - (IBAction)showPastScores:(UIButton *)sender {

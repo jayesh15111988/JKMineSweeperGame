@@ -12,6 +12,7 @@ build/*
 xcuserdata
 profile
 *.moved-aside
+*.xcworkspace
 DerivedData
 .DS_Store
 *.psd

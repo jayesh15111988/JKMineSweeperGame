@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Jayesh Kawli. All rights reserved.
 //
 
+
 @interface JKMinesweeperAppearance : NSObject
+
++ (UIColor*)orangeColor;
 
 @end

@@ -9,6 +9,7 @@
 #import "ColorPickerProvider.h"
 #import <HRColorPickerView.h>
 #import <ReactiveCocoa.h>
+#import "JKMineSweeperConstants.h"
 
 static HRColorPickerView* colorPickerView;
 
@@ -20,7 +21,7 @@ static HRColorPickerView* colorPickerView;
     colorPickerView = [[HRColorPickerView alloc] init];
     colorPickerView.translatesAutoresizingMaskIntoConstraints = NO;
     colorPickerView.color = parentView.backgroundColor;
-    colorPickerView.colorInfoView.hidden = YES;
+    colorPickerView.colorInfoView.alpha = 0.0;
     
     [[colorPickerView rac_signalForControlEvents:UIControlEventValueChanged] subscribeNext:^(HRColorPickerView* colorPicker) {
         colorChangedBlock(colorPicker.color);
@@ -32,7 +33,9 @@ static HRColorPickerView* colorPickerView;
     [hideColorPickerButton setTitle:@"OK" forState:UIControlStateNormal];
     [hideColorPickerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [[hideColorPickerButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
-        colorPickerHolderView.hidden = YES;
+        [UIView animateWithDuration:REGULAR_ANIMATION_DURATION animations:^{
+           colorPickerHolderView.alpha = 0.0; 
+        }];
     }];
     
     [colorPickerHolderView addSubview:colorPickerView];

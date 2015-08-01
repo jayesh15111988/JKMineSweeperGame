@@ -9,7 +9,7 @@
 #define MINES_NOT_REVEALED_STATE 14
 #define MINES_REVEALED_STATE 15
 
-#define REGULAR_ANIMATION_DURATION 0.3
+#define REGULAR_ANIMATION_DURATION 0.5
 #define MULTIPLE_ANIMATION_DURATION 0.4
 #define GIF_IMAGE_ANIMATION_DURATION 2.0
 #define DEFAULT_TOTAL_ANIMATION_DURATION 2.0
@@ -46,9 +46,15 @@ enum {
     SavedGame
 };
 
+enum {
+    ColorStateTileForegroundColor,
+    ColorStateGridBackgroundColor
+};
+
 typedef NSUInteger CurrentGameState;
 typedef NSUInteger SoundCategory;
 typedef NSUInteger GameState;
+typedef NSUInteger ColorState;
 
 
 @interface JKMineSweeperConstants : NSObject

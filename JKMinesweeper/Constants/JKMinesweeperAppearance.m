@@ -10,4 +10,8 @@
 
 @implementation JKMinesweeperAppearance
 
++ (UIColor*)orangeColor {
+    return [UIColor colorWithRed:0.94 green:0.67 blue:0.3 alpha:1.0];
+}
+
 @end
