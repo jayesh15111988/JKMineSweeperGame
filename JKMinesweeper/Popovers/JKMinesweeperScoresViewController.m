@@ -66,6 +66,10 @@
     return currentCell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44.0;
+}
+
 - (IBAction)clearAllScoresButtonPressed:(UIButton*)sender {
     [UIAlertView bk_showAlertViewWithTitle:@"Scores History" message:@"Are you sure you want to clear all the previous scores?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Ok"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == 1) {

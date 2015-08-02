@@ -37,11 +37,9 @@
     
     if ([allScores count] > 0) {
         RLMRealm* currentRealm = [RLMRealm defaultRealm];
-        for (Score* individualScore in allScores) {
-            [currentRealm beginWriteTransaction];
-            [currentRealm deleteObject:individualScore];
-            [currentRealm commitWriteTransaction];
-        }
+        [currentRealm beginWriteTransaction];
+        [currentRealm deleteObjects:allScores];
+        [currentRealm commitWriteTransaction];
         return ([[Score allObjects] count] == 0);
     }
     return YES;

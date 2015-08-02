@@ -554,7 +554,7 @@ typedef void (^resetTilesFinishedBlock)();
                 currentGameStatusMessage = @"Sorry, you still need to unleash few "
                 @"tiles before we could declare you as " @"Winner";
             } else {
-                currentGameStatusMessage =@"Sorry you have lost in this game. Please click reset button to generate new game";
+                currentGameStatusMessage =@"Sorry you lost this game.";
             }
         }
     } else {
@@ -826,7 +826,7 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (void)showAlertViewWithMessage:(NSString *)message {
-    [UIAlertView bk_showAlertViewWithTitle:@"Minesweeper" message:message cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Continue"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+    [UIAlertView bk_showAlertViewWithTitle:@"Minesweeper" message:message cancelButtonTitle:@"Continue" otherButtonTitles:nil handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (self.gameState == OverAndWin || self.gameState == OverAndLoss) {
             [self showSaveScoreDialogueBox];
         }
@@ -1024,6 +1024,7 @@ typedef void (^resetTilesFinishedBlock)();
     if (color) {
         NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:color];
         [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:colorKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
