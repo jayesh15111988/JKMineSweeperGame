@@ -48,8 +48,7 @@
     
     if (vLoop) {
         self.foreGroundPlayer.numberOfLoops = -1;
-    }
-    else {
+    } else {
         self.foreGroundPlayer.numberOfLoops = 0;
     }
     
@@ -57,8 +56,7 @@
     
     if (self.foreGroundPlayer == nil) {
         success = NO;
-    }
-    else {
+    } else {
         success = [self.foreGroundPlayer play];
     }
     return success;
@@ -82,8 +80,7 @@
     
     if (vLoop) {
         self.backGroundPlayer.numberOfLoops = -1;
-    }
-    else {
+    } else {
         self.backGroundPlayer.numberOfLoops = 0;
     }
     
@@ -91,8 +88,7 @@
     
     if (self.backGroundPlayer == nil) {
         success = NO;
-    }
-    else {
+    } else {
         success = [self.backGroundPlayer play];
     }
     return success;

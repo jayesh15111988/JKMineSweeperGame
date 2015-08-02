@@ -11,6 +11,7 @@
 #import "JKMineSweeperConstants.h"
 #import "GridTileCornerRadiusCalculator.h"
 #import <FLAnimatedImageView.h>
+#import <ReactiveCocoa.h>
 
 @interface JKCustomButton ()
 
@@ -57,18 +58,14 @@
             titleColor = [UIColor blackColor];
         } else if (numberOfSurroundingMines < 4) {
             titleColor = [UIColor blueColor];
-
-        }
-        // Any Value >3
-        else {
+        } else {
             titleColor = [UIColor yellowColor];
         }
 
         [self setTitleColor:titleColor forState:UIControlStateNormal];
-
-        [self addTarget:self
-                      action:@selector(tileButtonSelected:)
-            forControlEvents:UIControlEventTouchUpInside];
+        [[self rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+            [self tileButtonSelected];
+        }];
     }
 
     return self;
@@ -88,9 +85,7 @@
     
 
     self.buttonStateModel = previousButtonState;
-    self.frame =
-    CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y,
-               tileWidth, tileWidth);
+    self.frame = CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y, tileWidth, tileWidth);
     
     // Change color of title based on number of surrounding mines for given
     // tile
@@ -102,13 +97,11 @@
     } else if (numberOfSurroundingMines < 4) {
         titleColor = [UIColor blueColor];
         
-    }
-    // Any Value >3
-    else {
+    } else {
         titleColor = [UIColor yellowColor];
     }
+    // Any Value > 3.
     
-    self.backgroundColor = [UIColor orangeColor];
     [self setTitleColor:titleColor forState:UIControlStateNormal];
     
     if (previousButtonState.currentTileState == TileSelected) {
@@ -120,17 +113,14 @@
         [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self setBackgroundColor:[UIColor whiteColor]];
     }
-    
-    
-    [self addTarget:self
-             action:@selector(tileButtonSelected:)
-   forControlEvents:UIControlEventTouchUpInside];
-    
+    [[self rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+        [self tileButtonSelected];
+    }];
 }
 
 
 
-- (IBAction)tileButtonSelected:(JKCustomButton *)sender {
+- (void)tileButtonSelected {
 
     // Go in the block only if tile is not previously selected by the user
     DLog(@"%ld",(long)self.buttonStateModel.currentTileState);

@@ -146,11 +146,6 @@ typedef void (^resetTilesFinishedBlock)();
         [self saveColor:[UIColor greenColor] forKey:@"tileForegroundColor"];
     }
     
-    self.gridBackgroundColor = [self loadColorForKey:@"gridBackgroundColor"];
-    [self.view setBackgroundColor:self.gridBackgroundColor];
-    self.tileForegroundColor = [self loadColorForKey:@"tileForegroundColor"];
-    
-    self.gridHolderView.layer.borderColor = self.tileForegroundColor.CGColor;
     self.gridHolderView.layer.borderWidth = 0.5f;
     self.currentScoreValue = 0;
     self.totalNumberOfTilesRevealed = 0;
@@ -275,6 +270,7 @@ typedef void (^resetTilesFinishedBlock)();
         [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
         [self.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld",(long)([levelNumber integerValue])] forState:UIControlStateNormal];
     }];
+
     
     [[self.changeScrollViewBackgroundColorButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
         self.currentColorState = ColorStateGridBackgroundColor;
@@ -372,7 +368,7 @@ typedef void (^resetTilesFinishedBlock)();
                     individualButton.frame = CGRectMake(individualButton.positionOnScreen.x, individualButton.positionOnScreen.y, self.tileWidth, self.tileWidth);
                     
                     [individualButton configurePreviousButton:individualButton.positionOnScreen andWidth:self.tileWidth andButtonState:individualButton.buttonStateModel];
-                    
+                    [individualButton setBackgroundColor:self.tileForegroundColor];
 
                     if (individualButton.buttonStateModel.isThisButtonMine) {
                         [self.minesButtonsHolder addObject:individualButton];
@@ -412,6 +408,19 @@ typedef void (^resetTilesFinishedBlock)();
             [self.timerProviderUtility startTimer];
         }
         return [RACSignal empty];
+    }];
+}
+
+- (void)setupRACSignalsForGameColors {
+    [RACObserve(self, gridBackgroundColor) subscribeNext:^(UIColor* selectedColor) {
+        [self saveColor:selectedColor forKey:@"gridBackgroundColor"];
+        [self.scrollViewAutoLayout.contentView setBackgroundColor:selectedColor];
+        [self.view setBackgroundColor:selectedColor];
+    }];
+    
+    [RACObserve(self, tileForegroundColor) subscribeNext:^(UIColor* selectedColor) {
+        self.gridHolderView.layer.borderColor = selectedColor.CGColor;
+        [self saveColor:selectedColor forKey:@"tileForegroundColor"];
     }];
 }
 
@@ -457,8 +466,7 @@ typedef void (^resetTilesFinishedBlock)();
     
     if (isSoundEnabled) {
         [self playBackgroundSound];
-    }
-    else {
+    } else {
         [self.audioOperationsManager stopBackgroundMusic];
     }
 }
@@ -478,8 +486,7 @@ typedef void (^resetTilesFinishedBlock)();
                 }
                 [self.timerProviderUtility startTimer];
             }
-        }
-        else {
+        } else {
             [self.timerProviderUtility resetTimer];
         }
     }
@@ -528,7 +535,7 @@ typedef void (^resetTilesFinishedBlock)();
     
     NSString *currentGameStatusMessage = @"N/A";
     
-    if (self.gameState != NotStarted) {
+    if (self.gameState == InProgress) {
         if (didUserWinCurrentGame) {
             [self.audioOperationsManager playForegroundSoundFXnamed:@"gamewin.wav" loop:NO];
             [self.audioOperationsManager stopBackgroundMusic];
@@ -539,13 +546,11 @@ typedef void (^resetTilesFinishedBlock)();
             if (self.gameState != OverAndLoss) {
                 currentGameStatusMessage = @"Sorry, you still need to unleash few "
                 @"tiles before we could declare you as " @"Winner";
-            }
-            else {
+            } else {
                 currentGameStatusMessage =@"Sorry you have lost in this game. Please click reset button to generate new game";
             }
         }
-    }
-    else {
+    } else {
         currentGameStatusMessage = @"You haven't started game yet. Please Start a new game verify the game state";
     }
     [self showAlertViewWithMessage:currentGameStatusMessage];
@@ -566,8 +571,8 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (void)createNewGridOnScreen {
-
-    //[self resetGridWithNewTiles];
+    
+    self.tileForegroundColor = [self loadColorForKey:@"tileForegroundColor"];
     self.resetButton.enabled = YES;
     self.revealMenuButton.enabled = YES;
 
@@ -664,7 +669,12 @@ typedef void (^resetTilesFinishedBlock)();
     self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.gridHolderSuperView];
     [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderView];
     [self.scrollViewAutoLayout.contentView addSubview:self.changeTileForegroundColorButton];
-    [self.scrollViewAutoLayout.contentView setBackgroundColor:self.gridBackgroundColor];
+    
+    
+    [self setupRACSignalsForGameColors];
+    
+    self.gridBackgroundColor = [self loadColorForKey:@"gridBackgroundColor"];
+    self.tileForegroundColor = [self loadColorForKey:@"tileForegroundColor"];
     
     self.createNewGridAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:(DEFAULT_TOTAL_ANIMATION_DURATION/self.maximumTileSequence) target:self selector:@selector(makeTileVisibleForCurrentIndex:) userInfo:nil repeats:YES];
     [self.createNewGridAnimationTimer fire];
@@ -713,16 +723,14 @@ typedef void (^resetTilesFinishedBlock)();
         
         if (longPressedButton.buttonStateModel.currentTileState == TileQuestionMarked) {
             longPressedButton.buttonStateModel.currentTileState = TileNotSelected;
-        }
-        else {
+        } else {
             longPressedButton.buttonStateModel.currentTileState = TileQuestionMarked;
         }
         
         if (longPressedButton.buttonStateModel.currentTileState == TileQuestionMarked) {
             [longPressedButton setTitle:@"?" forState:UIControlStateNormal];
             [longPressedButton setBackgroundColor:[UIColor whiteColor]];
-        }
-        else {
+        } else {
             [longPressedButton setTitle:@"" forState:UIControlStateNormal];
             [longPressedButton setBackgroundColor:self.tileForegroundColor];
         }
@@ -982,21 +990,17 @@ typedef void (^resetTilesFinishedBlock)();
 -(void)setupColorPickerView {
     if (!self.colorPickerHolderView) {
         @weakify(self)
-       self.colorPickerHolderView = [ColorPickerProvider colorPickerForCurrentViewForParentView:self.gridHolderSuperView andColorChangedBlock:^(UIColor *selectedColor) {
+       self.colorPickerHolderView = [ColorPickerProvider colorPickerForCurrentViewForParentView:self.view andColorChangedBlock:^(UIColor *selectedColor) {
            @strongify(self)
-           NSString* userColorPreferencesKey = @"";
            if (self.currentColorState == ColorStateGridBackgroundColor) {
-               [self.scrollViewAutoLayout.contentView setBackgroundColor:selectedColor];
-               [self.view setBackgroundColor:selectedColor];
-               userColorPreferencesKey = @"gridBackgroundColor";
+               self.gridBackgroundColor = selectedColor;
            } else {
-              userColorPreferencesKey = @"tileForegroundColor";
                self.tileForegroundColor = selectedColor;
            }
-           [self saveColor:selectedColor forKey:userColorPreferencesKey];
        }];
     }
     
+    [self.view bringSubviewToFront:self.colorPickerHolderView];
     NSString* userColorPreferencesKey = @"";
     if (self.currentColorState == ColorStateGridBackgroundColor) {
         userColorPreferencesKey = @"gridBackgroundColor";
@@ -1010,8 +1014,10 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (void)saveColor:(UIColor*)color forKey:(NSString*)colorKey {
-    NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:color];
-    [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:colorKey];
+    if (color) {
+        NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:color];
+        [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:colorKey];
+    }
 }
 
 - (UIColor*)loadColorForKey:(NSString*)colorKey {

@@ -10,6 +10,7 @@
 #import <HRColorPickerView.h>
 #import <ReactiveCocoa.h>
 #import "JKMineSweeperConstants.h"
+#import "JKMinesweeperAppearance.h"
 
 static HRColorPickerView* colorPickerView;
 
@@ -29,7 +30,7 @@ static HRColorPickerView* colorPickerView;
     
     UIButton* hideColorPickerButton = [[UIButton alloc] init];
     hideColorPickerButton.translatesAutoresizingMaskIntoConstraints = NO;
-    hideColorPickerButton.backgroundColor = [UIColor yellowColor];
+    hideColorPickerButton.backgroundColor = [JKMinesweeperAppearance orangeColor];
     [hideColorPickerButton setTitle:@"OK" forState:UIControlStateNormal];
     [hideColorPickerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [[hideColorPickerButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
