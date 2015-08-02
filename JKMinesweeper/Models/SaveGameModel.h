@@ -7,6 +7,7 @@
 //
 
 #import "RLMObject.h"
+#import "JKMineSweeperConstants.h"
 
 @interface SaveGameModel : RLMObject
 
@@ -16,6 +17,7 @@
 @property NSInteger levelNumber;
 @property NSString* numberOfTilesInRow;
 @property double timestampOfSave;
+@property NSInteger successiveTilesDistanceIncrement;
 @property NSInteger score;
 
 @end

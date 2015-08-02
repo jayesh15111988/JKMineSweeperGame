@@ -33,12 +33,16 @@
 
 -(void) performDatabaseMigration {
     
-    [RLMRealm setSchemaVersion:1 forRealmAtPath:[RLMRealm defaultRealmPath] withMigrationBlock:^(RLMMigration *migration, uint64_t oldSchemaVersion) {
+    [RLMRealm setSchemaVersion:2 forRealmAtPath:[RLMRealm defaultRealmPath] withMigrationBlock:^(RLMMigration *migration, uint64_t oldSchemaVersion) {
         if (oldSchemaVersion < 1) {
             [migration enumerateObjects: SaveGameModel.className
                                   block:^(RLMObject *oldObject, RLMObject *newObject) {
                                       newObject[@"score"] = @(0);
                                   }];
+        } else if (oldSchemaVersion < 2) {
+            [migration enumerateObjects:SaveGameModel.className block:^(RLMObject* oldObject, RLMObject* newObject) {
+                newObject[@"successiveTilesDistanceIncrement"] = @(0);
+            }];
         }
     }];
 }

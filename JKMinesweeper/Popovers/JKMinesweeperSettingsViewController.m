@@ -65,8 +65,7 @@
     if (sender == self.soundEffectSwitch) {
         [[NSUserDefaults standardUserDefaults] setObject:@(sender.isOn) forKey:@"sound"];
         [[NSNotificationCenter defaultCenter] postNotificationName:SOUND_SETTINGS_CHANGED object:nil];
-    }
-    else {
+    } else {
         [[NSUserDefaults standardUserDefaults] setObject:@(sender.isOn) forKey:@"timer"];
         [[NSNotificationCenter defaultCenter] postNotificationName:TIMER_VALUE_CHANGED object:nil];
     }

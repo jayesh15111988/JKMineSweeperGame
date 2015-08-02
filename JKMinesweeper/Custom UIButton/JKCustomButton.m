@@ -37,38 +37,55 @@
         self.buttonStateModel.isThisButtonMine = isMine;
         self.buttonStateModel.numberOfNeighboringMines = numberOfSurroundingMines;
         self.alpha = 0.0;
-        // 0 55 110 165 220 275
         
-        self.frame =
-            CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y,
-                       tileWidth, tileWidth);
+        // 0 55 110 165 220 275.
         
-        GridButtonType buttonType = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gridButtonType"] unsignedIntegerValue];
-        
-        self.layer.cornerRadius = [GridTileCornerRadiusCalculator buttonBorderRadiusFromType:buttonType andTileWidth:tileWidth];
-
-        _overlayImageView = [[FLAnimatedImageView alloc] initWithFrame:CGRectMake(0, 0, tileWidth, tileWidth)];
-        _overlayImageView.alpha = 0.0;
-        [self addSubview:_overlayImageView];
-        // Change color of title based on number of surrounding mines for given
-        // tile
-        // While - Light blue - lightgreen
-        UIColor *titleColor;
-        if (numberOfSurroundingMines == 1) {
-            titleColor = [UIColor blackColor];
-        } else if (numberOfSurroundingMines < 4) {
-            titleColor = [UIColor blueColor];
-        } else {
-            titleColor = [UIColor yellowColor];
-        }
-
-        [self setTitleColor:titleColor forState:UIControlStateNormal];
-        [[self rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
-            [self tileButtonSelected];
-        }];
+        self.frame = CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y, tileWidth, tileWidth);
+        [self makeCommonSetupWithTileWidth:tileWidth andNumberOfNeighbouringMines:numberOfSurroundingMines];
     }
 
     return self;
+}
+
+-(void)configurePreviousButton:(CGPoint)buttonPositionOnScreen andWidth:(NSInteger)tileWidth andButtonState:(JKButtonStateModel*)previousButtonState {
+    
+    self.buttonStateModel = previousButtonState;
+    self.frame = CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y, tileWidth, tileWidth);
+    [self makeCommonSetupWithTileWidth:tileWidth andNumberOfNeighbouringMines:previousButtonState.numberOfNeighboringMines];
+    self.alpha = 1.0;
+    if (previousButtonState.currentTileState == TileSelected) {
+        [self setBackgroundColor:[UIColor redColor]];
+        [self setTitle:[NSString stringWithFormat:@"%ld",(long)previousButtonState.numberOfNeighboringMines] forState:UIControlStateNormal];
+    } else if (previousButtonState.currentTileState == TileQuestionMarked) {
+        [self setTitle:@"?" forState:UIControlStateNormal];
+        [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self setBackgroundColor:[UIColor whiteColor]];
+    }
+}
+
+- (void)makeCommonSetupWithTileWidth:(CGFloat)tileWidth andNumberOfNeighbouringMines:(NSInteger)numberOfNeighbouringMines {
+    GridButtonType buttonType = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gridButtonType"] unsignedIntegerValue];
+    self.layer.cornerRadius = [GridTileCornerRadiusCalculator buttonBorderRadiusFromType:buttonType andTileWidth:tileWidth];
+    _overlayImageView = [[FLAnimatedImageView alloc] initWithFrame:CGRectMake(0, 0, tileWidth, tileWidth)];
+    _overlayImageView.alpha = 0.0;
+    [self addSubview:_overlayImageView];
+    
+    // Change color of title based on number of surrounding mines for given tile While - Light blue - lightgreen
+
+    UIColor *titleColor;
+    if (numberOfNeighbouringMines == 1) {
+        titleColor = [UIColor blackColor];
+    } else if (numberOfNeighbouringMines < 4) {
+        titleColor = [UIColor blueColor];
+    } else {
+        titleColor = [UIColor yellowColor];
+    }
+    
+    [self setTitleColor:titleColor forState:UIControlStateNormal];
+    
+    [[self rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+        [self tileButtonSelected];
+    }];
 }
 
 - (void)updateOverlayImageRegularImage:(UIImage*)regularImage {
@@ -81,48 +98,9 @@
     _overlayImageView.animatedImage = animatedImage;
 }
 
--(void)configurePreviousButton:(CGPoint)buttonPositionOnScreen andWidth:(NSInteger)tileWidth andButtonState:(JKButtonStateModel*)previousButtonState {
-    
-
-    self.buttonStateModel = previousButtonState;
-    self.frame = CGRectMake(buttonPositionOnScreen.x, buttonPositionOnScreen.y, tileWidth, tileWidth);
-    
-    // Change color of title based on number of surrounding mines for given
-    // tile
-    // While - Light blue - lightgreen
-    NSInteger numberOfSurroundingMines = previousButtonState.numberOfNeighboringMines;
-    UIColor *titleColor;
-    if (numberOfSurroundingMines == 1) {
-        titleColor = [UIColor blackColor];
-    } else if (numberOfSurroundingMines < 4) {
-        titleColor = [UIColor blueColor];
-        
-    } else {
-        titleColor = [UIColor yellowColor];
-    }
-    // Any Value > 3.
-    
-    [self setTitleColor:titleColor forState:UIControlStateNormal];
-    
-    if (previousButtonState.currentTileState == TileSelected) {
-        [self setBackgroundColor:[UIColor redColor]];
-        [self setTitle:[NSString stringWithFormat:@"%ld",(long)numberOfSurroundingMines] forState:UIControlStateNormal];
-    }
-    else if (previousButtonState.currentTileState == TileQuestionMarked) {
-        [self setTitle:@"?" forState:UIControlStateNormal];
-        [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [self setBackgroundColor:[UIColor whiteColor]];
-    }
-    [[self rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
-        [self tileButtonSelected];
-    }];
-}
-
-
-
 - (void)tileButtonSelected {
 
-    // Go in the block only if tile is not previously selected by the user
+    // Go in the block only if tile is not previously selected by the user.
     DLog(@"%ld",(long)self.buttonStateModel.currentTileState);
     if (self.buttonStateModel.currentTileState == TileNotSelected || self.buttonStateModel.currentTileState == TileQuestionMarked) {
         self.buttonStateModel.currentTileState = TileSelected;
@@ -142,6 +120,8 @@
         DLog(@"Tile was already selected");
     }
 }
+
+// This is the golden code. Really proud that I wrote it!
 
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeObject:[NSValue valueWithCGPoint:self.positionOnScreen] forKey:@"positionOnScreen"];

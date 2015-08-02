@@ -143,7 +143,7 @@ typedef void (^resetTilesFinishedBlock)();
     }
     
     if (![self loadColorForKey:@"tileForegroundColor"]) {
-        [self saveColor:[UIColor greenColor] forKey:@"tileForegroundColor"];
+        [self saveColor:[UIColor blueColor] forKey:@"tileForegroundColor"];
     }
     
     self.gridHolderView.layer.borderWidth = 0.5f;
@@ -351,6 +351,7 @@ typedef void (^resetTilesFinishedBlock)();
             self.savedGamesViewController.openSelectedGameModel = ^(SaveGameModel* selectedGameModel) {
                 @strongify(self)
                 [self resetGameBeforeLoadingPreviousGame:selectedGameModel];
+                [self.popupView dismiss:YES];
                 //Now load all tiles on the front page
                 NSArray *allCustomButtonCollection=[NSKeyedUnarchiver unarchiveObjectWithData:selectedGameModel.savedGameData];
                 
@@ -366,10 +367,15 @@ typedef void (^resetTilesFinishedBlock)();
                 for (JKCustomButton* individualButton in allCustomButtonCollection) {
                     DLog(@"In button mine %ld Sequence number %ld current tile state %ld ", (long)individualButton.buttonStateModel.isThisButtonMine, (long)individualButton.buttonSequenceNumber, (long)individualButton.buttonStateModel.currentTileState);
                     individualButton.frame = CGRectMake(individualButton.positionOnScreen.x, individualButton.positionOnScreen.y, self.tileWidth, self.tileWidth);
-                    
-                    [individualButton configurePreviousButton:individualButton.positionOnScreen andWidth:self.tileWidth andButtonState:individualButton.buttonStateModel];
+                    DLog(@"%ld", self.tileWidth + self.gutterSpacing);
                     [individualButton setBackgroundColor:self.tileForegroundColor];
-
+                    
+                    CGFloat xScaleIncrementFactor = individualButton.positionOnScreen.x/selectedGameModel.successiveTilesDistanceIncrement;
+                    CGFloat yScaleIncrementFactor = individualButton.positionOnScreen.y/selectedGameModel.successiveTilesDistanceIncrement;
+                    
+                    CGPoint updatedScreenPoint = CGPointMake(individualButton.positionOnScreen.x + xScaleIncrementFactor * (self.tileWidth + self.gutterSpacing - selectedGameModel.successiveTilesDistanceIncrement), individualButton.positionOnScreen.y + yScaleIncrementFactor *(self.tileWidth + self.gutterSpacing - selectedGameModel.successiveTilesDistanceIncrement));
+                    DLog(@"Old X %f Old Y %f AND new X %f new Y %f", individualButton.positionOnScreen.x, individualButton.positionOnScreen.y, updatedScreenPoint.x, updatedScreenPoint.y);
+                    [individualButton configurePreviousButton:updatedScreenPoint andWidth:self.tileWidth andButtonState:individualButton.buttonStateModel];
                     if (individualButton.buttonStateModel.isThisButtonMine) {
                         [self.minesButtonsHolder addObject:individualButton];
                     } else {
@@ -439,6 +445,7 @@ typedef void (^resetTilesFinishedBlock)();
         [self resetRevealMenuButton];
     }
     
+    DLog(@"%ld", selectedGameModel.successiveTilesDistanceIncrement);
     self.gameStateNewLoaded = SavedGame;
     self.currentScoreValue = selectedGameModel.score;
     self.currentScore.text = [NSString stringWithFormat:@"%ld",(long)self.currentScoreValue];
@@ -841,8 +848,7 @@ typedef void (^resetTilesFinishedBlock)();
         gameToStore.savedGameName = gameName;
         if (self.gameStateNewLoaded == NewGame) {
             gameToStore.identifier = self.currentGameIdentifier;
-        }
-        else {
+        } else {
             gameToStore.identifier = [JKRandomStringGenerator generateRandomStringWithLength:6];
         }
         
@@ -851,7 +857,7 @@ typedef void (^resetTilesFinishedBlock)();
         gameToStore.levelNumber = self.levelNumberSelected;
         gameToStore.numberOfTilesInRow = self.gridSizeInputText.text;
         gameToStore.score = self.currentScoreValue;
-        
+        gameToStore.successiveTilesDistanceIncrement = self.tileWidth + self.gutterSpacing;
         [currentRealm beginWriteTransaction];
         [currentRealm addObject:gameToStore];
         [currentRealm commitWriteTransaction];
@@ -865,6 +871,7 @@ typedef void (^resetTilesFinishedBlock)();
             previouslyStoredModel.timestampOfSave = [[NSDate date] timeIntervalSince1970];
             previouslyStoredModel.savedGameData = gameDataToArchive;
             previouslyStoredModel.score = self.currentScoreValue;
+            previouslyStoredModel.successiveTilesDistanceIncrement = self.tileWidth + self.gutterSpacing;
             [currentRealm commitWriteTransaction];
             DLog(@"Updated game model");
     }

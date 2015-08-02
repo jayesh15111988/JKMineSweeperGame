@@ -48,9 +48,8 @@ static NSInteger bottomLeftCorner;
                                 @(minesTileSequenceNumber - totalNumberOfTilesInRow)
                                 ];
         
-    }
-    // Top horizontal Row
-    else if (minesTileSequenceNumber < topRightCorner) {
+    } else if (minesTileSequenceNumber < topRightCorner) {
+        // Top horizontal Row
         resultantNeightbors = @[
                                 @(minesTileSequenceNumber - 1),
                                 @(minesTileSequenceNumber + 1),
@@ -59,10 +58,9 @@ static NSInteger bottomLeftCorner;
                                 @(minesTileSequenceNumber + totalNumberOfTilesInRow)
                                 ];
         
-    }
-    // Extreme right vertical row
-    else if ((minesTileSequenceNumber + 1) % totalNumberOfTilesInRow ==
+    } else if ((minesTileSequenceNumber + 1) % totalNumberOfTilesInRow ==
              0) {
+        // Extreme right vertical row
         resultantNeightbors = @[
                                 @(minesTileSequenceNumber - 1),
                                 @(minesTileSequenceNumber + totalNumberOfTilesInRow),
@@ -71,10 +69,8 @@ static NSInteger bottomLeftCorner;
                                 @(minesTileSequenceNumber - totalNumberOfTilesInRow - 1)
                                 ];
         
-    }
-    // Extreme left vertical row
-    else if (minesTileSequenceNumber % totalNumberOfTilesInRow == 0) {
-        
+    } else if (minesTileSequenceNumber % totalNumberOfTilesInRow == 0) {
+        // Extreme left vertical row
         resultantNeightbors = @[
                                 @(minesTileSequenceNumber + 1),
                                 @(minesTileSequenceNumber - totalNumberOfTilesInRow),
@@ -83,9 +79,8 @@ static NSInteger bottomLeftCorner;
                                 @(minesTileSequenceNumber + totalNumberOfTilesInRow + 1)
                                 ];
         
-    }
-    // Bottom horizontal row
-    else if (minesTileSequenceNumber > bottomLeftCorner) {
+    } else if (minesTileSequenceNumber > bottomLeftCorner) {
+        // Bottom horizontal row
         resultantNeightbors = @[
                                 @(minesTileSequenceNumber - 1),
                                 @(minesTileSequenceNumber + 1),
@@ -94,9 +89,8 @@ static NSInteger bottomLeftCorner;
                                 @(minesTileSequenceNumber - totalNumberOfTilesInRow)
                                 ];
         
-    }
-    // Any tile inside grid and not touching any adjacent boundary
-    else {
+    } else {
+        // Any tile inside grid and not touching any adjacent boundary
         resultantNeightbors = @[
                                 @(minesTileSequenceNumber - 1),
                                 @(minesTileSequenceNumber + 1),

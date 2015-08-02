@@ -85,14 +85,13 @@
 }
 
 - (IBAction)clearAllScoresButtonPressed:(UIButton*)sender {
-    [UIAlertView bk_showAlertViewWithTitle:@"Saved Games" message:@"Are you sure you want to clear all the previous games?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Ok"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+    [UIAlertView bk_showAlertViewWithTitle:@"Saved Games" message:@"Are you sure you want to clear all the previous games?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"OK"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == 1) {
             if ([SavedGameOperation removeAllEntriesFromSavedGames]) {
                 [self loadSavedGames];
-                [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Successfully cleared all games from database" cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
-            }
-            else {
-                [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Failed to clear stored games from database" cancelButtonTitle:@"Ok" otherButtonTitles:@[@"Retry" ] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Successfully cleared all games from database" cancelButtonTitle:@"OK" otherButtonTitles:nil handler:nil];
+            } else {
+                [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Failed to clear stored games from database" cancelButtonTitle:@"OK" otherButtonTitles:@[@"Retry" ] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                     if (buttonIndex == 1) {
                         [self clearAllScoresButtonPressed:nil];
                     }
