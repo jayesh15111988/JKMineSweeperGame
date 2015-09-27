@@ -32,7 +32,8 @@
 
 
 -(void) performDatabaseMigration {
-    [RLMRealm setSchemaVersion:2 forRealmAtPath:[RLMRealmConfiguration defaultConfiguration].path withMigrationBlock:^(RLMMigration *migration, uint64_t oldSchemaVersion) {
+    [[RLMRealmConfiguration defaultConfiguration] setSchemaVersion:2];
+    [[RLMRealmConfiguration defaultConfiguration] setMigrationBlock:^(RLMMigration *migration, uint64_t oldSchemaVersion) {
         if (oldSchemaVersion < 1) {
             [migration enumerateObjects: SaveGameModel.className
                                   block:^(RLMObject *oldObject, RLMObject *newObject) {
