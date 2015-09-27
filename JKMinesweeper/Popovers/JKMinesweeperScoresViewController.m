@@ -75,7 +75,7 @@
         if (buttonIndex == 1) {
             if ([ScoreSaver removeAllEntriesFromScore]) {
                 [self loadAllScores];
-                [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Successfully cleared all scores from database" cancelButtonTitle:@"Ok" otherButtonTitles:nil handler:nil];
+                [TSMessage showNotificationInViewController:self title:@"Scores" subtitle:@"Successfully cleared all scores from database" type:TSMessageNotificationTypeMessage duration:2.0];
             } else {
                 [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Failed to clear scores from database" cancelButtonTitle:@"Ok" otherButtonTitles:@[@"Retry" ] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                     if (buttonIndex == 1) {

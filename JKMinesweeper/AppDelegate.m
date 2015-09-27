@@ -7,8 +7,8 @@
 //
 
 
-#import <RLMMigration.h>
-#import <RLMRealm.h>
+#import <Realm/Realm.h>
+#import <Realm/RLMRealmConfiguration.h>
 #import <objc/runtime.h>
 #import "SaveGameModel.h"
 #import "AppDelegate.h"
@@ -32,8 +32,7 @@
 
 
 -(void) performDatabaseMigration {
-    
-    [RLMRealm setSchemaVersion:2 forRealmAtPath:[RLMRealm defaultRealmPath] withMigrationBlock:^(RLMMigration *migration, uint64_t oldSchemaVersion) {
+    [RLMRealm setSchemaVersion:2 forRealmAtPath:[RLMRealmConfiguration defaultConfiguration].path withMigrationBlock:^(RLMMigration *migration, uint64_t oldSchemaVersion) {
         if (oldSchemaVersion < 1) {
             [migration enumerateObjects: SaveGameModel.className
                                   block:^(RLMObject *oldObject, RLMObject *newObject) {

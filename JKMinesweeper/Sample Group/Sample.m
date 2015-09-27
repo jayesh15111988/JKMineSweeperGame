@@ -11,24 +11,25 @@
 @implementation Sample
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeObject:self.p1 forKey:@"p1"];
-    [coder encodeObject:[NSValue valueWithCGPoint:self.p2] forKey:@"p2"];
-    [coder encodeObject:@(self.p3) forKey:@"p3"];
-    [coder encodeObject:@(self.p4) forKey:@"p4"];
-    
+  [coder encodeObject:self.p1 forKey:@"p1"];
+  [coder encodeObject:[NSValue valueWithCGPoint:self.p2] forKey:@"p2"];
+  [coder encodeObject:@(self.p3) forKey:@"p3"];
+  [coder encodeObject:@(self.p4) forKey:@"p4"];
 }
-- (Sample*)initWithCoder:(NSCoder *)decoder {
-    if (self = [super init]) {
-        self.p1 = [decoder decodeObjectForKey:@"p1"];
-        self.p2 = [[decoder decodeObjectForKey:@"p2"] CGPointValue];
-        self.p3 = [[decoder decodeObjectForKey:@"p3"] integerValue];
-        self.p4 = [[decoder decodeObjectForKey:@"p4"] boolValue];
-    }
-    return self;
+- (Sample *)initWithCoder:(NSCoder *)decoder {
+  if (self = [super init]) {
+    self.p1 = [decoder decodeObjectForKey:@"p1"];
+    self.p2 = [[decoder decodeObjectForKey:@"p2"] CGPointValue];
+    self.p3 = [[decoder decodeObjectForKey:@"p3"] integerValue];
+    self.p4 = [[decoder decodeObjectForKey:@"p4"] boolValue];
+  }
+  return self;
 }
 
--(NSString*)description {
-    return [NSString stringWithFormat:@"%@ %@ %ld, %ld",self.p1,NSStringFromCGPoint(self.p2), (long)self.p3, (long)self.p4];
+- (NSString *)description {
+  return [NSString stringWithFormat:@"%@ %@ %ld, %ld", self.p1,
+                                    NSStringFromCGPoint(self.p2), (long)self.p3,
+                                    (long)self.p4];
 }
 
 @end

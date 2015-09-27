@@ -93,7 +93,7 @@
         if (buttonIndex == 1) {
             if ([SavedGameOperation removeAllEntriesFromSavedGames]) {
                 [self loadSavedGames];
-                [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Successfully cleared all games from database" cancelButtonTitle:@"OK" otherButtonTitles:nil handler:nil];
+                [TSMessage showNotificationInViewController:self title:@"Scores" subtitle:@"Successfully cleared all games from database" type:TSMessageNotificationTypeMessage duration:2.0];
             } else {
                 [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Failed to clear stored games from database" cancelButtonTitle:@"OK" otherButtonTitles:@[@"Retry" ] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                     if (buttonIndex == 1) {
