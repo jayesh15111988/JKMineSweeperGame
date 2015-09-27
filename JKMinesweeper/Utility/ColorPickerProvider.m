@@ -31,7 +31,7 @@ static HRColorPickerView* colorPickerView;
     
     UIButton* hideColorPickerButton = [[UIButton alloc] init];
     hideColorPickerButton.translatesAutoresizingMaskIntoConstraints = NO;
-    hideColorPickerButton.backgroundColor = [JKMinesweeperAppearance orangeColor];
+    hideColorPickerButton.backgroundColor = [UIColor iOS7greenColor];
     [hideColorPickerButton setTitle:@"OK" forState:UIControlStateNormal];
     [hideColorPickerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [[hideColorPickerButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {

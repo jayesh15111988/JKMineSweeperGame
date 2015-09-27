@@ -34,6 +34,7 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     self.tileWidthLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"tileWidth"];
     self.gutterSpaceLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"gutterSpacing"];
     self.soundEffectSwitch.on = [[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue];

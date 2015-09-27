@@ -45,7 +45,7 @@
 
 -(void)addFooterView {
     UIView* footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 1)];
-    [footerView setBackgroundColor:[UIColor lightGrayColor]];
+    [footerView setBackgroundColor:[UIColor colorWithCrayola:@"Silver"]];
     self.tableView.tableFooterView = footerView;
 }
 

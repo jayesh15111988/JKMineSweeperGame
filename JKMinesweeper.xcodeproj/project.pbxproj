@@ -17,6 +17,7 @@
 		383399801A5080D3004B9D60 /* SavedGameOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3833997F1A5080D3004B9D60 /* SavedGameOperation.m */; };
 		3836A11C1A4D0B06009E24B5 /* exploding_bomb.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */; };
 		3836A11E1A4D14EF009E24B5 /* skull.png in Resources */ = {isa = PBXBuildFile; fileRef = 3836A11D1A4D14EF009E24B5 /* skull.png */; };
+		387E24681BB8917F0005DF45 /* Minesweeper Opening.png in Resources */ = {isa = PBXBuildFile; fileRef = 387E24671BB8917F0005DF45 /* Minesweeper Opening.png */; };
 		388C744A1A4E6C620094BC96 /* JKTimerProviderUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */; };
 		388C74551A4F36650094BC96 /* background.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C744F1A4F36650094BC96 /* background.wav */; };
 		388C74571A4F36650094BC96 /* explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = 388C74511A4F36650094BC96 /* explosion.wav */; };
@@ -98,6 +99,7 @@
 		3833997F1A5080D3004B9D60 /* SavedGameOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavedGameOperation.m; sourceTree = "<group>"; };
 		3836A11B1A4D0B06009E24B5 /* exploding_bomb.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = exploding_bomb.gif; sourceTree = "<group>"; };
 		3836A11D1A4D14EF009E24B5 /* skull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skull.png; sourceTree = "<group>"; };
+		387E24671BB8917F0005DF45 /* Minesweeper Opening.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Minesweeper Opening.png"; sourceTree = "<group>"; };
 		388C74481A4E6C620094BC96 /* JKTimerProviderUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKTimerProviderUtility.h; sourceTree = "<group>"; };
 		388C74491A4E6C620094BC96 /* JKTimerProviderUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKTimerProviderUtility.m; sourceTree = "<group>"; };
 		388C744D1A4F13EC0094BC96 /* JKMinesweeper-PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JKMinesweeper-PrefixHeader.pch"; sourceTree = "<group>"; };
@@ -390,6 +392,7 @@
 		91AA40FA19D8C956009CB397 /* JKMinesweeper */ = {
 			isa = PBXGroup;
 			children = (
+				387E24671BB8917F0005DF45 /* Minesweeper Opening.png */,
 				38059D9D1A4F861900F7A02F /* Load Save Game */,
 				38059D961A4F738B00F7A02F /* Sample Group */,
 				388C745E1A4F40370094BC96 /* Audio Support */,
@@ -597,6 +600,7 @@
 				388C746D1A4F6B5E0094BC96 /* clockcirclecomplete.wav in Resources */,
 				38A787471A4CF07A0004B2B4 /* smiley.gif in Resources */,
 				38E778BD1A4CF4BB009E127A /* changeColor.png in Resources */,
+				387E24681BB8917F0005DF45 /* Minesweeper Opening.png in Resources */,
 				388C74671A4F43390094BC96 /* gamewin.wav in Resources */,
 				389ACDB51A4DEC1600637375 /* JKScoresCustomTableViewCell.xib in Resources */,
 				388C74651A4F43390094BC96 /* tilereveal.wav in Resources */,
@@ -808,7 +812,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -823,7 +827,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};

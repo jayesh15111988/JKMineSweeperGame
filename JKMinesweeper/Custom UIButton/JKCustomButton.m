@@ -54,12 +54,12 @@
     [self makeCommonSetupWithTileWidth:tileWidth andNumberOfNeighbouringMines:previousButtonState.numberOfNeighboringMines];
     self.alpha = 1.0;
     if (previousButtonState.currentTileState == TileSelected) {
-        [self setBackgroundColor:[UIColor redColor]];
+        [self setBackgroundColor:[UIColor colorWithCrayola:@"Mango Tango"]];
         [self setTitle:[NSString stringWithFormat:@"%ld",(long)previousButtonState.numberOfNeighboringMines] forState:UIControlStateNormal];
     } else if (previousButtonState.currentTileState == TileQuestionMarked) {
         [self setTitle:@"?" forState:UIControlStateNormal];
         [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [self setBackgroundColor:[UIColor whiteColor]];
+        [self setBackgroundColor:[UIColor colorWithCrayola:@"Aquamarine"]];
     }
 }
 
@@ -76,9 +76,9 @@
     if (numberOfNeighbouringMines == 1) {
         titleColor = [UIColor blackColor];
     } else if (numberOfNeighbouringMines < 4) {
-        titleColor = [UIColor blueColor];
+        titleColor = [UIColor colorWithCrayola:@"Jungle Green"];
     } else {
-        titleColor = [UIColor yellowColor];
+        titleColor = [UIColor colorWithCrayola:@"Dandelion"];
     }
     
     [self setTitleColor:titleColor forState:UIControlStateNormal];

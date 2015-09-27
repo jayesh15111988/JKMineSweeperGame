@@ -141,14 +141,15 @@ typedef void (^resetTilesFinishedBlock)();
                       andTileWidth:self.tileWidth];
 
     if (![self loadColorForKey:@"gridBackgroundColor"]) {
-        [self saveColor:[UIColor colorWithRed:0.8 green:0.6 blue:0.2 alpha:1.0] forKey:@"gridBackgroundColor"];
+        [self saveColor:[UIColor colorWithCrayola:@"Pacific Blue"] forKey:@"gridBackgroundColor"];
     }
 
     if (![self loadColorForKey:@"tileForegroundColor"]) {
-        [self saveColor:[UIColor blueColor] forKey:@"tileForegroundColor"];
+        [self saveColor:[UIColor iOS7redColor] forKey:@"tileForegroundColor"];
     }
 
-    self.gridHolderView.layer.borderWidth = 0.5f;
+    self.gridHolderView.layer.borderWidth = 1.0f;
+    self.gridHolderView.layer.borderColor = [UIColor colorWithCrayola:@"Sonic Silver"].CGColor;
     self.currentScoreValue = 0;
     self.totalNumberOfTilesRevealed = 0;
     [self updateUIWithNewTimeValue];
@@ -192,7 +193,7 @@ typedef void (^resetTilesFinishedBlock)();
             delay:0.0
             options:UIViewAnimationOptionCurveEaseIn
             animations:^{
-              [currentMine setBackgroundColor:[UIColor redColor]];
+              [currentMine setBackgroundColor:[UIColor colorWithCrayola:@"Scarlet"]];
             }
             completion:^(BOOL finished) {
               currentMine.buttonStateModel.currentTileState = TileSelected;
@@ -477,7 +478,6 @@ typedef void (^resetTilesFinishedBlock)();
     }];
 
     [RACObserve (self, tileForegroundColor) subscribeNext:^(UIColor* selectedColor) {
-      self.gridHolderView.layer.borderColor = selectedColor.CGColor;
       [self saveColor:selectedColor forKey:@"tileForegroundColor"];
     }];
 }
@@ -863,7 +863,7 @@ typedef void (^resetTilesFinishedBlock)();
         [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
                          animations:^{
                            [buttonWithCurrentIdentifier addDecorationWithImage:[UIImage imageNamed:@"normal"]
-                                                                       orColor:[UIColor redColor]];
+                                                                       orColor:[UIColor colorWithCrayola:@"Scarlet"]];
                          }
                          completion:nil];
 
@@ -1018,7 +1018,7 @@ typedef void (^resetTilesFinishedBlock)();
             [self.revealMenuButton setTitle:@"Hide" forState:UIControlStateNormal];
             for (JKCustomButton* individualTileWithMine in self.minesButtonsHolder) {
                 [individualTileWithMine addDecorationWithImage:[UIImage imageNamed:@"mine"]
-                                                       orColor:[UIColor greenColor]];
+                                                       orColor:[UIColor iOS7greenColor]];
             }
         } else {
             sender.tag = MINES_NOT_REVEALED_STATE;
