@@ -32,8 +32,9 @@
 
 
 -(void) performDatabaseMigration {
-    [[RLMRealmConfiguration defaultConfiguration] setSchemaVersion:2];
-    [[RLMRealmConfiguration defaultConfiguration] setMigrationBlock:^(RLMMigration *migration, uint64_t oldSchemaVersion) {
+    RLMRealmConfiguration* config = [RLMRealmConfiguration defaultConfiguration];
+    [config setSchemaVersion:2];
+    [config setMigrationBlock:^(RLMMigration *migration, uint64_t oldSchemaVersion) {
         if (oldSchemaVersion < 1) {
             [migration enumerateObjects: SaveGameModel.className
                                   block:^(RLMObject *oldObject, RLMObject *newObject) {
@@ -45,6 +46,8 @@
             }];
         }
     }];
+    [RLMRealmConfiguration setDefaultConfiguration:config];
+    [RLMRealm defaultRealm];
 }
 
 -(void)setInitialDefaults {

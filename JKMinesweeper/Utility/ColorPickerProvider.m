@@ -21,7 +21,6 @@ static HRColorPickerView* colorPickerView;
     colorPickerHolderView.translatesAutoresizingMaskIntoConstraints = NO;
     colorPickerView = [[HRColorPickerView alloc] init];
     colorPickerView.translatesAutoresizingMaskIntoConstraints = NO;
-    NSLog(@"%@ bg color", parentView.backgroundColor);
     colorPickerView.color = parentView.backgroundColor;
     colorPickerView.colorInfoView.alpha = 0.0;
     

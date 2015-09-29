@@ -491,7 +491,11 @@ typedef void (^resetTilesFinishedBlock)();
                                                maskType:KLCPopupMaskTypeDimmed
                                dismissOnBackgroundTouch:YES
                                   dismissOnContentTouch:NO];
-        inputPopupView.transform = CGAffineTransformMakeRotation (M_PI / 2);
+        if ([UIDevice currentDevice].orientation == UIDeviceOrientationLandscapeRight) {
+            inputPopupView.transform = CGAffineTransformMakeRotation (M_PI / 2);
+        } else {
+            inputPopupView.transform = CGAffineTransformMakeRotation (-M_PI / 2);
+        }
     } else {
         self.popupView = [KLCPopup popupWithContentView:inputPopupView
                                                showType:KLCPopupShowTypeSlideInFromRight
