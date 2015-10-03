@@ -25,3 +25,4 @@
 #import <Foundation/Foundation.h>
 #import <TSMessages/TSMessage.h>
 #import <EDColor/EDColor.h>
+#import <MFSideMenu/MFSideMenu.h>

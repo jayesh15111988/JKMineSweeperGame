@@ -50,6 +50,8 @@
 		38A787451A4CF07A0004B2B4 /* mine.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A787421A4CF07A0004B2B4 /* mine.png */; };
 		38A787461A4CF07A0004B2B4 /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A787431A4CF07A0004B2B4 /* normal.png */; };
 		38A787471A4CF07A0004B2B4 /* smiley.gif in Resources */ = {isa = PBXBuildFile; fileRef = 38A787441A4CF07A0004B2B4 /* smiley.gif */; };
+		38B27E8D1BBE1BD90059823B /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38B27E8C1BBE1BD90059823B /* Main_iPhone.storyboard */; };
+		38B27E931BBE23260059823B /* options.png in Resources */ = {isa = PBXBuildFile; fileRef = 38B27E921BBE23260059823B /* options.png */; };
 		38C64BEA1B6C72C600829511 /* bullet_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BE81B6C72C600829511 /* bullet_grey.png */; };
 		38C64BEB1B6C72C600829511 /* bullet_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BE91B6C72C600829511 /* bullet_red.png */; };
 		38C64BED1B6C742600829511 /* bullet_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BEC1B6C742600829511 /* bullet_green.png */; };
@@ -57,6 +59,7 @@
 		38C64BF21B6D6A4D00829511 /* custom_button_square.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BEF1B6D6A4D00829511 /* custom_button_square.png */; };
 		38C64BF31B6D6A4D00829511 /* custom_button_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BF01B6D6A4D00829511 /* custom_button_circle.png */; };
 		38C64BF61B6D733400829511 /* GridTileCornerRadiusCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C64BF51B6D733400829511 /* GridTileCornerRadiusCalculator.m */; };
+		38E4D76F1BBF774A00B04B07 /* JKiPhoneSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E4D76E1BBF774A00B04B07 /* JKiPhoneSettingsViewController.m */; };
 		38E778BD1A4CF4BB009E127A /* changeColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 38E778BC1A4CF4BB009E127A /* changeColor.png */; };
 		38FA60831B6B0DFE00387FA4 /* ColorPickerProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FA60821B6B0DFE00387FA4 /* ColorPickerProvider.m */; };
 		38FA60861B6B1FB700387FA4 /* RandomNumberGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FA60851B6B1FB700387FA4 /* RandomNumberGenerator.m */; };
@@ -145,6 +148,8 @@
 		38A787421A4CF07A0004B2B4 /* mine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mine.png; sourceTree = "<group>"; };
 		38A787431A4CF07A0004B2B4 /* normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = normal.png; sourceTree = "<group>"; };
 		38A787441A4CF07A0004B2B4 /* smiley.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = smiley.gif; sourceTree = "<group>"; };
+		38B27E8C1BBE1BD90059823B /* Main_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main_iPhone.storyboard; path = ../../Main_iPhone.storyboard; sourceTree = "<group>"; };
+		38B27E921BBE23260059823B /* options.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = options.png; sourceTree = "<group>"; };
 		38C64BE81B6C72C600829511 /* bullet_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet_grey.png; sourceTree = "<group>"; };
 		38C64BE91B6C72C600829511 /* bullet_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet_red.png; sourceTree = "<group>"; };
 		38C64BEC1B6C742600829511 /* bullet_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullet_green.png; sourceTree = "<group>"; };
@@ -153,6 +158,8 @@
 		38C64BF01B6D6A4D00829511 /* custom_button_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = custom_button_circle.png; sourceTree = "<group>"; };
 		38C64BF41B6D733400829511 /* GridTileCornerRadiusCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridTileCornerRadiusCalculator.h; sourceTree = "<group>"; };
 		38C64BF51B6D733400829511 /* GridTileCornerRadiusCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridTileCornerRadiusCalculator.m; sourceTree = "<group>"; };
+		38E4D76D1BBF774A00B04B07 /* JKiPhoneSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKiPhoneSettingsViewController.h; sourceTree = "<group>"; };
+		38E4D76E1BBF774A00B04B07 /* JKiPhoneSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKiPhoneSettingsViewController.m; sourceTree = "<group>"; };
 		38E778BC1A4CF4BB009E127A /* changeColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeColor.png; sourceTree = "<group>"; };
 		38FA60811B6B0DFE00387FA4 /* ColorPickerProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerProvider.h; sourceTree = "<group>"; };
 		38FA60821B6B0DFE00387FA4 /* ColorPickerProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerProvider.m; sourceTree = "<group>"; };
@@ -300,6 +307,7 @@
 		38A7873D1A4CED560004B2B4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				38B27E921BBE23260059823B /* options.png */,
 				38C64BEE1B6D6A4D00829511 /* custom_button_rounded_border.png */,
 				38C64BEF1B6D6A4D00829511 /* custom_button_square.png */,
 				38C64BF01B6D6A4D00829511 /* custom_button_circle.png */,
@@ -328,6 +336,13 @@
 				389ACDBC1A4DF19500637375 /* UIView+Utility.m */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		38B27E8E1BBE21600059823B /* iPhone Specific */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "iPhone Specific";
 			sourceTree = "<group>";
 		};
 		6E1D38DA68CD49B26B92EA26 /* Frameworks */ = {
@@ -392,6 +407,7 @@
 		91AA40FA19D8C956009CB397 /* JKMinesweeper */ = {
 			isa = PBXGroup;
 			children = (
+				38B27E8E1BBE21600059823B /* iPhone Specific */,
 				387E24671BB8917F0005DF45 /* Minesweeper Opening.png */,
 				38059D9D1A4F861900F7A02F /* Load Save Game */,
 				38059D961A4F738B00F7A02F /* Sample Group */,
@@ -448,6 +464,8 @@
 			children = (
 				91AA412219D8CA77009CB397 /* JKMinesweeperHomeViewController.h */,
 				91AA412319D8CA77009CB397 /* JKMinesweeperHomeViewController.m */,
+				38E4D76D1BBF774A00B04B07 /* JKiPhoneSettingsViewController.h */,
+				38E4D76E1BBF774A00B04B07 /* JKiPhoneSettingsViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -456,6 +474,7 @@
 			isa = PBXGroup;
 			children = (
 				91AA412619D8CAD8009CB397 /* Main.storyboard */,
+				38B27E8C1BBE1BD90059823B /* Main_iPhone.storyboard */,
 			);
 			path = Storyboard;
 			sourceTree = "<group>";
@@ -537,7 +556,7 @@
 		91AA40F019D8C956009CB397 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Jayesh Kawli";
 				TargetAttributes = {
 					91AA40F719D8C956009CB397 = {
@@ -580,6 +599,7 @@
 			files = (
 				38A787451A4CF07A0004B2B4 /* mine.png in Resources */,
 				38C64BEB1B6C72C600829511 /* bullet_red.png in Resources */,
+				38B27E931BBE23260059823B /* options.png in Resources */,
 				388C745C1A4F37EC0094BC96 /* question.wav in Resources */,
 				389ACDBA1A4DF09C00637375 /* clearAll.png in Resources */,
 				38C64BF31B6D6A4D00829511 /* custom_button_circle.png in Resources */,
@@ -590,6 +610,7 @@
 				388C74591A4F36650094BC96 /* start.wav in Resources */,
 				388C74661A4F43390094BC96 /* openmenu.wav in Resources */,
 				38A787461A4CF07A0004B2B4 /* normal.png in Resources */,
+				38B27E8D1BBE1BD90059823B /* Main_iPhone.storyboard in Resources */,
 				38C64BF11B6D6A4D00829511 /* custom_button_rounded_border.png in Resources */,
 				389ACDBF1A4E274D00637375 /* backButtonSmall.png in Resources */,
 				91AA412719D8CAD8009CB397 /* Main.storyboard in Resources */,
@@ -665,6 +686,7 @@
 				389ACDA71A4DE0FB00637375 /* UIViewController+MJPopupViewController.m in Sources */,
 				388C74611A4F404F0094BC96 /* JKAudioOperations.m in Sources */,
 				3833997C1A4FB5DA004B9D60 /* JKMinesweeperSavedGamesViewController.m in Sources */,
+				38E4D76F1BBF774A00B04B07 /* JKiPhoneSettingsViewController.m in Sources */,
 				389ACDBD1A4DF19500637375 /* UIView+Utility.m in Sources */,
 				91AA412F19D8CC94009CB397 /* JKCustomButton.m in Sources */,
 				389ACDB41A4DEC1600637375 /* JKScoresCustomTableViewCell.m in Sources */,
@@ -743,6 +765,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -757,7 +780,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -793,7 +816,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -812,8 +835,9 @@
 				INFOPLIST_FILE = "JKMinesweeper/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "JK.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -828,8 +852,9 @@
 				INFOPLIST_FILE = "JKMinesweeper/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "JK.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -847,6 +872,7 @@
 				);
 				INFOPLIST_FILE = "JKMinesweeperTests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "JK.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JKMinesweeper.app/JKMinesweeper";
 			};
@@ -862,6 +888,7 @@
 				);
 				INFOPLIST_FILE = "JKMinesweeperTests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "JK.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JKMinesweeper.app/JKMinesweeper";
 			};

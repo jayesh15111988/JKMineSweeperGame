@@ -15,6 +15,8 @@
 #define DEFAULT_TOTAL_ANIMATION_DURATION 2.0
 #define DEFAULT_BLAST_ANIMATION_DURATION 2.0
 
+#define IPAD UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
+
 #define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
 #define ANIMATED_IMAGE_URL @"http://bigpinekey.com/wp-content/uploads/an_exploding_bomb.gif"

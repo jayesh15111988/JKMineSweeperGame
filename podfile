@@ -9,4 +9,5 @@ pod 'KLCPopup', '~> 1.0'
 pod 'JKAutolayoutReadyScrollView', :git => 'https://github.com/jayesh15111988/JKAutolayoutReadyScrollView.git'
 pod 'TSMessages'
 pod 'EDColor'
+pod 'MFSideMenu'
 

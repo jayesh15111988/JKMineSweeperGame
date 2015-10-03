@@ -10,6 +10,9 @@
 #import <Realm/Realm.h>
 #import <Realm/RLMRealmConfiguration.h>
 #import <objc/runtime.h>
+#import <MFSideMenu/MFSideMenu.h>
+#import "JKMinesweeperHomeViewController.h"
+#import "JKiPhoneSettingsViewController.h"
 #import "SaveGameModel.h"
 #import "AppDelegate.h"
 
@@ -26,6 +29,30 @@
         [self setInitialDefaults];
     }
     [self performDatabaseMigration];
+    
+    if (IPAD) {
+        self.window.rootViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateInitialViewController];
+    } else {
+        UIStoryboard* mainiPhoneStoryboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+        JKMinesweeperHomeViewController* homeViewController = [mainiPhoneStoryboard instantiateInitialViewController];
+        UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
+        JKiPhoneSettingsViewController* leftViewController = [mainiPhoneStoryboard instantiateViewControllerWithIdentifier:@"leftMenu"];
+        leftViewController.minesweeperHomeViewController = homeViewController;
+        
+        UINavigationController* leftMenuNavController = [[UINavigationController alloc] initWithRootViewController:leftViewController];
+        
+        MFSideMenuContainerViewController* container =
+        [MFSideMenuContainerViewController containerWithCenterViewController:navController
+                                                      leftMenuViewController:leftMenuNavController
+                                                     rightMenuViewController:nil];
+        container.panMode = MFSideMenuPanModeNone;
+        container.leftMenuWidth = homeViewController.view.frame.size.width - 60.0;
+        container.rightMenuWidth = homeViewController.view.frame.size.width - 60.0;
+        self.window.rootViewController = container;
+    }
+    self.window.frame = [UIScreen mainScreen].bounds;
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
