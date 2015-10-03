@@ -39,8 +39,11 @@
 
 -(void)loadAllScores {
     self.scoreObjectsCollection = [ScoreSaver getAllScoresFromDatabase];
-    self.clearScoreButton.hidden = (self.scoreObjectsCollection.count == 0);
     [self.tableView reloadData];
+    if (!self.scoreObjectsCollection.count) {
+        self.clearScoreButton.hidden = YES;
+        [TSMessage showNotificationInViewController:self title:@"No Scores to show" subtitle:@"Sorry, it looks like there is nothing to display" type:TSMessageNotificationTypeMessage duration:2.0];
+    }
 }
 
 #pragma MARK tableView dataSource and delegate methods

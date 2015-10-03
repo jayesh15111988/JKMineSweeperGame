@@ -27,7 +27,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.tableFooterView = [UIView new];
     self.levelSequenceToNameMappings = @[@"", @"Easy", @"Medium", @"Difficult", @"Expert"];
     [self.tableView addBorderWithColor:[UIColor blackColor] andWidth:1.0f];
     [self addFooterView];
@@ -40,8 +39,11 @@
 
 -(void)loadSavedGames {
     self.savedGamesCollection =[SaveGameModel allObjects];
-    self.clearSavedGamesButton.hidden = (self.savedGamesCollection.count == 0);
     [self.tableView reloadData];
+    if (!self.savedGamesCollection.count) {
+        self.clearSavedGamesButton.hidden = YES;
+        [TSMessage showNotificationInViewController:self title:@"No Saved games to show" subtitle:@"Sorry, it looks like there is nothing to display" type:TSMessageNotificationTypeMessage duration:2.0];
+    }
 }
 
 -(void)addFooterView {
