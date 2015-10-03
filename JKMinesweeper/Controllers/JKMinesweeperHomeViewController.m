@@ -276,7 +276,7 @@ typedef void (^resetTilesFinishedBlock)();
     [self.numberOfSurroundingMinesHolder removeAllObjects];
     self.totalNumberOfTilesRevealed = 0;
     self.currentScoreValue = 0;
-    self.currentScore.text = @"0";
+    self.currentScore.text = @"Score: 0";
 
     // Make animation to change grid border in case style has been changed in the
     // meantime.
@@ -447,7 +447,7 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
 
     self.gameStateNewLoaded = SavedGame;
     self.currentScoreValue = selectedGameModel.score;
-    self.currentScore.text = [NSString stringWithFormat:@"%ld", (long)self.currentScoreValue];
+    self.currentScore.text = [NSString stringWithFormat:@"Score: %ld", (long)self.currentScoreValue];
     self.levelNumberSelected = selectedGameModel.levelNumber;
     self.gridSizeInputText.text = selectedGameModel.numberOfTilesInRow;
     self.inputGridDimensionSize = [selectedGameModel.numberOfTilesInRow integerValue];
@@ -827,7 +827,7 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
             self.currentScoreValue +=
                 self.levelNumberSelected * buttonWithCurrentIdentifier.buttonStateModel.numberOfNeighboringMines;
         }
-        self.currentScore.text = [NSString stringWithFormat:@"%ld", (long)self.currentScoreValue];
+        self.currentScore.text = [NSString stringWithFormat:@"Score: %ld", (long)self.currentScoreValue];
         // After each revelation check if user has won the game or not
         if ([self didWinUserCurrentGameLiveCheck]) {
             [self verifyLossWinButtonPressedWithUserWonCurrentGame:YES];
@@ -914,7 +914,7 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
                                                inputUserName = @"User";
                                            }
                                            [ScoreSaver saveScoreInDatabaseWithUserName:inputUserName
-                                                                         andScoreValue:self.currentScore.text
+                                                                         andScoreValue:[NSString stringWithFormat:@"%ld", (long)_currentScoreValue]
                                                                   andSelectedGameLevel:self.levelNumberSelected];
                                            [self resetGridWithNewTiles];
                                          }];
@@ -1044,13 +1044,25 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
     return [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
 }
 
+- (void)showPastScores {
+    [self showPastScores:nil];
+}
+
 - (IBAction)showPastScores:(UIButton*)sender {
     [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
     if (!self.pastScoresViewController) {
-        self.pastScoresViewController =
+        if (IPAD) {
+            self.pastScoresViewController =
             [[JKMinesweeperScoresViewController alloc] initWithNibName:@"JKMinesweeperScoresViewController" bundle:nil];
+        } else {
+            self.pastScoresViewController = (JKMinesweeperScoresViewController*) [[UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"scoresScreen"];
+        }
     }
-    [self showInPopupWithView:self.pastScoresViewController.view];
+    if (IPAD) {
+        [self showInPopupWithView:self.pastScoresViewController.view];
+    } else {
+        [self.navigationController pushViewController:self.pastScoresViewController animated:YES];
+    }
 }
 
 - (IBAction)goToSettingsButtonPressed:(UIButton*)sender {
@@ -1058,8 +1070,9 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
 }
 
 - (void)saveOngoingGame {
-    
+    [self closeLeftMenu];
     if (self.gameState != InProgress) {
+        [self closeLeftMenu];
         [TSMessage showNotificationInViewController:self title:@"Game not yet started" subtitle:@"Please begin the game to start with save operation" type:TSMessageNotificationTypeError duration:2.0];
         return;
     }
@@ -1069,8 +1082,8 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
     
     UIAlertView* saveGameScoreDialogue =
     [UIAlertView bk_alertViewWithTitle:@"Save Game" message:@"Please type your name for this game"];
-    UITextField* saveGameScoreTextField = [saveGameScoreDialogue textFieldAtIndex:0];
     saveGameScoreDialogue.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField* saveGameScoreTextField = [saveGameScoreDialogue textFieldAtIndex:0];
     
     [saveGameScoreTextField setText:[formatter stringFromDate:[NSDate date]]];
     [saveGameScoreDialogue bk_setCancelButtonWithTitle:@"Cancel" handler:NULL];
@@ -1102,12 +1115,18 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
 
 - (void)loadPreviousGame {
     if (!self.savedGamesViewController) {
-        self.savedGamesViewController =
-        [[JKMinesweeperSavedGamesViewController alloc] initWithNibName:@"JKMinesweeperSavedGamesViewController"
+        if (IPAD) {
+            self.savedGamesViewController = [[JKMinesweeperSavedGamesViewController alloc] initWithNibName:@"JKMinesweeperSavedGamesViewController"
                                                                 bundle:nil];
+        } else {
+            self.savedGamesViewController = (JKMinesweeperSavedGamesViewController*) [[UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"savedGames"];
+        }
         @weakify (self) self.savedGamesViewController.openSelectedGameModel = ^(SaveGameModel* selectedGameModel) {
             
             @strongify (self)
+            if (!IPAD) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
             self.savedGameModel = selectedGameModel;
             [self resetGameBeforeLoadingPreviousGame:selectedGameModel];
             [self.popupView dismiss:YES];
@@ -1181,7 +1200,11 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
             }
         };
     }
-    [self showInPopupWithView:self.savedGamesViewController.view];
+    if (IPAD) {
+        [self showInPopupWithView:self.savedGamesViewController.view];
+    } else {
+        [self.navigationController pushViewController:self.savedGamesViewController animated:YES];
+    }
 }
 
 - (void)updateGridSizeWithNewGridSize:(NSInteger)gridSize {
@@ -1204,6 +1227,20 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
                                                               bundle:nil];
     }
     [self showInPopupWithView:self.settingsViewController.view];
+}
+
+/// This is required to close the left sidebar when navigation controller is pushed on the stack from home view.
+- (void)viewWillDisappear:(BOOL)animated {
+    [self closeLeftMenu];
+    [super viewWillDisappear:animated];
+}
+
+- (void)closeLeftMenu {
+    if (!IPAD) {
+        if (self.menuContainerViewController.menuState == MFSideMenuStateLeftMenuOpen) {
+            [self.menuContainerViewController toggleLeftSideMenuCompletion:NULL];
+        }
+    }
 }
 
 @end

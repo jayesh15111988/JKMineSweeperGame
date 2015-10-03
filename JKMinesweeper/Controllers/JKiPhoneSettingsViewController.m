@@ -65,4 +65,9 @@
     [self.view endEditing:YES];
 }
 
+- (IBAction)goToSavedScores:(id)sender {
+    [self.minesweeperHomeViewController showPastScores];
+}
+
+
 @end

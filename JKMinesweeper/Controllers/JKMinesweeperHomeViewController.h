@@ -20,5 +20,6 @@
 - (void)verifyCurrentGame;
 - (void)levelNumberButtonPressed;
 - (void)openMoreSettingsOption;
+- (void)showPastScores;
 
 @end
