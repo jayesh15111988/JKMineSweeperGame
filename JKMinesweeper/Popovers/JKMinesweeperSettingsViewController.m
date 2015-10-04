@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *gutterSpaceLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *buttonStyleSelectedSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIScrollView *settingsScrollView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *subTileWidthConstraint;
 
 @end
 
@@ -36,6 +37,7 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     if (!IPAD) {
+        self.subTileWidthConstraint.constant = self.view.frame.size.width;
         self.settingsScrollView.contentSize = CGSizeMake(self.view.frame.size.width, 565);
     }
 }
