@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *tileWidthLabel;
 @property (weak, nonatomic) IBOutlet UILabel *gutterSpaceLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *buttonStyleSelectedSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIScrollView *settingsScrollView;
 
 @end
 
@@ -30,6 +31,13 @@
     [[self.buttonStyleSelectedSegmentedControl rac_newSelectedSegmentIndexChannelWithNilValue:nil] subscribeNext:^(NSNumber* gridButtonType) {
         [[NSUserDefaults standardUserDefaults] setObject:gridButtonType forKey:@"gridButtonType"];
     }];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    if (!IPAD) {
+        self.settingsScrollView.contentSize = CGSizeMake(self.view.frame.size.width, 565);
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -62,7 +70,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:HIDE_POPOVER_VIEW_NOTIFICATION object:nil];
 }
 
-- (IBAction)soundSwitchChanged:(UISwitch *)sender {
+- (IBAction)switchChanged:(UISwitch *)sender {
     if (sender == self.soundEffectSwitch) {
         [[NSUserDefaults standardUserDefaults] setObject:@(sender.isOn) forKey:@"sound"];
         [[NSNotificationCenter defaultCenter] postNotificationName:SOUND_SETTINGS_CHANGED object:nil];

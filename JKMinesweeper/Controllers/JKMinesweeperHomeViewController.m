@@ -1222,11 +1222,19 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
 - (void)openMoreSettingsOption {
     [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
     if (!self.settingsViewController) {
-        self.settingsViewController =
-        [[JKMinesweeperSettingsViewController alloc] initWithNibName:@"JKMinesweeperSettingsViewController"
+        if (IPAD) {
+            self.settingsViewController = [[JKMinesweeperSettingsViewController alloc] initWithNibName:@"JKMinesweeperSettingsViewController"
                                                               bundle:nil];
+        } else {
+            self.settingsViewController = (JKMinesweeperSettingsViewController*) [[UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"iphoneSettings"];
+        }
     }
-    [self showInPopupWithView:self.settingsViewController.view];
+    
+    if (IPAD) {
+        [self showInPopupWithView:self.settingsViewController.view];
+    } else {
+        [self.navigationController pushViewController:self.settingsViewController animated:YES];
+    }
 }
 
 /// This is required to close the left sidebar when navigation controller is pushed on the stack from home view.

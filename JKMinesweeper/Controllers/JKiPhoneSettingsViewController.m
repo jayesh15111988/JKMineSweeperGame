@@ -23,7 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Game Options";
+    self.title = @"Options";
     self.gridSizeInputTextField.inputAccessoryView = self.toolbar;
     
     @weakify(self)

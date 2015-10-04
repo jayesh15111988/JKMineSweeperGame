@@ -91,7 +91,7 @@
                                     <rect key="frame" x="422" y="8" width="51" height="31"/>
                                     <animations/>
                                     <connections>
-                                        <action selector="soundSwitchChanged:" destination="-1" eventType="valueChanged" id="Cqf-ba-knk"/>
+                                        <action selector="switchChanged:" destination="-1" eventType="valueChanged" id="cwh-Fv-rvx"/>
                                     </connections>
                                 </switch>
                             </subviews>
@@ -112,7 +112,7 @@
                                     <rect key="frame" x="422" y="8" width="51" height="31"/>
                                     <animations/>
                                     <connections>
-                                        <action selector="soundSwitchChanged:" destination="-1" eventType="valueChanged" id="Yvu-I4-Fjs"/>
+                                        <action selector="switchChanged:" destination="-1" eventType="valueChanged" id="hyp-Qs-Ucs"/>
                                     </connections>
                                 </switch>
                             </subviews>
