@@ -46,6 +46,8 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) ScrollViewAutolayoutCreator* scrollViewAutoLayout;
 @property (strong, nonatomic) UIView* gridHolderSuperView;
 @property (nonatomic, strong, readwrite) SaveGameModel* savedGameModel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *timerIndicatorButtonWidthConstraint;
+
 
 @property (strong, nonatomic) UIColor* tileForegroundColor;
 @property (strong, nonatomic) UIColor* gridBackgroundColor;
@@ -164,6 +166,7 @@ typedef void (^resetTilesFinishedBlock)();
 }
 
 - (void)openLeftMenuBar {
+    [self.view endEditing:YES];
     [self.menuContainerViewController toggleLeftSideMenuCompletion:NULL];
 }
 
@@ -479,8 +482,13 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
 }
 
 - (void)updateUIWithNewTimeValue {
-    self.timerIndicatorButton.hidden = ![[[NSUserDefaults standardUserDefaults] objectForKey:@"timer"] boolValue];
-    if (!self.timerIndicatorButton.hidden) {
+    BOOL timerEnabled = [[[NSUserDefaults standardUserDefaults] objectForKey:@"timer"] boolValue];
+    if (!timerEnabled) {
+        self.timerIndicatorButtonWidthConstraint.constant = 0;
+    } else {
+        self.timerIndicatorButtonWidthConstraint.constant = 70;
+    }
+    if (timerEnabled) {
         if (self.gameState == InProgress) {
             if (self.timerProviderUtility.currentTimerState != TimerIsPaused) {
                 if (!self.timerProviderUtility) {

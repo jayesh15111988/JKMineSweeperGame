@@ -42,7 +42,9 @@
     [self.tableView reloadData];
     if (!self.scoreObjectsCollection.count) {
         self.clearScoreButton.hidden = YES;
-        [TSMessage showNotificationInViewController:self title:@"No Scores to show" subtitle:@"Sorry, it looks like there is nothing to display" type:TSMessageNotificationTypeMessage duration:2.0];
+        if (!IPAD) {
+            [TSMessage showNotificationInViewController:self title:@"No Scores to show" subtitle:@"Sorry, it looks like there is nothing to display" type:TSMessageNotificationTypeMessage duration:2.0];
+        }
     }
 }
 
@@ -79,7 +81,9 @@
         if (buttonIndex == 1) {
             if ([ScoreSaver removeAllEntriesFromScore]) {
                 [self loadAllScores];
-                [TSMessage showNotificationInViewController:self title:@"Scores" subtitle:@"Successfully cleared all scores from database" type:TSMessageNotificationTypeMessage duration:2.0];
+                if (!IPAD) {
+                    [TSMessage showNotificationInViewController:self title:@"Scores" subtitle:@"Successfully cleared all scores from database" type:TSMessageNotificationTypeMessage duration:2.0];
+                }
             } else {
                 [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Failed to clear scores from database" cancelButtonTitle:@"Ok" otherButtonTitles:@[@"Retry" ] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                     if (buttonIndex == 1) {

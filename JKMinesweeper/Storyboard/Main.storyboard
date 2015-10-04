@@ -269,6 +269,7 @@
                         <outlet property="revealMenuButton" destination="Pvu-Ac-RuH" id="1kN-zU-gdD"/>
                         <outlet property="saveButton" destination="a6U-v5-Hrx" id="7bj-hn-eCv"/>
                         <outlet property="timerIndicatorButton" destination="Tud-sB-CfL" id="nTC-gw-iFN"/>
+                        <outlet property="timerIndicatorButtonWidthConstraint" destination="Wz1-AR-nOu" id="8C5-UV-ak3"/>
                         <outlet property="topHeaderOptionsView" destination="2qk-pa-kYS" id="uEq-D6-BVc"/>
                         <outlet property="verifyLossWinButton" destination="C0L-YA-Nfa" id="CNE-Ek-yMG"/>
                     </connections>

@@ -31,11 +31,11 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ihW-dF-iH6">
-                                        <rect key="frame" x="8" y="7" width="66" height="32"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ihW-dF-iH6">
+                                        <rect key="frame" x="8" y="7" width="70" height="32"/>
                                         <animations/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="66" id="qCv-Yr-c8Y"/>
+                                            <constraint firstAttribute="width" constant="70" id="qCv-Yr-c8Y"/>
                                         </constraints>
                                         <state key="normal" title="00 : 00">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -88,6 +88,7 @@
                                     <constraint firstAttribute="bottom" secondItem="QHa-rX-lar" secondAttribute="bottom" id="DtG-MT-wjp"/>
                                     <constraint firstItem="L4v-KM-LuH" firstAttribute="top" secondItem="REg-tE-PA2" secondAttribute="top" constant="7" id="HUN-7s-dU0"/>
                                     <constraint firstAttribute="bottom" secondItem="He9-As-hSP" secondAttribute="bottom" constant="7" id="O2G-JE-Ktj"/>
+                                    <constraint firstItem="He9-As-hSP" firstAttribute="leading" secondItem="ihW-dF-iH6" secondAttribute="trailing" constant="4" id="TBJ-gL-san"/>
                                     <constraint firstAttribute="centerX" secondItem="mKG-Qo-KDc" secondAttribute="centerX" constant="-30" id="VO9-7G-fsd"/>
                                     <constraint firstItem="ihW-dF-iH6" firstAttribute="leading" secondItem="REg-tE-PA2" secondAttribute="leading" constant="8" id="X36-Yt-LVZ"/>
                                     <constraint firstAttribute="height" constant="46" id="aDE-Ny-yk0"/>
@@ -98,6 +99,11 @@
                                     <constraint firstAttribute="bottom" secondItem="mKG-Qo-KDc" secondAttribute="bottom" constant="7" id="uhx-Yk-ive"/>
                                     <constraint firstAttribute="centerX" secondItem="He9-As-hSP" secondAttribute="centerX" constant="39.5" id="vV0-BF-fhP"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="vV0-BF-fhP"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <animations/>
@@ -138,6 +144,7 @@
                         <outlet property="resetButton" destination="mKG-Qo-KDc" id="hTR-Yk-afI"/>
                         <outlet property="revealMenuButton" destination="L4v-KM-LuH" id="P9A-qr-pJH"/>
                         <outlet property="timerIndicatorButton" destination="ihW-dF-iH6" id="1E6-Oz-s2L"/>
+                        <outlet property="timerIndicatorButtonWidthConstraint" destination="qCv-Yr-c8Y" id="h59-kD-fU5"/>
                         <outlet property="toolbar" destination="7a1-lG-Nfw" id="k3L-6O-989"/>
                         <outlet property="topHeaderOptionsView" destination="REg-tE-PA2" id="S3J-CB-1hl"/>
                     </connections>

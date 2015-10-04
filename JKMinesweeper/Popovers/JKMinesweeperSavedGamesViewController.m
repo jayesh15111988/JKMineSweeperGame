@@ -42,7 +42,9 @@
     [self.tableView reloadData];
     if (!self.savedGamesCollection.count) {
         self.clearSavedGamesButton.hidden = YES;
-        [TSMessage showNotificationInViewController:self title:@"No Saved games to show" subtitle:@"Sorry, it looks like there is nothing to display" type:TSMessageNotificationTypeMessage duration:2.0];
+        if (!IPAD) {
+            [TSMessage showNotificationInViewController:self title:@"No Saved games to show" subtitle:@"Sorry, it looks like there is nothing to display" type:TSMessageNotificationTypeMessage duration:2.0];
+        }
     }
 }
 
@@ -96,7 +98,9 @@
         if (buttonIndex == 1) {
             if ([SavedGameOperation removeAllEntriesFromSavedGames]) {
                 [self loadSavedGames];
-                [TSMessage showNotificationInViewController:self title:@"Scores" subtitle:@"Successfully cleared all games from database" type:TSMessageNotificationTypeMessage duration:2.0];
+                if (!IPAD) {
+                    [TSMessage showNotificationInViewController:self title:@"Scores" subtitle:@"Successfully cleared all games from database" type:TSMessageNotificationTypeMessage duration:2.0];
+                }
             } else {
                 [UIAlertView bk_showAlertViewWithTitle:@"Scores" message:@"Failed to clear stored games from database" cancelButtonTitle:@"OK" otherButtonTitles:@[@"Retry" ] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                     if (buttonIndex == 1) {
