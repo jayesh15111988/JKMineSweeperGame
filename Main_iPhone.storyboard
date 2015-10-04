@@ -785,9 +785,13 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBH-6n-oWa">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBH-6n-oWa">
                                                 <rect key="frame" x="60" y="60" width="80" height="30"/>
                                                 <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="7uQ-dt-wXa"/>
+                                                    <constraint firstAttribute="width" constant="80" id="ecL-vn-7Zg"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -812,6 +816,7 @@
                                             <constraint firstAttribute="height" constant="105" id="NVj-qC-k2M"/>
                                             <constraint firstItem="bV4-Ek-DSp" firstAttribute="centerX" secondItem="JZV-dp-69w" secondAttribute="centerX" constant="60" id="QqB-UA-76g"/>
                                             <constraint firstItem="Ipb-CB-eCF" firstAttribute="centerX" secondItem="JZV-dp-69w" secondAttribute="centerX" id="hff-jw-HBS"/>
+                                            <constraint firstItem="CBH-6n-oWa" firstAttribute="top" secondItem="Ipb-CB-eCF" secondAttribute="bottom" constant="20" id="jeC-SP-Rm4"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QlU-gT-DFk">

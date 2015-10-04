@@ -916,6 +916,7 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
                                            [ScoreSaver saveScoreInDatabaseWithUserName:inputUserName
                                                                          andScoreValue:[NSString stringWithFormat:@"%ld", (long)_currentScoreValue]
                                                                   andSelectedGameLevel:self.levelNumberSelected];
+                                             [TSMessage showNotificationInViewController:self title:@"Score successfully saved in the database" subtitle:@"" type:TSMessageNotificationTypeMessage duration:2.0];
                                            [self resetGridWithNewTiles];
                                          }];
     [saveGameScoreDialogue show];
