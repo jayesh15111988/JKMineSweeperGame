@@ -279,7 +279,7 @@ typedef void (^resetTilesFinishedBlock)();
     [self.numberOfSurroundingMinesHolder removeAllObjects];
     self.totalNumberOfTilesRevealed = 0;
     self.currentScoreValue = 0;
-    self.currentScore.text = @"Score: 0";
+    self.currentScore.text = @"0";
 
     // Make animation to change grid border in case style has been changed in the
     // meantime.
@@ -450,7 +450,7 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
 
     self.gameStateNewLoaded = SavedGame;
     self.currentScoreValue = selectedGameModel.score;
-    self.currentScore.text = [NSString stringWithFormat:@"Score: %ld", (long)self.currentScoreValue];
+    self.currentScore.text = [NSString stringWithFormat:@"%ld", (long)self.currentScoreValue];
     self.levelNumberSelected = selectedGameModel.levelNumber;
     self.gridSizeInputText.text = selectedGameModel.numberOfTilesInRow;
     self.inputGridDimensionSize = [selectedGameModel.numberOfTilesInRow integerValue];
@@ -835,7 +835,7 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
             self.currentScoreValue +=
                 self.levelNumberSelected * buttonWithCurrentIdentifier.buttonStateModel.numberOfNeighboringMines;
         }
-        self.currentScore.text = [NSString stringWithFormat:@"Score: %ld", (long)self.currentScoreValue];
+        self.currentScore.text = [NSString stringWithFormat:@"%ld", (long)self.currentScoreValue];
         // After each revelation check if user has won the game or not
         if ([self didWinUserCurrentGameLiveCheck]) {
             [self verifyLossWinButtonPressedWithUserWonCurrentGame:YES];

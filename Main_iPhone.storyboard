@@ -959,6 +959,7 @@
                                                 <color key="backgroundColor" red="0.72156862749999995" green="0.91372549020000005" blue="0.47843137250000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="28" id="N6a-A7-knO"/>
+                                                    <constraint firstAttribute="width" constant="242" id="r2f-qv-OBP"/>
                                                 </constraints>
                                                 <segments>
                                                     <segment title="Square" width="60"/>
@@ -966,6 +967,11 @@
                                                     <segment title="Circle" width="60"/>
                                                 </segments>
                                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="N6a-A7-knO"/>
+                                                    </mask>
+                                                </variation>
                                             </segmentedControl>
                                         </subviews>
                                         <animations/>
@@ -977,7 +983,14 @@
                                             <constraint firstAttribute="height" constant="105" id="M43-UN-RnO"/>
                                             <constraint firstItem="jau-qQ-CoW" firstAttribute="top" secondItem="njb-c1-jfV" secondAttribute="bottom" constant="15" id="YVf-8Y-Xc9"/>
                                             <constraint firstItem="njb-c1-jfV" firstAttribute="centerX" secondItem="CIm-pc-w2b" secondAttribute="centerX" id="ccW-hq-1HI"/>
+                                            <constraint firstItem="jau-qQ-CoW" firstAttribute="centerX" secondItem="CIm-pc-w2b" secondAttribute="centerX" id="lGr-dg-tmG"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="A9W-fv-RWR"/>
+                                                <exclude reference="Kqy-xf-17P"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                 </subviews>
                                 <animations/>
