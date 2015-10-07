@@ -1,4 +1,28 @@
 PODS:
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking-RACExtensions (0.1.8):
+    - AFNetworking (~> 2.5.3)
+    - ReactiveCocoa (~> 2.0)
+  - AFNetworking/NSURLConnection (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
+  - AFNetworking/UIKit (2.5.4):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
   - BlocksKit (2.2.5):
     - BlocksKit/All (= 2.2.5)
   - BlocksKit/All (2.2.5):
@@ -18,10 +42,14 @@ PODS:
   - EDColor (1.0.0)
   - FLAnimatedImage (1.0.8)
   - HexColors (2.2.1)
+  - JKAppsFeedbackUIProvider (0.1):
+    - AFNetworking-RACExtensions (~> 0.1)
+    - EDColor
   - JKAutolayoutReadyScrollView (0.2):
     - TPKeyboardAvoiding (~> 1.2)
   - KLCPopup (1.0)
   - MFSideMenu (0.5.5)
+  - MJPopupViewController (0.4)
   - ReactiveCocoa (2.5):
     - ReactiveCocoa/UI (= 2.5)
   - ReactiveCocoa/Core (2.5):
@@ -29,9 +57,9 @@ PODS:
   - ReactiveCocoa/no-arc (2.5)
   - ReactiveCocoa/UI (2.5):
     - ReactiveCocoa/Core
-  - Realm (0.95.2):
-    - Realm/Headers (= 0.95.2)
-  - Realm/Headers (0.95.2)
+  - Realm (0.95.3):
+    - Realm/Headers (= 0.95.3)
+  - Realm/Headers (0.95.3)
   - TPKeyboardAvoiding (1.2.9)
   - TSMessages (0.9.12):
     - HexColors (~> 2.2.0)
@@ -41,33 +69,46 @@ DEPENDENCIES:
   - Color-Picker-for-iOS (~> 2.0)
   - EDColor
   - FLAnimatedImage (~> 1.0)
+  - JKAppsFeedbackUIProvider (from `git@github.com:jayesh15111988/JKAppsFeedbackUIProvider.git`,
+    branch `master`)
   - JKAutolayoutReadyScrollView (from `https://github.com/jayesh15111988/JKAutolayoutReadyScrollView.git`)
   - KLCPopup (~> 1.0)
   - MFSideMenu
+  - MJPopupViewController
   - ReactiveCocoa (~> 2.4)
   - Realm
   - TSMessages
 
 EXTERNAL SOURCES:
+  JKAppsFeedbackUIProvider:
+    :branch: master
+    :git: git@github.com:jayesh15111988/JKAppsFeedbackUIProvider.git
   JKAutolayoutReadyScrollView:
     :git: https://github.com/jayesh15111988/JKAutolayoutReadyScrollView.git
 
 CHECKOUT OPTIONS:
+  JKAppsFeedbackUIProvider:
+    :commit: f9abb10f774cbb09a27e2d54ccae2329616aca63
+    :git: git@github.com:jayesh15111988/JKAppsFeedbackUIProvider.git
   JKAutolayoutReadyScrollView:
     :commit: 25e2b7c087a035c1e3e930e0c5ba6e06cede2c55
     :git: https://github.com/jayesh15111988/JKAutolayoutReadyScrollView.git
 
 SPEC CHECKSUMS:
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  AFNetworking-RACExtensions: a043c6b492fa892395ceb9d20bc4c94e96e08a57
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Color-Picker-for-iOS: 4980589b3e3cfe7198f227dd50be9adb02d8bc0b
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   FLAnimatedImage: f9422f796135aff80d8c00b2afc48015bb746e24
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
+  JKAppsFeedbackUIProvider: b93507091f0dc8ff0f6b276b6ae4883230d3d0b1
   JKAutolayoutReadyScrollView: bd0a1cabf4b80c162a3646858174a91bf2b7c92c
   KLCPopup: 76c5a19227977f1e53d85236f9ef42257c168d98
   MFSideMenu: 268122e6894f2747fc3a2b48578100b232506c60
+  MJPopupViewController: e9ad553a3145eb8126ba2748e872ae7fb25cc605
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
-  Realm: 4c026902041bb39c4bd083ebc5e88f4f17973d72
+  Realm: 55885fa05865344994ad8b56da96669ffa39fbf1
   TPKeyboardAvoiding: ff1ee4e5a5a0c119b965552af8f183868ea20207
   TSMessages: c8cc7b80f2a833af533872cd02010cac061532cc
 

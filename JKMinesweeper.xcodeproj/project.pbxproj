@@ -35,8 +35,6 @@
 		389ACD941A4DDE0A00637375 /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 389ACD931A4DDE0A00637375 /* setting.png */; };
 		389ACD991A4DDEDD00637375 /* JKMinesweeperScoresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACD971A4DDEDD00637375 /* JKMinesweeperScoresViewController.m */; };
 		389ACD9E1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACD9C1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.m */; };
-		389ACDA61A4DE0FB00637375 /* MJPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACDA31A4DE0FB00637375 /* MJPopupBackgroundView.m */; };
-		389ACDA71A4DE0FB00637375 /* UIViewController+MJPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACDA51A4DE0FB00637375 /* UIViewController+MJPopupViewController.m */; };
 		389ACDA91A4DE17100637375 /* JKMinesweeperScoresViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 389ACDA81A4DE17100637375 /* JKMinesweeperScoresViewController.xib */; };
 		389ACDAB1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 389ACDAA1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib */; };
 		389ACDAF1A4DE7E800637375 /* ScoreSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = 389ACDAE1A4DE7E800637375 /* ScoreSaver.m */; };
@@ -59,6 +57,8 @@
 		38C64BF21B6D6A4D00829511 /* custom_button_square.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BEF1B6D6A4D00829511 /* custom_button_square.png */; };
 		38C64BF31B6D6A4D00829511 /* custom_button_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C64BF01B6D6A4D00829511 /* custom_button_circle.png */; };
 		38C64BF61B6D733400829511 /* GridTileCornerRadiusCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C64BF51B6D733400829511 /* GridTileCornerRadiusCalculator.m */; };
+		38CEEDE01BC5C81C00163B57 /* feedback_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 38CEEDDF1BC5C81C00163B57 /* feedback_small.png */; settings = {ASSET_TAGS = (); }; };
+		38CEEDE41BC5CC1C00163B57 /* app_icon_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 38CEEDE31BC5CC1C00163B57 /* app_icon_default.png */; settings = {ASSET_TAGS = (); }; };
 		38E4D76F1BBF774A00B04B07 /* JKiPhoneSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E4D76E1BBF774A00B04B07 /* JKiPhoneSettingsViewController.m */; };
 		38E778BD1A4CF4BB009E127A /* changeColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 38E778BC1A4CF4BB009E127A /* changeColor.png */; };
 		38FA60831B6B0DFE00387FA4 /* ColorPickerProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FA60821B6B0DFE00387FA4 /* ColorPickerProvider.m */; };
@@ -126,10 +126,6 @@
 		389ACD971A4DDEDD00637375 /* JKMinesweeperScoresViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKMinesweeperScoresViewController.m; sourceTree = "<group>"; };
 		389ACD9B1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKMinesweeperSettingsViewController.h; sourceTree = "<group>"; };
 		389ACD9C1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKMinesweeperSettingsViewController.m; sourceTree = "<group>"; };
-		389ACDA21A4DE0FB00637375 /* MJPopupBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPopupBackgroundView.h; sourceTree = "<group>"; };
-		389ACDA31A4DE0FB00637375 /* MJPopupBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPopupBackgroundView.m; sourceTree = "<group>"; };
-		389ACDA41A4DE0FB00637375 /* UIViewController+MJPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MJPopupViewController.h"; sourceTree = "<group>"; };
-		389ACDA51A4DE0FB00637375 /* UIViewController+MJPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MJPopupViewController.m"; sourceTree = "<group>"; };
 		389ACDA81A4DE17100637375 /* JKMinesweeperScoresViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JKMinesweeperScoresViewController.xib; sourceTree = "<group>"; };
 		389ACDAA1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JKMinesweeperSettingsViewController.xib; sourceTree = "<group>"; };
 		389ACDAD1A4DE7E800637375 /* ScoreSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreSaver.h; sourceTree = "<group>"; };
@@ -158,6 +154,8 @@
 		38C64BF01B6D6A4D00829511 /* custom_button_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = custom_button_circle.png; sourceTree = "<group>"; };
 		38C64BF41B6D733400829511 /* GridTileCornerRadiusCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridTileCornerRadiusCalculator.h; sourceTree = "<group>"; };
 		38C64BF51B6D733400829511 /* GridTileCornerRadiusCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridTileCornerRadiusCalculator.m; sourceTree = "<group>"; };
+		38CEEDDF1BC5C81C00163B57 /* feedback_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = feedback_small.png; sourceTree = "<group>"; };
+		38CEEDE31BC5CC1C00163B57 /* app_icon_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_default.png; sourceTree = "<group>"; };
 		38E4D76D1BBF774A00B04B07 /* JKiPhoneSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKiPhoneSettingsViewController.h; sourceTree = "<group>"; };
 		38E4D76E1BBF774A00B04B07 /* JKiPhoneSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKiPhoneSettingsViewController.m; sourceTree = "<group>"; };
 		38E778BC1A4CF4BB009E127A /* changeColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = changeColor.png; sourceTree = "<group>"; };
@@ -275,10 +273,6 @@
 		389ACDA11A4DE0F500637375 /* Custom Popup Library */ = {
 			isa = PBXGroup;
 			children = (
-				389ACDA21A4DE0FB00637375 /* MJPopupBackgroundView.h */,
-				389ACDA31A4DE0FB00637375 /* MJPopupBackgroundView.m */,
-				389ACDA41A4DE0FB00637375 /* UIViewController+MJPopupViewController.h */,
-				389ACDA51A4DE0FB00637375 /* UIViewController+MJPopupViewController.m */,
 			);
 			path = "Custom Popup Library";
 			sourceTree = "<group>";
@@ -307,6 +301,8 @@
 		38A7873D1A4CED560004B2B4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				38CEEDE31BC5CC1C00163B57 /* app_icon_default.png */,
+				38CEEDDF1BC5C81C00163B57 /* feedback_small.png */,
 				38B27E921BBE23260059823B /* options.png */,
 				38C64BEE1B6D6A4D00829511 /* custom_button_rounded_border.png */,
 				38C64BEF1B6D6A4D00829511 /* custom_button_square.png */,
@@ -336,13 +332,6 @@
 				389ACDBC1A4DF19500637375 /* UIView+Utility.m */,
 			);
 			path = Categories;
-			sourceTree = "<group>";
-		};
-		38B27E8E1BBE21600059823B /* iPhone Specific */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "iPhone Specific";
 			sourceTree = "<group>";
 		};
 		6E1D38DA68CD49B26B92EA26 /* Frameworks */ = {
@@ -407,7 +396,6 @@
 		91AA40FA19D8C956009CB397 /* JKMinesweeper */ = {
 			isa = PBXGroup;
 			children = (
-				38B27E8E1BBE21600059823B /* iPhone Specific */,
 				387E24671BB8917F0005DF45 /* Minesweeper Opening.png */,
 				38059D9D1A4F861900F7A02F /* Load Save Game */,
 				38059D961A4F738B00F7A02F /* Sample Group */,
@@ -614,6 +602,7 @@
 				38C64BF11B6D6A4D00829511 /* custom_button_rounded_border.png in Resources */,
 				389ACDBF1A4E274D00637375 /* backButtonSmall.png in Resources */,
 				91AA412719D8CAD8009CB397 /* Main.storyboard in Resources */,
+				38CEEDE01BC5C81C00163B57 /* feedback_small.png in Resources */,
 				389ACDA91A4DE17100637375 /* JKMinesweeperScoresViewController.xib in Resources */,
 				389ACDAB1A4DE17B00637375 /* JKMinesweeperSettingsViewController.xib in Resources */,
 				388C74571A4F36650094BC96 /* explosion.wav in Resources */,
@@ -626,6 +615,7 @@
 				389ACDB51A4DEC1600637375 /* JKScoresCustomTableViewCell.xib in Resources */,
 				388C74651A4F43390094BC96 /* tilereveal.wav in Resources */,
 				38C64BEA1B6C72C600829511 /* bullet_grey.png in Resources */,
+				38CEEDE41BC5CC1C00163B57 /* app_icon_default.png in Resources */,
 				3833997D1A4FB5DA004B9D60 /* JKMinesweeperSavedGamesViewController.xib in Resources */,
 				91AA410C19D8C956009CB397 /* LaunchScreen.xib in Resources */,
 				388C74581A4F36650094BC96 /* nuclearexplosion.wav in Resources */,
@@ -683,7 +673,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				389ACDA71A4DE0FB00637375 /* UIViewController+MJPopupViewController.m in Sources */,
 				388C74611A4F404F0094BC96 /* JKAudioOperations.m in Sources */,
 				3833997C1A4FB5DA004B9D60 /* JKMinesweeperSavedGamesViewController.m in Sources */,
 				38E4D76F1BBF774A00B04B07 /* JKiPhoneSettingsViewController.m in Sources */,
@@ -706,7 +695,6 @@
 				38FA60861B6B1FB700387FA4 /* RandomNumberGenerator.m in Sources */,
 				91AA412C19D8CC80009CB397 /* JKButtonStateModel.m in Sources */,
 				38059DA61A4F8E8C00F7A02F /* SaveGameModel.m in Sources */,
-				389ACDA61A4DE0FB00637375 /* MJPopupBackgroundView.m in Sources */,
 				389ACD9E1A4DDEFA00637375 /* JKMinesweeperSettingsViewController.m in Sources */,
 				389ACDB81A4DEF7100637375 /* JKMinesweeperAppearance.m in Sources */,
 				38059D991A4F73A100F7A02F /* Sample.m in Sources */,
@@ -837,7 +825,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "JK.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -854,7 +842,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "JK.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

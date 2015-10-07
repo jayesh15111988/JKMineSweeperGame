@@ -32,6 +32,10 @@
 #import "JKMinesweeperAppearance.h"
 #import "GridTileCornerRadiusCalculator.h"
 
+#import <JKAppsFeedbackUIProvider/JKFeedbackInfo.h>
+#import <JKAppsFeedbackUIProvider/JKAppsFeedbackProviderViewController.h>
+#import <MJPopupViewController/UIViewController+MJPopupViewController.h>
+
 #import "JKMinesweeperHomeViewController.h"
 
 typedef void (^resetTilesFinishedBlock)();
@@ -144,7 +148,6 @@ typedef void (^resetTilesFinishedBlock)();
 - (IBAction)doneButtonPressed:(id)sender {
     [self.view endEditing:YES];
 }
-
 
 - (void)setupForiPhone {
     self.title = @"Playground";
@@ -956,8 +959,7 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
     [self resetGridWithNewTiles];
 }
 
-- (IBAction)revealMinesButtonPressed:(UIButton*)sender {
-
+- (IBAction)revealMinesButtonPressed:(UIButton*)sender {    
     if (self.minesButtonsHolder.count > 0) {
         [self.audioOperationsManager playForegroundSoundFXnamed:@"revealed.wav" loop:NO];
         if (sender.tag == MINES_NOT_REVEALED_STATE) {
@@ -1250,6 +1252,21 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
 - (void)viewWillDisappear:(BOOL)animated {
     [self closeLeftMenu];
     [super viewWillDisappear:animated];
+}
+
+- (IBAction)showFeedbackPopupButtonPressed:(id)sender {
+    [self showAppFeedbackView];
+}
+
+- (void)showAppFeedbackView {
+    JKFeedbackInfo* feedbackInfoObject = [[JKFeedbackInfo alloc] initWithApplogoImage:[UIImage imageNamed:@"app_icon_default"] andAppName:@"Super Minesweeper" andFeedbackViewBackgorundColor:[UIColor colorWithCrayola:@"Fern"]];
+    JKAppsFeedbackProviderViewController* feedbackController = [[JKAppsFeedbackProviderViewController alloc] initWithFeedbackInfoObject:feedbackInfoObject andFeedbackCompletionBlock:^(id serverResponse) {
+        [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideLeftLeft];
+    } andFeedbackErrorBlock:^(NSError *error) {
+        
+    }];
+    feedbackController.view.frame = CGRectMake(0, 0, 300, 500);
+    [self presentPopupViewController:feedbackController animationType:MJPopupViewAnimationSlideTopTop];
 }
 
 - (void)closeLeftMenu {

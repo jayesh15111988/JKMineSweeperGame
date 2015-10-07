@@ -21,5 +21,6 @@
 - (void)levelNumberButtonPressed;
 - (void)openMoreSettingsOption;
 - (void)showPastScores;
+- (void)showAppFeedbackView;
 
 @end

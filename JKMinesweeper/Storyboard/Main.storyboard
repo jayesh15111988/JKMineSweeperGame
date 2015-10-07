@@ -198,6 +198,17 @@
                                             <constraint firstAttribute="height" constant="30" id="wD1-xJ-Gks"/>
                                         </constraints>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pwh-dH-3aB">
+                                        <rect key="frame" x="915" y="7" width="35" height="30"/>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="35" id="Nzn-LO-lBh"/>
+                                        </constraints>
+                                        <state key="normal" backgroundImage="feedback_small.png"/>
+                                        <connections>
+                                            <action selector="showFeedbackPopupButtonPressed:" destination="0ou-U5-mfB" eventType="touchUpInside" id="PXf-eS-3r4"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -208,6 +219,7 @@
                                     <constraint firstAttribute="centerY" secondItem="Pvu-Ac-RuH" secondAttribute="centerY" id="56e-aU-Ny5"/>
                                     <constraint firstItem="Y7E-V4-PaI" firstAttribute="leading" secondItem="pma-1w-LJT" secondAttribute="trailing" id="7KY-1E-cBJ"/>
                                     <constraint firstItem="a6U-v5-Hrx" firstAttribute="height" secondItem="Jcs-qU-sB8" secondAttribute="height" id="AN7-CE-0ei"/>
+                                    <constraint firstItem="pwh-dH-3aB" firstAttribute="top" secondItem="Imu-eC-dEC" secondAttribute="top" id="AWn-o0-WPW"/>
                                     <constraint firstAttribute="centerY" secondItem="Tud-sB-CfL" secondAttribute="centerY" id="AhM-K1-v3B"/>
                                     <constraint firstAttribute="centerY" secondItem="pma-1w-LJT" secondAttribute="centerY" id="D2L-Mk-sJA"/>
                                     <constraint firstItem="a6U-v5-Hrx" firstAttribute="height" secondItem="Imu-eC-dEC" secondAttribute="height" id="DAd-dm-3oo"/>
@@ -231,7 +243,9 @@
                                     <constraint firstItem="Pvu-Ac-RuH" firstAttribute="leading" secondItem="miQ-MB-SWc" secondAttribute="trailing" constant="15" id="gBd-3a-AUn"/>
                                     <constraint firstItem="a6U-v5-Hrx" firstAttribute="height" secondItem="C0L-YA-Nfa" secondAttribute="height" id="gTh-iO-XiR"/>
                                     <constraint firstAttribute="trailing" secondItem="Hwu-r7-gdt" secondAttribute="trailing" constant="8" id="hTe-av-777"/>
+                                    <constraint firstItem="pwh-dH-3aB" firstAttribute="leading" secondItem="Imu-eC-dEC" secondAttribute="trailing" constant="13" id="ifs-Se-oGh"/>
                                     <constraint firstItem="Imu-eC-dEC" firstAttribute="leading" secondItem="bI9-N5-vvr" secondAttribute="trailing" constant="15" id="ioI-o4-Qxu"/>
+                                    <constraint firstItem="pwh-dH-3aB" firstAttribute="bottom" secondItem="Imu-eC-dEC" secondAttribute="bottom" id="k9W-o4-mTT"/>
                                     <constraint firstAttribute="centerY" secondItem="nwX-Io-fqJ" secondAttribute="centerY" id="lnl-8I-0bT"/>
                                     <constraint firstAttribute="centerY" secondItem="Tud-sB-CfL" secondAttribute="centerY" id="mBh-hj-atY"/>
                                     <constraint firstAttribute="centerY" secondItem="Imu-eC-dEC" secondAttribute="centerY" id="o8y-jo-Euy"/>
@@ -281,6 +295,7 @@
     </scenes>
     <resources>
         <image name="changeColor.png" width="128" height="128"/>
+        <image name="feedback_small.png" width="108" height="84"/>
         <image name="setting.png" width="64" height="64"/>
     </resources>
 </document>

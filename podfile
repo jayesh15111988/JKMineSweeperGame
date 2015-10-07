@@ -10,4 +10,6 @@ pod 'JKAutolayoutReadyScrollView', :git => 'https://github.com/jayesh15111988/JK
 pod 'TSMessages'
 pod 'EDColor'
 pod 'MFSideMenu'
+pod 'JKAppsFeedbackUIProvider', :git => 'git@github.com:jayesh15111988/JKAppsFeedbackUIProvider.git' , :branch => 'master'
+pod 'MJPopupViewController'
 

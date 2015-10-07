@@ -69,5 +69,10 @@
     [self.minesweeperHomeViewController showPastScores];
 }
 
+- (IBAction)feedbackButtonPressed:(id)sender {
+    [self.minesweeperHomeViewController showAppFeedbackView];
+}
+
+
 
 @end

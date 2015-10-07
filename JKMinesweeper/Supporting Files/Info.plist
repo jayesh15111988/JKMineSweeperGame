@@ -6,6 +6,7 @@
     <dict>
         <key>NSExceptionDomains</key>
         <dict>
+            
             <key>bigpinekey.com</key>
             <dict>
                 <!--Include to allow subdomains-->
@@ -18,8 +19,20 @@
                 <key>NSTemporaryExceptionMinimumTLSVersion</key>
                 <string>TLSv1.1</string>
             </dict>
+            
+            <key>jayeshkawli.com</key>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSTemporaryExceptionMinimumTLSVersion</key>
+                <string>TLSv1.1</string>
+            </dict>
+            
         </dict>
     </dict>
+    
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
