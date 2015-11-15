@@ -13,7 +13,7 @@
 #import "SaveGameModel.h"
 
 @implementation SavedGameOperation
-+(BOOL)removeAllEntriesFromSavedGames {
++ (BOOL)removeAllEntriesFromSavedGames {
     RLMResults* allSavedGames = [SaveGameModel allObjects];
     if ([allSavedGames count] > 0) {
         RLMRealm* currentRealm = [RLMRealm defaultRealm];

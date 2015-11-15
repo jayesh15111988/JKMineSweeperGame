@@ -13,3 +13,6 @@ pod 'MFSideMenu'
 pod 'JKAppsFeedbackUIProvider', :git => 'git@github.com:jayesh15111988/JKAppsFeedbackUIProvider.git' , :branch => 'master'
 pod 'MJPopupViewController'
 
+pod 'Fabric'
+pod 'Crashlytics'
+

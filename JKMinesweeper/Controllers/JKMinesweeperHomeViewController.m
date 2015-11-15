@@ -32,8 +32,7 @@
 #import "JKMinesweeperAppearance.h"
 #import "GridTileCornerRadiusCalculator.h"
 
-#import <JKAppsFeedbackUIProvider/JKFeedbackInfo.h>
-#import <JKAppsFeedbackUIProvider/JKAppsFeedbackProviderViewController.h>
+#import <JKAppsFeedbackUIProvider/JKAppsFeedbackUIProvider.h>
 #import <MJPopupViewController/UIViewController+MJPopupViewController.h>
 
 #import "JKMinesweeperHomeViewController.h"
@@ -50,8 +49,7 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) ScrollViewAutolayoutCreator* scrollViewAutoLayout;
 @property (strong, nonatomic) UIView* gridHolderSuperView;
 @property (nonatomic, strong, readwrite) SaveGameModel* savedGameModel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *timerIndicatorButtonWidthConstraint;
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* timerIndicatorButtonWidthConstraint;
 
 @property (strong, nonatomic) UIColor* tileForegroundColor;
 @property (strong, nonatomic) UIColor* gridBackgroundColor;
@@ -110,7 +108,7 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) JKTimerProviderUtility* timerProviderUtility;
 @property (strong, nonatomic) KLCPopup* popupView;
 
-@property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (strong, nonatomic) IBOutlet UIToolbar* toolbar;
 
 @end
 
@@ -119,15 +117,15 @@ typedef void (^resetTilesFinishedBlock)();
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.levelNumberSelected = [[[NSUserDefaults standardUserDefaults] objectForKey:@"currentLevel"] integerValue];
-    
+
     if (!IPAD) {
         [self setupForiPhone];
     }
-    
+
     [[self.gridSizeInputText rac_textSignal] subscribeNext:^(NSString* inputTextValue) {
-        self.inputGridDimensionSize = [inputTextValue integerValue];
+      self.inputGridDimensionSize = [inputTextValue integerValue];
     }];
-    
+
     self.audioOperationsManager = [[JKAudioOperations alloc] init];
     self.gridHolderView = [[UIView alloc] init];
     self.gridHolderView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -152,18 +150,16 @@ typedef void (^resetTilesFinishedBlock)();
 - (void)setupForiPhone {
     self.title = @"Playground";
     [self setupNavigationBarButtons];
-    UIView* v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
+    UIView* v = [[UIView alloc] initWithFrame:CGRectMake (0, 0, 100, 44)];
     v.backgroundColor = [UIColor redColor];
-    //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:v];
 }
 
 - (void)setupNavigationBarButtons {
-    @weakify(self)
-    UIImageView* optionsButton = [[UIImageView alloc] initWithFrame:CGRectMake (0, 0, 30, 30)];
+    @weakify (self) UIImageView* optionsButton = [[UIImageView alloc] initWithFrame:CGRectMake (0, 0, 30, 30)];
     [optionsButton setImage:[UIImage imageNamed:@"options"]];
     [optionsButton bk_whenTapped:^{
-        @strongify (self);
-        [self openLeftMenuBar];
+      @strongify (self);
+      [self openLeftMenuBar];
     }];
     [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:optionsButton]];
 }
@@ -236,7 +232,7 @@ typedef void (^resetTilesFinishedBlock)();
             delay:0.0
             options:UIViewAnimationOptionCurveEaseIn
             animations:^{
-              [currentMine setBackgroundColor:[UIColor colorWithCrayola:@"Scarlet"]];
+              [currentMine setBackgroundColor:[UIColor colorWithCrayola:@"Canary"]];
             }
             completion:^(BOOL finished) {
               currentMine.buttonStateModel.currentTileState = TileSelected;
@@ -335,7 +331,7 @@ typedef void (^resetTilesFinishedBlock)();
 
     [RACObserve (self, levelNumberSelected) subscribeNext:^(NSNumber* levelNumber) {
       [[NSUserDefaults standardUserDefaults] setObject:levelNumber forKey:@"currentLevel"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+      [[NSUserDefaults standardUserDefaults] synchronize];
       [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
       [self.levelNumberButton setTitle:[NSString stringWithFormat:@"Level %ld", (long)([levelNumber integerValue])]
                               forState:UIControlStateNormal];
@@ -374,7 +370,11 @@ typedef void (^resetTilesFinishedBlock)();
           gameProgressIndicatorImageName = @"bullet_green";
           break;
       case Busy:
-              [TSMessage showNotificationInViewController:self title:@"Game Loading in progress" subtitle:@"" type:TSMessageNotificationTypeMessage duration:2.0];
+          [TSMessage showNotificationInViewController:self
+                                                title:@"Game Loading in progress"
+                                             subtitle:@""
+                                                 type:TSMessageNotificationTypeMessage
+                                             duration:2.0];
           gameProgressIndicatorImageName = @"bullet_red";
           break;
       default:
@@ -383,16 +383,13 @@ typedef void (^resetTilesFinishedBlock)();
       self.gameProgressIndicatorImage.image = [UIImage imageNamed:gameProgressIndicatorImageName];
       [self updateUIWithNewTimeValue];
     }];
-    @weakify(self)
-    self.saveButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
-        @strongify(self)
-        [self saveOngoingGame];
+    @weakify (self) self.saveButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
+      @strongify (self)[self saveOngoingGame];
       return [RACSignal empty];
     }];
 
-self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
-      @strongify (self)
-    [self loadPreviousGame];
+    self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton* _) {
+      @strongify (self)[self loadPreviousGame];
       return [RACSignal empty];
     }];
 
@@ -694,7 +691,6 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
     [self.createNewGridAnimationTimer fire];
     self.gameState = Busy;
 
-    
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.gridHolderView
                                                           attribute:NSLayoutAttributeCenterX
                                                           relatedBy:NSLayoutRelationEqual
@@ -811,7 +807,7 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
         [UIView animateWithDuration:REGULAR_ANIMATION_DURATION
                          animations:^{
                            [buttonWithCurrentIdentifier addDecorationWithImage:[UIImage imageNamed:@"normal"]
-                                                                       orColor:[UIColor colorWithCrayola:@"Scarlet"]];
+                                                                       orColor:[UIColor colorWithCrayola:@"Denim"]];
                          }
                          completion:nil];
 
@@ -902,9 +898,14 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
             DLog (@"Updated game model");
         }
     }
-    
-    [TSMessage showNotificationInViewController:self title:@"Save Game" subtitle:[NSString
-                                                                                  stringWithFormat:@"Game %@ Successfully " @"stored in the database", gameName] type:TSMessageNotificationTypeMessage duration:2.0];
+
+    [TSMessage
+        showNotificationInViewController:self
+                                   title:@"Save Game"
+                                subtitle:[NSString stringWithFormat:@"Game %@ Successfully " @"stored in the database",
+                                                                    gameName]
+                                    type:TSMessageNotificationTypeMessage
+                                duration:2.0];
     [self.view endEditing:YES];
 }
 
@@ -918,18 +919,24 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
                                                handler:^{
                                                  [self resetGridWithNewTiles];
                                                }];
-    [saveGameScoreDialogue bk_addButtonWithTitle:@"OK"
-                                         handler:^{
-                                           NSString* inputUserName = [saveGameScoreAtEndTextField text];
-                                           if (!inputUserName || inputUserName.length == 0) {
-                                               inputUserName = @"User";
-                                           }
-                                           [ScoreSaver saveScoreInDatabaseWithUserName:inputUserName
-                                                                         andScoreValue:[NSString stringWithFormat:@"%ld", (long)_currentScoreValue]
-                                                                  andSelectedGameLevel:self.levelNumberSelected];
-                                             [TSMessage showNotificationInViewController:self title:@"Score successfully saved in the database" subtitle:@"" type:TSMessageNotificationTypeMessage duration:2.0];
-                                           [self resetGridWithNewTiles];
-                                         }];
+    [saveGameScoreDialogue
+        bk_addButtonWithTitle:@"OK"
+                      handler:^{
+                        NSString* inputUserName = [saveGameScoreAtEndTextField text];
+                        if (!inputUserName || inputUserName.length == 0) {
+                            inputUserName = @"User";
+                        }
+                        [ScoreSaver
+                            saveScoreInDatabaseWithUserName:inputUserName
+                                              andScoreValue:[NSString stringWithFormat:@"%ld", (long)_currentScoreValue]
+                                       andSelectedGameLevel:self.levelNumberSelected];
+                        [TSMessage showNotificationInViewController:self
+                                                              title:@"Score successfully saved in the database"
+                                                           subtitle:@""
+                                                               type:TSMessageNotificationTypeMessage
+                                                           duration:2.0];
+                        [self resetGridWithNewTiles];
+                      }];
     [saveGameScoreDialogue show];
 }
 
@@ -959,7 +966,7 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
     [self resetGridWithNewTiles];
 }
 
-- (IBAction)revealMinesButtonPressed:(UIButton*)sender {    
+- (IBAction)revealMinesButtonPressed:(UIButton*)sender {
     if (self.minesButtonsHolder.count > 0) {
         [self.audioOperationsManager playForegroundSoundFXnamed:@"revealed.wav" loop:NO];
         if (sender.tag == MINES_NOT_REVEALED_STATE) {
@@ -1064,9 +1071,12 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
     if (!self.pastScoresViewController) {
         if (IPAD) {
             self.pastScoresViewController =
-            [[JKMinesweeperScoresViewController alloc] initWithNibName:@"JKMinesweeperScoresViewController" bundle:nil];
+                [[JKMinesweeperScoresViewController alloc] initWithNibName:@"JKMinesweeperScoresViewController"
+                                                                    bundle:nil];
         } else {
-            self.pastScoresViewController = (JKMinesweeperScoresViewController*) [[UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"scoresScreen"];
+            self.pastScoresViewController =
+                (JKMinesweeperScoresViewController*)[[UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil]
+                    instantiateViewControllerWithIdentifier:@"scoresScreen"];
         }
     }
     if (IPAD) {
@@ -1084,131 +1094,135 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
     [self closeLeftMenu];
     if (self.gameState != InProgress) {
         [self closeLeftMenu];
-        [TSMessage showNotificationInViewController:self title:@"Game not yet started" subtitle:@"Please begin the game to start with save operation" type:TSMessageNotificationTypeError duration:2.0];
+        [TSMessage showNotificationInViewController:self
+                                              title:@"Game not yet started"
+                                           subtitle:@"Please begin the game to start with save operation"
+                                               type:TSMessageNotificationTypeError
+                                           duration:2.0];
         return;
     }
-    
+
     NSDateFormatter* formatter = [NSDateFormatter new];
     [formatter setDateFormat:@"MM/dd/yyyy hh:mm a"];
-    
+
     UIAlertView* saveGameScoreDialogue =
-    [UIAlertView bk_alertViewWithTitle:@"Save Game" message:@"Please type your name for this game"];
+        [UIAlertView bk_alertViewWithTitle:@"Save Game" message:@"Please type your name for this game"];
     saveGameScoreDialogue.alertViewStyle = UIAlertViewStylePlainTextInput;
     UITextField* saveGameScoreTextField = [saveGameScoreDialogue textFieldAtIndex:0];
-    
+
     [saveGameScoreTextField setText:[formatter stringFromDate:[NSDate date]]];
     [saveGameScoreDialogue bk_setCancelButtonWithTitle:@"Cancel" handler:NULL];
     [saveGameScoreDialogue
-     bk_addButtonWithTitle:@"OK"
-     handler:^{
-         NSString* saveGameName = [saveGameScoreTextField text];
-         // If it is a new game, save it with creation of new object
-         if (self.gameStateNewLoaded == NewGame) {
-             [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
-         } else {
-             [UIAlertView bk_showAlertViewWithTitle:@"Save Game"
-                                            message:@"Do you want to overwrite the existing game?"
-                                  cancelButtonTitle:@"No"
-                                  otherButtonTitles:@[ @"Yes" ]
-                                            handler:^(UIAlertView* alertView, NSInteger buttonIndex) {
-                                                if (buttonIndex == 0) {
-                                                    [self saveCurrentGameInDataBaseWithName:saveGameName
-                                                                       andToCreateNewObject:YES];
-                                                } else {
-                                                    [self saveCurrentGameInDataBaseWithName:saveGameName
-                                                                       andToCreateNewObject:NO];
-                                                }
-                                            }];
-         }
-     }];
+        bk_addButtonWithTitle:@"OK"
+                      handler:^{
+                        NSString* saveGameName = [saveGameScoreTextField text];
+                        // If it is a new game, save it with creation of new object
+                        if (self.gameStateNewLoaded == NewGame) {
+                            [self saveCurrentGameInDataBaseWithName:saveGameName andToCreateNewObject:YES];
+                        } else {
+                            [UIAlertView bk_showAlertViewWithTitle:@"Save Game"
+                                                           message:@"Do you want to overwrite the existing game?"
+                                                 cancelButtonTitle:@"No"
+                                                 otherButtonTitles:@[ @"Yes" ]
+                                                           handler:^(UIAlertView* alertView, NSInteger buttonIndex) {
+                                                             if (buttonIndex == 0) {
+                                                                 [self saveCurrentGameInDataBaseWithName:saveGameName
+                                                                                    andToCreateNewObject:YES];
+                                                             } else {
+                                                                 [self saveCurrentGameInDataBaseWithName:saveGameName
+                                                                                    andToCreateNewObject:NO];
+                                                             }
+                                                           }];
+                        }
+                      }];
     [saveGameScoreDialogue show];
 }
 
 - (void)loadPreviousGame {
     if (!self.savedGamesViewController) {
         if (IPAD) {
-            self.savedGamesViewController = [[JKMinesweeperSavedGamesViewController alloc] initWithNibName:@"JKMinesweeperSavedGamesViewController"
-                                                                bundle:nil];
+            self.savedGamesViewController =
+                [[JKMinesweeperSavedGamesViewController alloc] initWithNibName:@"JKMinesweeperSavedGamesViewController"
+                                                                        bundle:nil];
         } else {
-            self.savedGamesViewController = (JKMinesweeperSavedGamesViewController*) [[UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"savedGames"];
+            self.savedGamesViewController =
+                (JKMinesweeperSavedGamesViewController*)[[UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil]
+                    instantiateViewControllerWithIdentifier:@"savedGames"];
         }
         @weakify (self) self.savedGamesViewController.openSelectedGameModel = ^(SaveGameModel* selectedGameModel) {
-            
-            @strongify (self)
-            if (!IPAD) {
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-            self.savedGameModel = selectedGameModel;
-            [self resetGameBeforeLoadingPreviousGame:selectedGameModel];
-            [self.popupView dismiss:YES];
-            // Now load all tiles on the front page
-            NSArray* allCustomButtonCollection =
-            [NSKeyedUnarchiver unarchiveObjectWithData:selectedGameModel.savedGameData];
-            
-            NSArray* collectionWithSelectedTiles =
-            [allCustomButtonCollection bk_select:^BOOL (JKCustomButton* currentButtonObject) {
-                TileStateRepresentationValue currentButtonState =
-                currentButtonObject.buttonStateModel.currentTileState;
+
+          @strongify (self) if (!IPAD) {
+              [self.navigationController popViewControllerAnimated:YES];
+          }
+          self.savedGameModel = selectedGameModel;
+          [self resetGameBeforeLoadingPreviousGame:selectedGameModel];
+          [self.popupView dismiss:YES];
+          // Now load all tiles on the front page
+          NSArray* allCustomButtonCollection =
+              [NSKeyedUnarchiver unarchiveObjectWithData:selectedGameModel.savedGameData];
+
+          NSArray* collectionWithSelectedTiles =
+              [allCustomButtonCollection bk_select:^BOOL (JKCustomButton* currentButtonObject) {
+                TileStateRepresentationValue currentButtonState = currentButtonObject.buttonStateModel.currentTileState;
                 return (currentButtonState == TileSelected || currentButtonState == TileQuestionMarked);
-            }];
-            
-            DLog (@"%ld and %ld", (long)self.regularButtonsHolder.count, (long)self.minesButtonsHolder.count);
-            
-            self.totalNumberOfTilesRevealed = [collectionWithSelectedTiles count];
-            
-            for (JKCustomButton* individualButton in allCustomButtonCollection) {
-                DLog (@"In button mine %ld Sequence number %ld current tile state %ld ",
-                      (long)individualButton.buttonStateModel.isThisButtonMine,
-                      (long)individualButton.buttonSequenceNumber,
-                      (long)individualButton.buttonStateModel.currentTileState);
-                individualButton.frame =
-                CGRectMake (individualButton.positionOnScreen.x, individualButton.positionOnScreen.y,
-                            self.tileWidth, self.tileWidth);
-                [individualButton setBackgroundColor:self.tileForegroundColor];
-                
-                CGFloat xScaleIncrementFactor =
-                individualButton.positionOnScreen.x / selectedGameModel.successiveTilesDistanceIncrement;
-                CGFloat yScaleIncrementFactor =
-                individualButton.positionOnScreen.y / selectedGameModel.successiveTilesDistanceIncrement;
-                
-                CGPoint updatedScreenPoint = CGPointMake (
-                                                          individualButton.positionOnScreen.x +
-                                                          xScaleIncrementFactor *
-                                                          (self.tileWidth + self.gutterSpacing - selectedGameModel.successiveTilesDistanceIncrement),
-                                                          individualButton.positionOnScreen.y +
-                                                          yScaleIncrementFactor *
-                                                          (self.tileWidth + self.gutterSpacing - selectedGameModel.successiveTilesDistanceIncrement));
-                DLog (@"Old X %f Old Y %f AND new X %f new Y %f", individualButton.positionOnScreen.x,
-                      individualButton.positionOnScreen.y, updatedScreenPoint.x, updatedScreenPoint.y);
-                [individualButton configurePreviousButton:updatedScreenPoint
-                                                 andWidth:self.tileWidth
-                                           andButtonState:individualButton.buttonStateModel];
-                if (individualButton.buttonStateModel.isThisButtonMine) {
-                    [self.minesButtonsHolder addObject:individualButton];
-                } else {
-                    [self.regularButtonsHolder addObject:individualButton];
+              }];
+
+          DLog (@"%ld and %ld", (long)self.regularButtonsHolder.count, (long)self.minesButtonsHolder.count);
+
+          self.totalNumberOfTilesRevealed = [collectionWithSelectedTiles count];
+
+          for (JKCustomButton* individualButton in allCustomButtonCollection) {
+              DLog (@"In button mine %ld Sequence number %ld current tile state %ld ",
+                    (long)individualButton.buttonStateModel.isThisButtonMine,
+                    (long)individualButton.buttonSequenceNumber,
+                    (long)individualButton.buttonStateModel.currentTileState);
+              individualButton.frame = CGRectMake (individualButton.positionOnScreen.x,
+                                                   individualButton.positionOnScreen.y, self.tileWidth, self.tileWidth);
+              [individualButton setBackgroundColor:self.tileForegroundColor];
+
+              CGFloat xScaleIncrementFactor =
+                  individualButton.positionOnScreen.x / selectedGameModel.successiveTilesDistanceIncrement;
+              CGFloat yScaleIncrementFactor =
+                  individualButton.positionOnScreen.y / selectedGameModel.successiveTilesDistanceIncrement;
+
+              CGPoint updatedScreenPoint = CGPointMake (
+                  individualButton.positionOnScreen.x +
+                      xScaleIncrementFactor *
+                          (self.tileWidth + self.gutterSpacing - selectedGameModel.successiveTilesDistanceIncrement),
+                  individualButton.positionOnScreen.y +
+                      yScaleIncrementFactor *
+                          (self.tileWidth + self.gutterSpacing - selectedGameModel.successiveTilesDistanceIncrement));
+              DLog (@"Old X %f Old Y %f AND new X %f new Y %f", individualButton.positionOnScreen.x,
+                    individualButton.positionOnScreen.y, updatedScreenPoint.x, updatedScreenPoint.y);
+              [individualButton configurePreviousButton:updatedScreenPoint
+                                               andWidth:self.tileWidth
+                                         andButtonState:individualButton.buttonStateModel];
+              if (individualButton.buttonStateModel.isThisButtonMine) {
+                  [self.minesButtonsHolder addObject:individualButton];
+              } else {
+                  [self.regularButtonsHolder addObject:individualButton];
+              }
+
+              // For each button retrieved from database, we will add long press
+              // gesture to it
+              UILongPressGestureRecognizer* longPress =
+                  [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector (longPress:)];
+              [individualButton addGestureRecognizer:longPress];
+
+              individualButton.gameOverInstant = ^() {
+                [self showAllMines];
+                self.gameState = OverAndLoss;
+                [self showAlertViewWithMessage:@"You clicked on mine and now game is over"];
+                [self playGameOverSound];
+              };
+
+              individualButton.randomTileSelectedInstant = ^(NSInteger buttonSequenceNumber) {
+                if (![self isGameOver]) {
+                    [self highlightNeighbouringButtonsForButtonSequence:buttonSequenceNumber];
                 }
-                
-                // For each button retrieved from database, we will add long press
-                // gesture to it
-                UILongPressGestureRecognizer* longPress =
-                [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector (longPress:)];
-                [individualButton addGestureRecognizer:longPress];
-                
-                individualButton.gameOverInstant = ^() {
-                    [self showAllMines];
-                    self.gameState = OverAndLoss;
-                    [self showAlertViewWithMessage:@"You clicked on mine and now game is over"];
-                    [self playGameOverSound];
-                };
-                
-                individualButton.randomTileSelectedInstant = ^(NSInteger buttonSequenceNumber) {
-                    if (![self isGameOver]) {
-                        [self highlightNeighbouringButtonsForButtonSequence:buttonSequenceNumber];
-                    }
-                };
-                [self.gridHolderView addSubview:individualButton];
-            }
+              };
+              [self.gridHolderView addSubview:individualButton];
+          }
         };
     }
     if (IPAD) {
@@ -1234,13 +1248,16 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
     [self.audioOperationsManager playForegroundSoundFXnamed:@"openmenu.wav" loop:NO];
     if (!self.settingsViewController) {
         if (IPAD) {
-            self.settingsViewController = [[JKMinesweeperSettingsViewController alloc] initWithNibName:@"JKMinesweeperSettingsViewController"
-                                                              bundle:nil];
+            self.settingsViewController =
+                [[JKMinesweeperSettingsViewController alloc] initWithNibName:@"JKMinesweeperSettingsViewController"
+                                                                      bundle:nil];
         } else {
-            self.settingsViewController = (JKMinesweeperSettingsViewController*) [[UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"iphoneSettings"];
+            self.settingsViewController =
+                (JKMinesweeperSettingsViewController*)[[UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil]
+                    instantiateViewControllerWithIdentifier:@"iphoneSettings"];
         }
     }
-    
+
     if (IPAD) {
         [self showInPopupWithView:self.settingsViewController.view];
     } else {
@@ -1259,13 +1276,19 @@ self.loadButton.rac_command = [[RACCommand alloc] initWithSignalBlock:^(UIButton
 }
 
 - (void)showAppFeedbackView {
-    JKFeedbackInfo* feedbackInfoObject = [[JKFeedbackInfo alloc] initWithApplogoImage:[UIImage imageNamed:@"app_icon_default"] andAppName:@"Super Minesweeper" andFeedbackViewBackgorundColor:[UIColor colorWithCrayola:@"Fern"]];
-    JKAppsFeedbackProviderViewController* feedbackController = [[JKAppsFeedbackProviderViewController alloc] initWithFeedbackInfoObject:feedbackInfoObject andFeedbackCompletionBlock:^(id serverResponse) {
-        [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideLeftLeft];
-    } andFeedbackErrorBlock:^(NSError *error) {
-        
-    }];
-    feedbackController.view.frame = CGRectMake(0, 0, 300, 500);
+    JKFeedbackInfo* feedbackInfoObject =
+        [[JKFeedbackInfo alloc] initWithApplogoImage:[UIImage imageNamed:@"app_icon_default"]
+                                          andAppName:@"Blasting Minesweeper"
+                      andFeedbackViewBackgorundColor:[UIColor colorWithCrayola:@"Fern"]];
+    JKAppsFeedbackProviderViewController* feedbackController =
+        [[JKAppsFeedbackProviderViewController alloc] initWithFeedbackInfoObject:feedbackInfoObject
+            andFeedbackCompletionBlock:^(id serverResponse) {
+              [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideTopTop];
+            }
+            andFeedbackErrorBlock:^(NSError* error){
+
+            }];
+    feedbackController.view.frame = CGRectMake (0, 0, 300, 500);
     [self presentPopupViewController:feedbackController animationType:MJPopupViewAnimationSlideTopTop];
 }
 

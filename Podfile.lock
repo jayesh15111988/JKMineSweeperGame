@@ -39,10 +39,15 @@ PODS:
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
   - Color-Picker-for-iOS (2.0.2)
+  - Crashlytics (3.4.0):
+    - Fabric (~> 1.6.0)
   - EDColor (1.0.0)
+  - Fabric (1.6.0):
+    - Fabric/Base (= 1.6.0)
+  - Fabric/Base (1.6.0)
   - FLAnimatedImage (1.0.8)
   - HexColors (2.2.1)
-  - JKAppsFeedbackUIProvider (0.1):
+  - JKAppsFeedbackUIProvider (0.4):
     - AFNetworking-RACExtensions (~> 0.1)
     - EDColor
   - JKAutolayoutReadyScrollView (0.2):
@@ -57,17 +62,19 @@ PODS:
   - ReactiveCocoa/no-arc (2.5)
   - ReactiveCocoa/UI (2.5):
     - ReactiveCocoa/Core
-  - Realm (0.95.3):
-    - Realm/Headers (= 0.95.3)
-  - Realm/Headers (0.95.3)
-  - TPKeyboardAvoiding (1.2.9)
+  - Realm (0.96.2):
+    - Realm/Headers (= 0.96.2)
+  - Realm/Headers (0.96.2)
+  - TPKeyboardAvoiding (1.2.10)
   - TSMessages (0.9.12):
     - HexColors (~> 2.2.0)
 
 DEPENDENCIES:
   - BlocksKit (~> 2.2)
   - Color-Picker-for-iOS (~> 2.0)
+  - Crashlytics
   - EDColor
+  - Fabric
   - FLAnimatedImage (~> 1.0)
   - JKAppsFeedbackUIProvider (from `git@github.com:jayesh15111988/JKAppsFeedbackUIProvider.git`,
     branch `master`)
@@ -88,7 +95,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   JKAppsFeedbackUIProvider:
-    :commit: f9abb10f774cbb09a27e2d54ccae2329616aca63
+    :commit: 0b41b8494ef1ec97cac2da5d4e506b85f0e66782
     :git: git@github.com:jayesh15111988/JKAppsFeedbackUIProvider.git
   JKAutolayoutReadyScrollView:
     :commit: 25e2b7c087a035c1e3e930e0c5ba6e06cede2c55
@@ -99,17 +106,19 @@ SPEC CHECKSUMS:
   AFNetworking-RACExtensions: a043c6b492fa892395ceb9d20bc4c94e96e08a57
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Color-Picker-for-iOS: 4980589b3e3cfe7198f227dd50be9adb02d8bc0b
+  Crashlytics: 1ee87895c37472eb3f01f409ea1654a464d2f8d4
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
+  Fabric: d737eda3a26ac940a5430230eedb35f16b226131
   FLAnimatedImage: f9422f796135aff80d8c00b2afc48015bb746e24
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
-  JKAppsFeedbackUIProvider: b93507091f0dc8ff0f6b276b6ae4883230d3d0b1
+  JKAppsFeedbackUIProvider: 79941b4607408907612b08284113fe2195c67b0b
   JKAutolayoutReadyScrollView: bd0a1cabf4b80c162a3646858174a91bf2b7c92c
   KLCPopup: 76c5a19227977f1e53d85236f9ef42257c168d98
   MFSideMenu: 268122e6894f2747fc3a2b48578100b232506c60
   MJPopupViewController: e9ad553a3145eb8126ba2748e872ae7fb25cc605
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
-  Realm: 55885fa05865344994ad8b56da96669ffa39fbf1
-  TPKeyboardAvoiding: ff1ee4e5a5a0c119b965552af8f183868ea20207
+  Realm: 3ce8448151c571e90b85002d984d7f93f54fc8a3
+  TPKeyboardAvoiding: 614ebec846ec28b83d548769297fa5fb56468904
   TSMessages: c8cc7b80f2a833af533872cd02010cac061532cc
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0

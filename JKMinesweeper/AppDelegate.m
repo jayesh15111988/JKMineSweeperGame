@@ -16,6 +16,11 @@
 #import "SaveGameModel.h"
 #import "AppDelegate.h"
 
+// Crashlytics Dependencies.
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
+
 @interface AppDelegate ()
 
 @end
@@ -52,6 +57,8 @@
     }
     self.window.frame = [UIScreen mainScreen].bounds;
     [self.window makeKeyAndVisible];
+    [[Fabric sharedSDK] setDebug: YES];
+    [Fabric with:@[[Crashlytics class]]];
     
     return YES;
 }
