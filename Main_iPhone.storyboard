@@ -314,6 +314,9 @@
                                         <state key="normal" image="setting.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="openMoreSettingsOptionPressed:" destination="Do4-GN-edl" eventType="touchUpInside" id="m2M-rO-XpA"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E0M-UA-T2K">
                                         <rect key="frame" x="40" y="310" width="240" height="30"/>
