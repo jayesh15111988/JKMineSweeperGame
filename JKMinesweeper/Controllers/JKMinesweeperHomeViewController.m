@@ -50,6 +50,7 @@ typedef void (^resetTilesFinishedBlock)();
 @property (strong, nonatomic) UIView* gridHolderSuperView;
 @property (nonatomic, strong, readwrite) SaveGameModel* savedGameModel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* timerIndicatorButtonWidthConstraint;
+@property (assign, nonatomic) BOOL runningForFirstTime;
 
 @property (strong, nonatomic) UIColor* tileForegroundColor;
 @property (strong, nonatomic) UIColor* gridBackgroundColor;
@@ -116,6 +117,7 @@ typedef void (^resetTilesFinishedBlock)();
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _runningForFirstTime = YES;
     self.levelNumberSelected = [[[NSUserDefaults standardUserDefaults] objectForKey:@"currentLevel"] integerValue];
 
     if (!IPAD) {
@@ -370,11 +372,11 @@ typedef void (^resetTilesFinishedBlock)();
           gameProgressIndicatorImageName = @"bullet_green";
           break;
       case Busy:
-          [TSMessage showNotificationInViewController:self
-                                                title:@"Game Loading in progress"
-                                             subtitle:@""
-                                                 type:TSMessageNotificationTypeMessage
-                                             duration:2.0];
+//          [TSMessage showNotificationInViewController:self
+//                                                title:@"Game Loading in progress"
+//                                             subtitle:@""
+//                                                 type:TSMessageNotificationTypeMessage
+//                                             duration:2.0];
           gameProgressIndicatorImageName = @"bullet_red";
           break;
       default:
@@ -653,11 +655,18 @@ typedef void (^resetTilesFinishedBlock)();
     }
 
     if (self.gridHolderSuperView) {
+        [self.gridHolderView removeFromSuperview];
         [self.gridHolderSuperView removeFromSuperview];
         [self.scrollViewAutoLayout.contentView removeFromSuperview];
-        [_topHeaderOptionsView removeFromSuperview];
-        [self.gridHolderView removeFromSuperview];
     }
+    
+    CGFloat verticalOffsetForTopHeaderOption = 70;
+    if (self.runningForFirstTime) {
+        verticalOffsetForTopHeaderOption = 44;
+        self.runningForFirstTime = NO;
+    }
+    
+    CGFloat gridHolderVerticalOffset = verticalOffsetForTopHeaderOption + 50;
     
     self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.view
                                                          andHorizontalScrollingEnabled:YES];
@@ -666,6 +675,7 @@ typedef void (^resetTilesFinishedBlock)();
     [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderSuperView];
     [self.scrollViewAutoLayout.contentView addSubview:_topHeaderOptionsView];
     self.gridHolderView.backgroundColor = [JKMinesweeperAppearance orangeColor];
+    [_topHeaderOptionsView setBackgroundColor:[UIColor yellowColor]];
     [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderView];
     [self.scrollViewAutoLayout.contentView addSubview:self.changeTileForegroundColorButton];
     
@@ -677,9 +687,16 @@ typedef void (^resetTilesFinishedBlock)();
                                                         views:NSDictionaryOfVariableBindings (_gridHolderSuperView, _changeTileForegroundColorButton)]];
     
     [self.view addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:@"V:|[_topHeaderOptionsView][_gridHolderSuperView]|"
+                               constraintsWithVisualFormat:@"H:|-[_topHeaderOptionsView(viewWidth)]"
+                               options:kNilOptions
+                               metrics:@{@"viewWidth": @(self.view.frame.size.width)}
+                               views:NSDictionaryOfVariableBindings (_topHeaderOptionsView)]];
+    
+    
+    [self.view addConstraints:[NSLayoutConstraint
+                                  constraintsWithVisualFormat:@"V:|-verticalOffsetForTopHeaderOption-[_topHeaderOptionsView(44)]-[_gridHolderSuperView]|"
                                                       options:kNilOptions
-                                                      metrics:nil
+                               metrics:@{@"verticalOffsetForTopHeaderOption": @(verticalOffsetForTopHeaderOption)}
                                                         views:NSDictionaryOfVariableBindings (_topHeaderOptionsView,
                                                                                               _gridHolderSuperView)]];
 
@@ -699,10 +716,10 @@ typedef void (^resetTilesFinishedBlock)();
     self.gameState = Busy;
 
     [self.view addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:@"V:|-54-[_gridHolderView(totalGridViewHeight)]-20-|"
+                                  constraintsWithVisualFormat:@"V:|-gridHolderVerticalOffset-[_gridHolderView(totalGridViewHeight)]-20-|"
                                                       options:kNilOptions
                                                       metrics:@{
-                                                          @"totalGridViewHeight" : @(gridHeightAndWidth)
+                                                          @"totalGridViewHeight" : @(gridHeightAndWidth), @"gridHolderVerticalOffset": @(gridHolderVerticalOffset)
                                                       } views:NSDictionaryOfVariableBindings (_gridHolderView)]];
 
     [self.view
@@ -712,9 +729,9 @@ typedef void (^resetTilesFinishedBlock)();
                                                  views:NSDictionaryOfVariableBindings (
                                                            _gridHolderView)]];
     [self.view
-        addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-54-[_changeTileForegroundColorButton(30)]"
+        addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-gridHolderVerticalOffset-[_changeTileForegroundColorButton(30)]"
                                                                options:kNilOptions
-                                                               metrics:nil
+                                                               metrics:@{@"gridHolderVerticalOffset": @(gridHolderVerticalOffset)}
                                                                  views:NSDictionaryOfVariableBindings (
                                                                            _changeTileForegroundColorButton)]];
 }
