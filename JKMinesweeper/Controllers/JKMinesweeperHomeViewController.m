@@ -280,7 +280,7 @@ typedef void (^resetTilesFinishedBlock)();
     [self.numberOfSurroundingMinesHolder removeAllObjects];
     self.totalNumberOfTilesRevealed = 0;
     self.currentScoreValue = 0;
-    self.currentScore.text = @"Score: 0";
+    self.currentScore.text = @"0";
 
     // Make animation to change grid border in case style has been changed in the
     // meantime.
@@ -372,11 +372,11 @@ typedef void (^resetTilesFinishedBlock)();
           gameProgressIndicatorImageName = @"bullet_green";
           break;
       case Busy:
-//          [TSMessage showNotificationInViewController:self
-//                                                title:@"Game Loading in progress"
-//                                             subtitle:@""
-//                                                 type:TSMessageNotificationTypeMessage
-//                                             duration:2.0];
+          [TSMessage showNotificationInViewController:self
+                                                title:@"Game Loading in progress"
+                                             subtitle:@""
+                                                 type:TSMessageNotificationTypeMessage
+                                             duration:2.0];
           gameProgressIndicatorImageName = @"bullet_red";
           break;
       default:
@@ -452,7 +452,7 @@ typedef void (^resetTilesFinishedBlock)();
 
     self.gameStateNewLoaded = SavedGame;
     self.currentScoreValue = selectedGameModel.score;
-    self.currentScore.text = [NSString stringWithFormat:@"Score: %ld", (long)self.currentScoreValue];
+    self.currentScore.text = [NSString stringWithFormat:@"%ld", (long)self.currentScoreValue];
     self.levelNumberSelected = selectedGameModel.levelNumber;
     self.gridSizeInputText.text = selectedGameModel.numberOfTilesInRow;
     self.inputGridDimensionSize = [selectedGameModel.numberOfTilesInRow integerValue];
@@ -659,17 +659,17 @@ typedef void (^resetTilesFinishedBlock)();
         [self.gridHolderSuperView removeFromSuperview];
         [self.scrollViewAutoLayout.contentView removeFromSuperview];
     }
-    
+
     CGFloat verticalOffsetForTopHeaderOption = 70;
     if (self.runningForFirstTime) {
         verticalOffsetForTopHeaderOption = 0;
         self.runningForFirstTime = NO;
     }
-    
+
     CGFloat gridHolderVerticalOffset = verticalOffsetForTopHeaderOption + 50;
-    
-    self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.view
-                                                         andHorizontalScrollingEnabled:YES];
+
+    self.scrollViewAutoLayout =
+        [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.view andHorizontalScrollingEnabled:YES];
     self.gridHolderSuperView = [UIView new];
     self.gridHolderSuperView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderSuperView];
@@ -678,35 +678,44 @@ typedef void (^resetTilesFinishedBlock)();
     [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderView];
     [self.scrollViewAutoLayout.contentView addSubview:self.changeTileForegroundColorButton];
     [self.topHeaderOptionsView setBackgroundColor:[UIColor whiteColor]];
-    
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:|[_gridHolderSuperView(totalGridViewHeight)]-10-[_" @"changeTileForegroundColorButton("
-                               @"30)]"
-                                                      options:kNilOptions
-                               metrics:@{@"totalGridViewHeight" : @(gridHeightAndWidth)}
-                                                        views:NSDictionaryOfVariableBindings (_gridHolderSuperView, _changeTileForegroundColorButton)]];
-    if (gridHeightAndWidth > self.view.frame.size.width) {
-        [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:|-[_topHeaderOptionsView(viewWidth)]"
-                               options:kNilOptions
-                               metrics:@{@"viewWidth": @(self.view.frame.size.width)}
-                               views:NSDictionaryOfVariableBindings (_topHeaderOptionsView)]];
-    } else {
-        [self.view addConstraints:[NSLayoutConstraint
-                                   constraintsWithVisualFormat:@"H:|-[_topHeaderOptionsView]-|"
-                                   options:kNilOptions
-                                   metrics:nil
-                                   views:NSDictionaryOfVariableBindings (_topHeaderOptionsView)]];
-    }
-    
-    
-    [self.view addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:@"V:|-verticalOffsetForTopHeaderOption-[_topHeaderOptionsView(44)]-[_gridHolderSuperView]|"
-                                                      options:kNilOptions
-                               metrics:@{@"verticalOffsetForTopHeaderOption": @(verticalOffsetForTopHeaderOption)}
-                                                        views:NSDictionaryOfVariableBindings (_topHeaderOptionsView,
-                                                                                              _gridHolderSuperView)]];
 
+    [self.view
+        addConstraints:[NSLayoutConstraint
+                           constraintsWithVisualFormat:@"H:|[_gridHolderSuperView(totalGridViewHeight)]-10-[_"
+                           @"changeTileForegroundColorButton(" @"30)]"
+                                               options:kNilOptions
+                                               metrics:@{
+                                                   @"totalGridViewHeight" : @(gridHeightAndWidth)
+                                               }
+                                                 views:NSDictionaryOfVariableBindings (
+                                                           _gridHolderSuperView, _changeTileForegroundColorButton)]];
+    if (gridHeightAndWidth > self.view.frame.size.width) {
+        [self.view
+            addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-[_topHeaderOptionsView(viewWidth)]"
+                                                   options:kNilOptions
+                                                   metrics:@{
+                                                       @"viewWidth" : @(self.view.frame.size.width)
+                                                   } views:NSDictionaryOfVariableBindings (_topHeaderOptionsView)]];
+    } else {
+        [self.view
+            addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-[_topHeaderOptionsView(viewWidth)]-|"
+                                                   options:kNilOptions
+                                                   metrics:@{
+                                                       @"viewWidth" : @(self.view.frame.size.width)
+                                                   } views:NSDictionaryOfVariableBindings (_topHeaderOptionsView)]];
+    }
+
+    [self.view addConstraints:
+                   [NSLayoutConstraint
+                       constraintsWithVisualFormat:
+                           @"V:|-verticalOffsetForTopHeaderOption-[_topHeaderOptionsView(44)]-[_gridHolderSuperView]|"
+                                           options:kNilOptions
+                                           metrics:@{
+                                               @"verticalOffsetForTopHeaderOption" : @(verticalOffsetForTopHeaderOption)
+                                           } views:NSDictionaryOfVariableBindings (_topHeaderOptionsView,
+                                                                                   _gridHolderSuperView)]];
 
     [self setupRACSignalsForGameColors];
 
@@ -721,36 +730,40 @@ typedef void (^resetTilesFinishedBlock)();
                                         repeats:YES];
     [self.createNewGridAnimationTimer fire];
     self.gameState = Busy;
-    
+
     [self.view addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:@"V:|-gridHolderVerticalOffset-[_gridHolderView(totalGridViewHeight)]-20-|"
+                                  constraintsWithVisualFormat:
+                                      @"V:|-gridHolderVerticalOffset-[_gridHolderView(totalGridViewHeight)]-20-|"
                                                       options:kNilOptions
                                                       metrics:@{
-                                                          @"totalGridViewHeight" : @(gridHeightAndWidth), @"gridHolderVerticalOffset": @(gridHolderVerticalOffset)
+                                                          @"totalGridViewHeight" : @(gridHeightAndWidth),
+                                                          @"gridHolderVerticalOffset" : @(gridHolderVerticalOffset)
                                                       } views:NSDictionaryOfVariableBindings (_gridHolderView)]];
 
     if (gridHeightAndWidth > self.view.frame.size.width) {
-        [self.view
-         addConstraints:[NSLayoutConstraint
-                           constraintsWithVisualFormat:@"H:|-[_gridHolderView(totalGridViewWidth)]-40-|" options:kNilOptions
-                        metrics:@{@"totalGridViewWidth" : @(gridHeightAndWidth)}
-                                                 views:NSDictionaryOfVariableBindings (
-                                                           _gridHolderView)]];
+        [self.view addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:@"H:|-[_gridHolderView(totalGridViewWidth)]-44-|"
+                                                          options:kNilOptions
+                                                          metrics:@{
+                                                              @"totalGridViewWidth" : @(gridHeightAndWidth)
+                                                          } views:NSDictionaryOfVariableBindings (_gridHolderView)]];
     } else {
-        [self.view
-         addConstraints:[NSLayoutConstraint
-                         constraintsWithVisualFormat:@"H:|-[_gridHolderView(totalGridViewWidth)]" options:kNilOptions
-                         metrics:@{@"totalGridViewWidth" : @(gridHeightAndWidth)}
-                         views:NSDictionaryOfVariableBindings (
-                                                               _gridHolderView)]];
+        [self.view addConstraints:[NSLayoutConstraint
+                                      constraintsWithVisualFormat:@"H:|-[_gridHolderView(totalGridViewWidth)]"
+                                                          options:kNilOptions
+                                                          metrics:@{
+                                                              @"totalGridViewWidth" : @(gridHeightAndWidth)
+                                                          } views:NSDictionaryOfVariableBindings (_gridHolderView)]];
     }
-    
+
     [self.view
-        addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-gridHolderVerticalOffset-[_changeTileForegroundColorButton(30)]"
-                                                               options:kNilOptions
-                                                               metrics:@{@"gridHolderVerticalOffset": @(gridHolderVerticalOffset)}
-                                                                 views:NSDictionaryOfVariableBindings (
-                                                                           _changeTileForegroundColorButton)]];
+        addConstraints:
+            [NSLayoutConstraint
+                constraintsWithVisualFormat:@"V:|-gridHolderVerticalOffset-[_changeTileForegroundColorButton(30)]"
+                                    options:kNilOptions
+                                    metrics:@{
+                                        @"gridHolderVerticalOffset" : @(gridHolderVerticalOffset)
+                                    } views:NSDictionaryOfVariableBindings (_changeTileForegroundColorButton)]];
 }
 
 - (void)playGameOverSound {
@@ -860,7 +873,7 @@ typedef void (^resetTilesFinishedBlock)();
             self.currentScoreValue +=
                 self.levelNumberSelected * buttonWithCurrentIdentifier.buttonStateModel.numberOfNeighboringMines;
         }
-        self.currentScore.text = [NSString stringWithFormat:@"Score: %ld", (long)self.currentScoreValue];
+        self.currentScore.text = [NSString stringWithFormat:@"%ld", (long)self.currentScoreValue];
         // After each revelation check if user has won the game or not
         if ([self didWinUserCurrentGameLiveCheck]) {
             [self verifyLossWinButtonPressedWithUserWonCurrentGame:YES];
