@@ -459,7 +459,7 @@ typedef void (^resetTilesFinishedBlock)();
     // Setup Grid size to match the one number of tiles here.
     [self setupGridHolderView];
     if (self.totalNumberOfRequiredTiles < 3) {
-        self.totalNumberOfRequiredTiles = 3;
+        self.totalNumberOfRequiredTiles = 9;
     }
     // We will use previous identifier and will use to overwrite existing game
     self.currentGameIdentifier = selectedGameModel.identifier;
@@ -522,7 +522,7 @@ typedef void (^resetTilesFinishedBlock)();
     self.totalNumberOfRequiredTiles = self.inputGridDimensionSize;
 
     if (self.totalNumberOfRequiredTiles < 3) {
-        self.totalNumberOfRequiredTiles = 3;
+        self.totalNumberOfRequiredTiles = 9;
     }
 
     self.currentGameIdentifier = [JKRandomStringGenerator generateRandomStringWithLength:6];
@@ -655,9 +655,13 @@ typedef void (^resetTilesFinishedBlock)();
     if (self.gridHolderSuperView) {
         [self.gridHolderSuperView removeFromSuperview];
     }
+    
+    self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.view
+                                                         andHorizontalScrollingEnabled:YES];
     self.gridHolderSuperView = [UIView new];
     self.gridHolderSuperView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.gridHolderSuperView];
+    [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderSuperView];
+    [self.scrollViewAutoLayout.contentView addSubview:_topHeaderOptionsView];
     self.gridHolderView.backgroundColor = [JKMinesweeperAppearance orangeColor];
 
     [self.view addConstraints:[NSLayoutConstraint
@@ -666,14 +670,12 @@ typedef void (^resetTilesFinishedBlock)();
                                                       metrics:nil
                                                         views:NSDictionaryOfVariableBindings (_gridHolderSuperView)]];
     [self.view addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:@"V:[_topHeaderOptionsView][_gridHolderSuperView]|"
+                                  constraintsWithVisualFormat:@"V:|[_topHeaderOptionsView][_gridHolderSuperView]|"
                                                       options:kNilOptions
                                                       metrics:nil
                                                         views:NSDictionaryOfVariableBindings (_topHeaderOptionsView,
                                                                                               _gridHolderSuperView)]];
 
-    self.scrollViewAutoLayout = [[ScrollViewAutolayoutCreator alloc] initWithSuperView:self.gridHolderSuperView
-                                                         andHorizontalScrollingEnabled:NO];
     [self.scrollViewAutoLayout.contentView addSubview:self.gridHolderView];
     [self.scrollViewAutoLayout.contentView addSubview:self.changeTileForegroundColorButton];
 
@@ -706,7 +708,7 @@ typedef void (^resetTilesFinishedBlock)();
                                                          multiplier:1.0
                                                            constant:gridHeightAndWidth]];
     [self.view addConstraints:[NSLayoutConstraint
-                                  constraintsWithVisualFormat:@"V:|-20-[_gridHolderView(totalGridViewHeight)]-20-|"
+                                  constraintsWithVisualFormat:@"V:|-54-[_gridHolderView(totalGridViewHeight)]-20-|"
                                                       options:kNilOptions
                                                       metrics:@{
                                                           @"totalGridViewHeight" : @(gridHeightAndWidth)
@@ -714,8 +716,8 @@ typedef void (^resetTilesFinishedBlock)();
 
     [self.view
         addConstraints:[NSLayoutConstraint
-                           constraintsWithVisualFormat:@"H:[_gridHolderView]-10-[_" @"changeTileForegroundColorButton("
-                           @"30)]" options:kNilOptions
+                           constraintsWithVisualFormat:@"H:|[_gridHolderView]-10-[_" @"changeTileForegroundColorButton("
+                           @"30)]|" options:kNilOptions
                                                metrics:nil
                                                  views:NSDictionaryOfVariableBindings (
                                                            _gridHolderView, _changeTileForegroundColorButton)]];
